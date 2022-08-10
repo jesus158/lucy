@@ -59,7 +59,7 @@ class TypeAlertAdmin extends React.Component {
 
         if (typeAlert.name === "") {
 
-            this.showAlertInfo("Por favor debe ingresar el nombre del activo");
+            this.showAlertInfo("Por favor debe ingresar el nombre de la alerta");
             return;
         }
 
@@ -136,7 +136,7 @@ class TypeAlertAdmin extends React.Component {
                                     <CustomInput
                                         labelText={
                                             <span>
-                                                Nombre del tipo de activo
+                                                Nombre del tipo de alerta
                                     </span>
                                         }
                                         id="firstname"

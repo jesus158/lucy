@@ -21,7 +21,7 @@ class TypeAlerts extends React.Component {
           });
           this.props.history.push('/admin/admin-type-alert');
         }}>
-          <ViewList /> Nuevo tipo de activo
+          <ViewList /> Nuevo tipo de alerta
             </Button>
             </GridItem>
             <TypeActivesList/>

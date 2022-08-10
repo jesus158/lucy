@@ -16,6 +16,7 @@ export const findTypeAsset = (action$, state$) => action$.pipe(
                     let code = response.data.apiResponse.code;
                     if (response.status >= 200 && response.status < 300 && code === 200) {
                         let data = response.data;
+                        console.log('find asset',data)
                         obs.next(findTypeAssetSuccess(data));
                         obs.complete();
                     } else if (response.status === 401) {

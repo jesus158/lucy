@@ -4,29 +4,29 @@ import { apiTimeout } from 'modules/utils/ApiUtil';
 import { ofType } from 'redux-observable';
 import { Observable, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
-import TypeAssetApi from 'modules/configurations/type_alerts/TypeActivesApiClient.js';
-import { configureTypeAssetError, configureTypeAssetSuccess, CONFIGURE_TYPE_ASSET, findTypeAssetError, findTypeAssetSuccess, FIND_TYPE_ASSET_LIST, getListActiveTypeAlertError, getListActiveTypeAlertSuccess, getTypeAssetByIdError, getTypeAssetByIdSuccess, GET_LIST_ACTIVE_TYPE_ASSET, GET_TYPE_ASSET_BY_ID, inactiveTypeAssetError, inactiveTypeAssetSuccess, INACTIVE_TYPE_ASSET } from 'modules/configurations/type_actives/TypeActivesActions.js';
+import { configureTypeAlertError, configureTypeAlertSuccess, CONFIGURE_TYPE_ALERT, findTypeAlertError, findTypeAlertSuccess, FIND_TYPE_ALERT_LIST, getListActiveTypeAlertError, getListActiveTypeAlertSuccess, getTypeAlertByIdError, getTypeAlertByIdSuccess, GET_LIST_ACTIVE_TYPE_ALERT, GET_TYPE_ALERT_BY_ID, inactiveTypeAlertError, inactiveTypeAlertSuccess, INACTIVE_TYPE_ALERT } from 'modules/configurations/type_alerts/TypeAlertsActions.js';
+import TypeAlertsApi from "modules/configurations/type_alerts/TypeAlertsApiClient.js";
 
-export const findTypeAsset = (action$, state$) => action$.pipe(
-    ofType(FIND_TYPE_ASSET_LIST), mergeMap(action =>
+export const findTypeAlert = (action$, state$) => action$.pipe(
+    ofType(FIND_TYPE_ALERT_LIST), mergeMap(action =>
         Observable.create(obs => {
             axios.defaults.timeout = apiTimeout;
-            axios(TypeAssetApi.filterTypeAsset(action.apiPaginationAction, action.apiPaginationCurrentPage, action.apiPaginationDirection, action.apiPaginationLimit, action.apiPaginationOrderColumn, action.apiPaginationMoveToPage, action.apiPaginationFilter))
+            axios(TypeAlertsApi.filterTypeAlert(action.apiPaginationAction, action.apiPaginationCurrentPage, action.apiPaginationDirection, action.apiPaginationLimit, action.apiPaginationOrderColumn, action.apiPaginationMoveToPage, action.apiPaginationFilter))
                 .then(response => {
                     let code = response.data.apiResponse.code;
                     if (response.status >= 200 && response.status < 300 && code === 200) {
                         let data = response.data;
-                        obs.next(findTypeAssetSuccess(data));
+                        obs.next(findTypeAlertSuccess(data));
                         obs.complete();
                     } else if (response.status === 401) {
-                        obs.next(findTypeAssetError(response.data.apiResponse.message));
+                        obs.next(findTypeAlertError(response.data.apiResponse.message));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
                         }));
                         obs.complete();
                     } else {
-                        obs.next(findTypeAssetError(response.data.apiResponse.message));
+                        obs.next(findTypeAlertError(response.data.apiResponse.message));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
@@ -35,7 +35,7 @@ export const findTypeAsset = (action$, state$) => action$.pipe(
                     }
                 })
                 .catch(error => {
-                    obs.next(findTypeAssetError(error));
+                    obs.next(findTypeAlertError(error));
                     obs.next(addMessage({
                         variant: "error",
                         message: error.message
@@ -43,22 +43,22 @@ export const findTypeAsset = (action$, state$) => action$.pipe(
                     obs.complete();
                 });
         }).pipe(
-            catchError(error => of (findTypeAssetError("Error"), console.warn("ERROR OBSERVABLE"), addMessage({
+            catchError(error => of (findTypeAlertError("Error"), console.warn("ERROR OBSERVABLE"), addMessage({
                 variant: "error",
                 message: "Error"
             }))))
     )
 );
 
-export const configureTypeAsset = (action$, state$) => action$.pipe(
-    ofType(CONFIGURE_TYPE_ASSET), mergeMap(action =>
+export const configureTypeAlert = (action$, state$) => action$.pipe(
+    ofType(CONFIGURE_TYPE_ALERT), mergeMap(action =>
         Observable.create(obs => {
             axios.defaults.timeout = apiTimeout;
-            axios(TypeAssetApi.configureTypeAsset(action.typeAsset))
+            axios(TypeAlertsApi.configureTypeAlert(action.typeAlert))
                 .then(response => {
                     let code = response.data.apiResponse.code;
                     if (response.status >= 200 && response.status < 300 && code === 200) {
-                        obs.next(configureTypeAssetSuccess());
+                        obs.next(configureTypeAlertSuccess());
                         obs.next(addMessage({
                             variant: "success",
                             message: response.data.apiResponse.message
@@ -66,7 +66,7 @@ export const configureTypeAsset = (action$, state$) => action$.pipe(
                         obs.complete();
                         action.onSuccess("OK"); //Callback de suceso
                     } else if (response.status === 401) {
-                        obs.next(configureTypeAssetError(""));
+                        obs.next(configureTypeAlertError(""));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
@@ -74,7 +74,7 @@ export const configureTypeAsset = (action$, state$) => action$.pipe(
                         obs.complete();
                         action.onSuccess("ERROR");
                     } else {
-                        obs.next(configureTypeAssetError(response.data.message));
+                        obs.next(configureTypeAlertError(response.data.message));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
@@ -85,7 +85,7 @@ export const configureTypeAsset = (action$, state$) => action$.pipe(
 
                 })
                 .catch(error => {
-                    obs.next(configureTypeAssetError(error));
+                    obs.next(configureTypeAlertError(error));
                     obs.next(addMessage({
                         variant: "error",
                         message: error.message
@@ -93,33 +93,33 @@ export const configureTypeAsset = (action$, state$) => action$.pipe(
                     obs.complete();
                     action.onSuccess("ERROR");
                 });
-        }).pipe(catchError(error => of (configureTypeAssetError(error), addMessage({
+        }).pipe(catchError(error => of (configureTypeAlertError(error), addMessage({
             variant: "error",
             message: "Error"
         }))))
     )
 );
 
-export const getTypeAssetById = (action$, state$) => action$.pipe(
-    ofType(GET_TYPE_ASSET_BY_ID), mergeMap(action =>
+export const getTypeAlertById = (action$, state$) => action$.pipe(
+    ofType(GET_TYPE_ALERT_BY_ID), mergeMap(action =>
         Observable.create(obs => {
             axios.defaults.timeout = apiTimeout;
-            axios(TypeAssetApi.getTypeAssetById(action.id))
+            axios(TypeAlertsApi.getTypeAlertById(action.id))
                 .then(response => {
                     let code = response.data.apiResponse.code;
                     if (response.status >= 200 && response.status < 300 && code === 200) {
                         let data = response.data;
-                        obs.next(getTypeAssetByIdSuccess(data.typeAsset));
+                        obs.next(getTypeAlertByIdSuccess(data.typeAlert));
                         obs.complete();
                     } else if (response.status === 401) {
-                        obs.next(getTypeAssetByIdError(""));
+                        obs.next(getTypeAlertByIdError(""));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
                         }));
                         obs.complete();
                     } else {
-                        obs.next(getTypeAssetByIdError(response.data.message));
+                        obs.next(getTypeAlertByIdError(response.data.message));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
@@ -129,29 +129,29 @@ export const getTypeAssetById = (action$, state$) => action$.pipe(
 
                 })
                 .catch(error => {
-                    obs.next(getTypeAssetByIdError(error));
+                    obs.next(getTypeAlertByIdError(error));
                     obs.next(addMessage({
                         variant: "error",
                         message: error.message
                     }));
                     obs.complete();
                 });
-        }).pipe(catchError(error => of (getTypeAssetByIdError(error), addMessage({
+        }).pipe(catchError(error => of (getTypeAlertByIdError(error), addMessage({
             variant: "error",
             message: "Error"
         }))))
     )
 );
 
-export const inactiveTypeAsset = (action$, state$) => action$.pipe(
-    ofType(INACTIVE_TYPE_ASSET), mergeMap(action =>
+export const inactiveTypeAlert = (action$, state$) => action$.pipe(
+    ofType(INACTIVE_TYPE_ALERT), mergeMap(action =>
         Observable.create(obs => {
             axios.defaults.timeout = apiTimeout;
-            axios(TypeAssetApi.inactiveTypeAsset(action.id))
+            axios(TypeAlertsApi.inactiveTypeAlert(action.id))
                 .then(response => {
                     let code = response.data.apiResponse.code;
                     if (response.status >= 200 && response.status < 300 && code === 200) {
-                        obs.next(inactiveTypeAssetSuccess());
+                        obs.next(inactiveTypeAlertSuccess());
                         obs.next(addMessage({
                             variant: "success",
                             message: response.data.apiResponse.message
@@ -159,7 +159,7 @@ export const inactiveTypeAsset = (action$, state$) => action$.pipe(
                         obs.complete();
                         action.onSuccess("OK"); //Callback de suceso
                     } else if (response.status === 401) {
-                        obs.next(inactiveTypeAssetError(response.data.apiResponse.message));
+                        obs.next(inactiveTypeAlertError(response.data.apiResponse.message));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
@@ -167,7 +167,7 @@ export const inactiveTypeAsset = (action$, state$) => action$.pipe(
                         obs.complete();
                         action.onSuccess("ERROR");
                     } else {
-                        obs.next(inactiveTypeAssetError(response.data.apiResponse.message));
+                        obs.next(inactiveTypeAlertError(response.data.apiResponse.message));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
@@ -178,7 +178,7 @@ export const inactiveTypeAsset = (action$, state$) => action$.pipe(
 
                 })
                 .catch(error => {
-                    obs.next(inactiveTypeAssetError(error));
+                    obs.next(inactiveTypeAlertError(error));
                     obs.next(addMessage({
                         variant: "error",
                         message: error.message
@@ -186,7 +186,7 @@ export const inactiveTypeAsset = (action$, state$) => action$.pipe(
                     obs.complete();
                     action.onSuccess("ERROR");
                 });
-        }).pipe(catchError(error => of (inactiveTypeAssetError(error), addMessage({
+        }).pipe(catchError(error => of (inactiveTypeAlertError(error), addMessage({
             variant: "error",
             message: "Error"
         }))))
@@ -194,14 +194,15 @@ export const inactiveTypeAsset = (action$, state$) => action$.pipe(
 );
 
 export const getListActiveTypeAlert = (action$, state$) => action$.pipe(
-    ofType(GET_LIST_ACTIVE_TYPE_ASSET), mergeMap(action =>
+    ofType(GET_LIST_ACTIVE_TYPE_ALERT), mergeMap(action =>
         Observable.create(obs => {
             axios.defaults.timeout = apiTimeout;
-            axios(TypeAssetApi.getListActiveTypeAlert())
+            axios(TypeAlertsApi.getListActiveTypeAlert())
                 .then(response => {
                     let code = response.data.apiResponse.code;
                     if (response.status >= 200 && response.status < 300 && code === 200) {
                         let data = response.data;
+                        console.log('get list Active', data)
                         obs.next(getListActiveTypeAlertSuccess(data.listTypeAlert));
                         //obs.next(addMessage({variant:"success", message:response.data.apiResponse.message}));
                         obs.complete();

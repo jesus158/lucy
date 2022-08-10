@@ -24,7 +24,7 @@ import GridItem from "components/Grid/GridItem.jsx";
 import WaitDialog from "modules/components/WaitDialog.jsx";
 import React from "react";
 import { connect } from 'react-redux';
-import { configureTypeAsset, getTypeAssetById, setTypeAsset } from 'modules/configurations/type_actives/TypeActivesActions.js';
+import { configureTypeAlert, getTypeAlertById, setTypeAlert } from 'modules/configurations/type_alerts/TypeAlertsActions.js';
 
 const style = {
     gridContainer: {
@@ -53,18 +53,18 @@ class TypeAlertAdmin extends React.Component {
 
     }
 
-    configureTypeAsset = () => {
-        const { typeAsset } = this.props.typeAssetState.data;
+    configureTypeAlert = () => {
+        const { typeAlert } = this.props.typeAlertState.data;
 
 
-        if (typeAsset.name === "") {
+        if (typeAlert.name === "") {
 
             this.showAlertInfo("Por favor debe ingresar el nombre del activo");
             return;
         }
 
 
-        this.props.configureTypeAsset(typeAsset, this.props, (success) => {
+        this.props.configureTypeAlert(typeAlert, this.props, (success) => {
             //Navegación a la lista
             this.props.history.push('/admin/config-actives');
         });
@@ -84,32 +84,32 @@ class TypeAlertAdmin extends React.Component {
     }
 
     handleInputText = event => {
-        var typeAsset = this.props.typeAssetState.data.typeAsset;
-        typeAsset[[event.target.name]] = event.target.value;
-        this.props.setTypeAsset(typeAsset);
+        var typeAlert = this.props.typeAlertState.data.typeAlert;
+        typeAlert[[event.target.name]] = event.target.value;
+        this.props.setTypeAlert(typeAlert);
     };
 
     handleToggle() {
-        var typeAsset = this.props.typeAssetState.data.typeAsset;
-        console.log(typeAsset)
-        if (typeAsset.active) {
-            typeAsset.active = 0;
+        var typeAlert = this.props.typeAlertState.data.typeAlert;
+        console.log(typeAlert)
+        if (typeAlert.active) {
+            typeAlert.active = 0;
         } else {
-            typeAsset.active = 1;
+            typeAlert.active = 1;
         }
-        this.props.setTypeAsset(typeAsset);
+        this.props.setTypeAlert(typeAlert);
     }
 
     handlePriorityInput = event => {
-        var typeAsset = this.props.typeAssetState.data.typeAsset;
-        typeAsset[[event.target.name]] = event.target.value;
-        this.props.setTypeAsset(typeAsset);
+        var typeAlert = this.props.typeAlertState.data.typeAlert;
+        typeAlert[[event.target.name]] = event.target.value;
+        this.props.setTypeAlert(typeAlert);
     }
 
     render() {
         const { classes } = this.props;
-        let isActivityIndicatorShown = this.props.typeAssetState.data.isActivityIndicatorShown;
-        const { typeAsset } = this.props.typeAssetState.data;
+        let isActivityIndicatorShown = this.props.typeAlertState.data.isActivityIndicatorShown;
+        const { typeAlert } = this.props.typeAlertState.data;
         return (
             <GridItem xs={12}>
                 {isActivityIndicatorShown &&
@@ -121,7 +121,7 @@ class TypeAlertAdmin extends React.Component {
                         <CardIcon color="info">
                             <ViewList />
                         </CardIcon>
-                        <h4 className={classes.cardIconTitle}>Tipo de Activo</h4>
+                        <h4 className={classes.cardIconTitle}>Tipo de Alerta</h4>
                     </CardHeader>
                     <CardBody>
                         <GridContainer>
@@ -146,7 +146,7 @@ class TypeAlertAdmin extends React.Component {
                                         inputProps={{
                                             name: "name",
                                             id: "name",
-                                            value: typeAsset.name,
+                                            value: typeAlert.name,
                                             onChange: event => this.handleInputText(event),
                                             startAdornment: (
                                                 <InputAdornment
@@ -173,7 +173,7 @@ class TypeAlertAdmin extends React.Component {
                                         inputProps={{
                                             name: "description",
                                             id: "description",
-                                            value: typeAsset.description,
+                                            value: typeAlert.description,
                                             onChange: event => this.handleInputText(event),
                                             startAdornment: (
                                                 <InputAdornment
@@ -186,7 +186,7 @@ class TypeAlertAdmin extends React.Component {
                                     />
                                 </GridItem>
 
-                                {typeAsset.id > 0 &&
+                                {typeAlert.id > 0 &&
                                     <GridItem xs={12} sm={12}>
                                         <FormControlLabel
                                             control={
@@ -198,7 +198,7 @@ class TypeAlertAdmin extends React.Component {
                                                     classes={{
                                                         checked: classes.checked
                                                     }}
-                                                    checked={typeAsset.active}
+                                                    checked={typeAlert.active}
                                                     onClick={() => this.handleToggle()}
                                                     disableRipple
                                                 />
@@ -214,7 +214,7 @@ class TypeAlertAdmin extends React.Component {
                             <GridItem xs={12} sm={12} className={classes.gridItem}>
 
                                 <Button
-                                    onClick={this.configureTypeAsset}
+                                    onClick={this.configureTypeAlert}
                                     color="success"
                                     round><SaveIcon />
                       Guardar
@@ -230,15 +230,15 @@ class TypeAlertAdmin extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        //typeAssetState: state.typeAssetState,
+        typeAlertState: state.typeAlertState,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        configureTypeAsset: (typeAsset, ownProps, onSuccess) => dispatch(configureTypeAsset(typeAsset, ownProps, onSuccess)),
-        setTypeAsset: (typeAsset) => dispatch(setTypeAsset(typeAsset)),
-        getTypeAssetById: (id) => dispatch(getTypeAssetById(id)),
+        configureTypeAlert: (typeAlert, ownProps, onSuccess) => dispatch(configureTypeAlert(typeAlert, ownProps, onSuccess)),
+        setTypeAlert: (typeAlert) => dispatch(setTypeAlert(typeAlert)),
+        getTypeAlertById: (id) => dispatch(getTypeAlertById(id)),
     };
 };
 

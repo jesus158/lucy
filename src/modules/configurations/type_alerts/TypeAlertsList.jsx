@@ -31,7 +31,13 @@ import React from "react";
 import { connect } from 'react-redux';
 import { Redirect } from "react-router-dom";
 // module Components
-import { findTypeAsset, inactiveTypeAsset, setTypeAsset } from 'modules/configurations/type_actives/TypeActivesActions.js';
+import {
+    findTypeAlert,
+    getListActiveTypeAlert,
+    inactiveTypeAlert,
+    setTypeAlert
+} from 'modules/configurations/type_alerts/TypeAlertsActions.js';
+
 
 const rows = [
     { id: 2, numeric: false, disablePadding: false, isSorted: true, label: 'Nombre' },
@@ -40,7 +46,7 @@ const rows = [
     { id: 0, numeric: false, disablePadding: true, isSorted: false, label: '' },
 ];
 
-class TypeActivesList extends React.Component {
+class TypeAlertsList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -57,7 +63,8 @@ class TypeActivesList extends React.Component {
     }
 
     componentDidMount = () => {
-        this.props.findTypeAsset(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
+        this.props.findTypeAlert(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
+        this.props.getListActiveTypeAlert()
     }
 
 
@@ -69,20 +76,20 @@ class TypeActivesList extends React.Component {
             order = 0;
         }
 
-        this.props.findTypeAsset(undefined, this.state.page, order, this.state.rowsPerPage, orderBy, this.state.page, this.state.filter.name);
+        this.props.findTypeAlert(undefined, this.state.page, order, this.state.rowsPerPage, orderBy, this.state.page, this.state.filter.name);
         this.setState({ order, orderBy });
     };
 
-    handleEdit = (typeAsset) => {
-        this.props.setTypeAsset({
-            id: typeAsset.id,
-            name: typeAsset.name,
-            description: typeAsset.description,
-            active: typeAsset.active
+    handleEdit = (typeAlert) => {
+        this.props.setTypeAlert({
+            id: typeAlert.id,
+            name: typeAlert.name,
+            description: typeAlert.description,
+            active: typeAlert.active
         });
         this.setState({
             toAdmin: true
-            , accountId: typeAsset.id
+            , accountId: typeAlert.id
         });
     }
 
@@ -97,7 +104,7 @@ class TypeActivesList extends React.Component {
                     <DialogTitle id="form-dialog-title">{nameAccountSelected}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            ¿Está seguro que quiere inactivar este tipo de activo?
+                            ¿Está seguro que quiere desactivar este tipo de alerta?
                     </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -106,8 +113,8 @@ class TypeActivesList extends React.Component {
                     </Button>
                         <Button onClick={() => {
                             this.hideAlertInactive();
-                            this.props.inactiveTypeAsset(id, success => {
-                                this.props.findTypeAsset(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
+                            this.props.inactiveTypeAlert(id, success => {
+                                this.props.findTypeAlert(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
                             });
                         }} color="info">
                             Aceptar
@@ -126,44 +133,43 @@ class TypeActivesList extends React.Component {
 
     onFilter = filter => {
         this.setState({ filter });
-        this.props.findTypeAsset(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, filter.name);
+        this.props.findTypeAlert(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, filter.name);
     }
 
     handleChangePage = (page) => {
-        this.props.findTypeAsset(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, page, this.state.filter.name);
+        this.props.findTypeAlert(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, page, this.state.filter.name);
         this.setState({ page });
     };
 
     handleChangeRowsPerPage = rowsPerPage => {
-        this.props.findTypeAsset(undefined, this.state.page, this.state.order, rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
+        this.props.findTypeAlert(undefined, this.state.page, this.state.order, rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
         this.setState({ rowsPerPage });
     };
 
     render() {
         const { classes } = this.props;
 
-        const { isActivityIndicatorShown } = this.props.typeAssetState.data;
-        var { apiPagination, listTypeAlert } = this.props.typeAssetState.data.listResultSetTypeAsset;
+        const { isActivityIndicatorShown } = this.props.typeAlertState?.data;
+        var {  listTypeAlert, apiPagination } = this.props.typeAlertState?.data?.listResultSetTypeAlert;
 
-        console.log(this.props.typeAssetState.data.listResultSetTypeAsset)
+        console.log(this.props.typeAlertState?.data?.listResultSetTypeAlert)
 
         const { order, orderBy } = this.state;
 
-        if (apiPagination === undefined) {
+        if (this.props.typeAlertState?.data?.listResultSetTypeAlert?.apiPagination === undefined) {
             apiPagination = {};
         }
 
         if (listTypeAlert === undefined) {
             listTypeAlert = [];
         }
-
         if (this.state.toAdmin === true) {
             return <Redirect to={'/admin/admin-type-alert/?code=' + this.state.accountId} />
         }
 
         return (
             <GridItem xs={12}>
-                {isActivityIndicatorShown ?
+                {this.props.typeAlertState?.data?.isActivityIndicatorShown ?
                     <WaitDialog text={"Cargando..."} />
                     : null
                 }
@@ -173,10 +179,10 @@ class TypeActivesList extends React.Component {
                         <CardIcon color="info">
                             <ViewList />
                         </CardIcon>
-                        <h4 className={classes.cardIconTitle}>Tipo de Activo</h4>
+                        <h4 className={classes.cardIconTitle}>Tipo de Alerta</h4>
                     </CardHeader>
                     <CardBody style={{ overflow: "auto" }}>
-                        <Filter onFilter={this.onFilter} name={true} nameText={"Filtrar"} placeholder={"activo"} />
+                        <Filter onFilter={this.onFilter} name={true} nameText={"Filtrar"} placeholder={"alerta"} />
                         <Table className={classes.table} aria-labelledby="tableTitle">
                             <EnhancedTableHead
                                 onRequestSort={this.handleRequestSort}
@@ -186,15 +192,15 @@ class TypeActivesList extends React.Component {
                                 rows={rows}
                             />
                             <TableBody>
-                                {listTypeAlert.map((typeAsset, key) => {
+                                {listTypeAlert.map((typeAlert, key) => {
                                     return (
                                         <TableRow tabIndex={-1} key={`TableRow-${key}`} style={{ background: key % 2 === 0 ? ROW_GRAY : ROW_WHITE }}>
-                                            <TableCell align="left"><Link color="inherit" onClick={() => { this.handleEdit(typeAsset) }} component="button" size="sm" className={classes.marginRight}>{typeAsset.name}</Link></TableCell>
+                                            <TableCell align="left"><Link color="inherit" onClick={() => { this.handleEdit(typeAlert) }} component="button" size="sm" className={classes.marginRight}>{typeAlert.name}</Link></TableCell>
                                             <TableCell className="text-column">
-                                                {typeAsset.description}
+                                                {typeAlert.description}
                                             </TableCell>
                                             <TableCell className="text-column">
-                                                {typeAsset.active === 1 ? (
+                                                {typeAlert.active === 1 ? (
                                                     <Badge color="success">Activa</Badge>
                                                 ) : <Badge color="danger">Inactiva</Badge>}
                                             </TableCell>
@@ -204,16 +210,16 @@ class TypeActivesList extends React.Component {
                                                         color="success"
                                                         simple
                                                         className={classes.actionButton}
-                                                        key={"edit_" + typeAsset.id}
-                                                        onClick={() => { this.handleEdit(typeAsset) }}>
+                                                        key={"edit_" + typeAlert.id}
+                                                        onClick={() => { this.handleEdit(typeAlert) }}>
                                                         <Edit className={classes.icon} />
                                                     </Button>
                                                     <Button
                                                         color="danger"
                                                         simple
                                                         className={classes.actionButton}
-                                                        key={"close_" + typeAsset.id}
-                                                        onClick={this.showAlertInactive.bind(this, typeAsset.name, typeAsset.id)}>
+                                                        key={"close_" + typeAlert.id}
+                                                        onClick={this.showAlertInactive.bind(this, typeAlert.name, typeAlert.id)}>
                                                         <Block className={classes.icon} />
                                                     </Button>
 
@@ -228,9 +234,9 @@ class TypeActivesList extends React.Component {
 
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, 50, 100]}
-                            pages={apiPagination.totalPages}
-                            rowsPerPage={apiPagination.limit}
-                            page={apiPagination.currentPage}
+                            pages={apiPagination?.totalPages}
+                            rowsPerPage={apiPagination?.limit}
+                            page={apiPagination?.currentPage}
                             onChangePage={this.handleChangePage}
                             onChangeRowsPerPage={this.handleChangeRowsPerPage}
                         />
@@ -243,28 +249,29 @@ class TypeActivesList extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        typeAssetState: state.typeAssetState,
+        typeAlertState: state.typeAlertState,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        findTypeAsset: (apiPaginationAction
+        findTypeAlert: (apiPaginationAction
             , apiPaginationCurrentPage
             , apiPaginationDirection
             , apiPaginationLimit
             , apiPaginationOrderColumn
             , apiPaginationMoveToPage
-            , apiPaginationFilter) => dispatch(findTypeAsset(apiPaginationAction
+            , apiPaginationFilter) => dispatch(findTypeAlert(apiPaginationAction
                 , apiPaginationCurrentPage
                 , apiPaginationDirection
                 , apiPaginationLimit
                 , apiPaginationOrderColumn
                 , apiPaginationMoveToPage
                 , apiPaginationFilter)),
-        setTypeAsset: (typeAsset) => dispatch(setTypeAsset(typeAsset)),
-        inactiveTypeAsset: (id, onSuccess) => dispatch(inactiveTypeAsset(id, onSuccess)),
+        setTypeAlert: (typeAlert) => dispatch(setTypeAlert(typeAlert)),
+        inactiveTypeAlert: (id, onSuccess) => dispatch(inactiveTypeAlert(id, onSuccess)),
+        getListActiveTypeAlert: (onSuccess) => dispatch(getListActiveTypeAlert(onSuccess))
     };
 };
 
-export default withStyles(extendedTablesStyle)(connect(mapStateToProps, mapDispatchToProps)(TypeActivesList));
+export default withStyles(extendedTablesStyle)(connect(mapStateToProps, mapDispatchToProps)(TypeAlertsList));

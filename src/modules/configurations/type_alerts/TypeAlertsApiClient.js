@@ -8,7 +8,7 @@ class ApiClient {
         this.url = LUCY_CONFIGURATION_SERVICE;
     }
 
-    filterTypeAsset = (apiPaginationAction, apiPaginationCurrentPage, apiPaginationDirection, apiPaginationLimit, apiPaginationOrderColumn, apiPaginationMoveToPage, apiPaginationFilter) => {
+    filterTypeAlert = (apiPaginationAction, apiPaginationCurrentPage, apiPaginationDirection, apiPaginationLimit, apiPaginationOrderColumn, apiPaginationMoveToPage, apiPaginationFilter) => {
         this.account = sessionStorage["accountCode"];
         var uriFilter = '';
 
@@ -44,7 +44,7 @@ class ApiClient {
 
         let request = {
             method: 'get',
-            url: `${this.url}/typeAsset/getByFilter/${this.account}` + encodeURI(uriFilter),
+            url: `${this.url}/typeAlert/getByFilter/${this.account}` + encodeURI(uriFilter),
             headers: {
                 "Accept": "application/json;charset=UTF-8"
             }
@@ -54,11 +54,12 @@ class ApiClient {
         return request;
     }
 
-    configureTypeAsset = (typeAsset) => {
+    configureTypeAlert = (typeAsset) => {
+        console.log('type asset', typeAsset)
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'post',
-            url: `${this.url}/typeAsset/createUpdate/${this.account}`,
+            url: `${this.url}/typeAlert/createUpdate/${this.account}`,
             data: typeAsset,
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
@@ -69,11 +70,11 @@ class ApiClient {
         return request;
     }
 
-    getTypeAssetById = (id) => {
+    getTypeAlertById = (id) => {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'get',
-            url: `${this.url}/typeAsset/getById/${this.account}?idTypeAsset=${id}`,
+            url: `${this.url}/typeAlert/getById/${this.account}?idTypeAlert=${id}`,
             headers: {
                 "Accept": "application/json;charset=UTF-8"
             }
@@ -82,11 +83,11 @@ class ApiClient {
         return request;
     }
 
-    inactiveTypeAsset = (id) => {
+    inactiveTypeAlert = (id) => {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'delete',
-            url: `${this.url}/typeAsset/delete/${this.account}?idTypeAsset=${id}`,
+            url: `${this.url}/typeAlert/delete/${this.account}?idTypeAlert=${id}`,
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Accept": "application/json;charset=UTF-8"
@@ -112,5 +113,5 @@ class ApiClient {
 
 }
 
-const TypeAssetApi = new ApiClient();
-export default TypeAssetApi;
+const TypeAlertApi = new ApiClient();
+export default TypeAlertApi;

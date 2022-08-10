@@ -25,6 +25,12 @@ import { getHistoryRequest, getHistoryRequestExport } from 'modules/reports/hist
 import { trackingStateSOS,trackingStateAlerts, trackingStateUsers, trackingStateAssets, closeAlert} from 'modules/reports/tracking/TrackingEpic.js';
 import { cancelRequest, carrierAcceptsAssignment, carrierRejectsAssignment, createRequest, endRequest, getRequestInProcessByUserByFilter, startRequest, updateRequest } from "modules/requests/RequestEpic.js";
 import { combineEpics } from 'redux-observable';
+import {
+    configureTypeAlert,
+    findTypeAlert,
+    getListActiveTypeAlert, getTypeAlertById,
+    inactiveTypeAlert
+} from "../modules/configurations/type_alerts/TypeAlertsEpic";
 
 export const rootEpic = combineEpics(
     findAccount
@@ -63,11 +69,15 @@ export const rootEpic = combineEpics(
     , getListActiveTypeCancellation
 
     , findTypeAsset
+    , findTypeAlert
     , configureTypeAsset
     , getTypeAssetById
     , inactiveTypeAsset
     , getListActiveTypeAsset
-
+    , getListActiveTypeAlert
+    , inactiveTypeAlert
+    , getTypeAlertById
+    , configureTypeAlert
     , findAsset
     , configureAsset
     , getAssetById

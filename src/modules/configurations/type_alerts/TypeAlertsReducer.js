@@ -1,37 +1,38 @@
 import {
-   FIND_TYPE_ASSET_LIST,
-   FIND_TYPE_ASSET_LIST_SUCCESS,
-   FIND_TYPE_ASSET_LIST_ERROR
+   FIND_TYPE_ALERT_LIST,
+   FIND_TYPE_ALERT_LIST_SUCCESS,
+   FIND_TYPE_ALERT_LIST_ERROR
 
    ,
-   CONFIGURE_TYPE_ASSET,
-   CONFIGURE_TYPE_ASSET_SUCCESS,
-   CONFIGURE_TYPE_ASSET_ERROR
+   CONFIGURE_TYPE_ALERT,
+   CONFIGURE_TYPE_ALERT_SUCCESS,
+   CONFIGURE_TYPE_ALERT_ERROR
 
    ,
-   GET_TYPE_ASSET_BY_ID,
-   GET_TYPE_ASSET_BY_ID_SUCCESS,
-   GET_TYPE_ASSET_BY_ID_ERROR
+   GET_TYPE_ALERT_BY_ID,
+   GET_TYPE_ALERT_BY_ID_SUCCESS,
+   GET_TYPE_ALERT_BY_ID_ERROR
 
    ,
-   INACTIVE_TYPE_ASSET,
-   INACTIVE_TYPE_ASSET_SUCCESS,
-   INACTIVE_TYPE_ASSET_ERROR
+   INACTIVE_TYPE_ALERT,
+   INACTIVE_TYPE_ALERT_SUCCESS,
+   INACTIVE_TYPE_ALERT_ERROR
 
    ,
-   GET_LIST_ACTIVE_TYPE_ASSET,
-   GET_LIST_ACTIVE_TYPE_ASSET_SUCCESS,
-   GET_LIST_ACTIVE_TYPE_ASSET_ERROR
+   GET_LIST_ACTIVE_TYPE_ALERT,
+   GET_LIST_ACTIVE_TYPE_ALERT_SUCCESS,
+   GET_LIST_ACTIVE_TYPE_ALERT_ERROR
 
    ,
-   SET_TYPE_ASSET
-} from 'modules/configurations/type_actives/TypeActivesActions.js';
+   SET_TYPE_ALERT
+} from 'modules/configurations/type_alerts/TypeAlertsActions.js';
+
 
 const initialState = {
    data: {
       isActivityIndicatorShown: false,
-      listResultSetTypeAsset: {},
-      typeAsset: {
+      listResultSetTypeAlert: {},
+      typeAlert: {
          id: 0,
          name: "",
          description: "",
@@ -41,9 +42,9 @@ const initialState = {
    }
 };
 
-const typeAssetReducer = (state = initialState, action) => {
+const typeAlertReducer = (state = initialState, action) => {
    switch (action.type) {
-      case FIND_TYPE_ASSET_LIST:
+      case FIND_TYPE_ALERT_LIST:
          return {
             ...state,
             data: {
@@ -51,16 +52,16 @@ const typeAssetReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case FIND_TYPE_ASSET_LIST_SUCCESS:
+      case FIND_TYPE_ALERT_LIST_SUCCESS:
          return {
             ...state,
             data: {
                ...state.data,
-               listResultSetTypeAsset: action.listResultSetTypeAsset,
+               listResultSetTypeAlert: action.listResultSetTypeAlert,
                isActivityIndicatorShown: false,
             },
          };
-      case FIND_TYPE_ASSET_LIST_ERROR:
+      case FIND_TYPE_ALERT_LIST_ERROR:
          return {
             ...state,
             data: {
@@ -69,7 +70,7 @@ const typeAssetReducer = (state = initialState, action) => {
             },
          };
 
-      case CONFIGURE_TYPE_ASSET:
+      case CONFIGURE_TYPE_ALERT:
          return {
             ...state,
             data: {
@@ -77,7 +78,7 @@ const typeAssetReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case CONFIGURE_TYPE_ASSET_SUCCESS:
+      case CONFIGURE_TYPE_ALERT_SUCCESS:
          return {
             ...state,
             data: {
@@ -85,7 +86,7 @@ const typeAssetReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case CONFIGURE_TYPE_ASSET_ERROR:
+      case CONFIGURE_TYPE_ALERT_ERROR:
          return {
             ...state,
             data: {
@@ -93,7 +94,7 @@ const typeAssetReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case GET_TYPE_ASSET_BY_ID:
+      case GET_TYPE_ALERT_BY_ID:
          return {
             ...state,
             data: {
@@ -101,16 +102,16 @@ const typeAssetReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case GET_TYPE_ASSET_BY_ID_SUCCESS:
+      case GET_TYPE_ALERT_BY_ID_SUCCESS:
          return {
             ...state,
             data: {
                ...state.data,
-               typeAsset: action.typeAsset,
+               typeAlert: action.typeAlert,
                isActivityIndicatorShown: false,
             },
          };
-      case GET_TYPE_ASSET_BY_ID_ERROR:
+      case GET_TYPE_ALERT_BY_ID_ERROR:
          return {
             ...state,
             data: {
@@ -118,7 +119,7 @@ const typeAssetReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case INACTIVE_TYPE_ASSET:
+      case INACTIVE_TYPE_ALERT:
          return {
             ...state,
             data: {
@@ -126,7 +127,7 @@ const typeAssetReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case INACTIVE_TYPE_ASSET_SUCCESS:
+      case INACTIVE_TYPE_ALERT_SUCCESS:
          return {
             ...state,
             data: {
@@ -134,7 +135,7 @@ const typeAssetReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case INACTIVE_TYPE_ASSET_ERROR:
+      case INACTIVE_TYPE_ALERT_ERROR:
          return {
             ...state,
             data: {
@@ -142,15 +143,15 @@ const typeAssetReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case SET_TYPE_ASSET:
+      case SET_TYPE_ALERT:
          return {
             ...state,
             data: {
                ...state.data,
-               typeAsset: action.typeAsset,
+               typeAlert: action.typeAlert,
             },
          };
-      case GET_LIST_ACTIVE_TYPE_ASSET:
+      case GET_LIST_ACTIVE_TYPE_ALERT:
          return {
             ...state,
             data: {
@@ -158,7 +159,7 @@ const typeAssetReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case GET_LIST_ACTIVE_TYPE_ASSET_SUCCESS:
+      case GET_LIST_ACTIVE_TYPE_ALERT_SUCCESS:
          return {
             ...state,
             data: {
@@ -167,7 +168,7 @@ const typeAssetReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case GET_LIST_ACTIVE_TYPE_ASSET_ERROR:
+      case GET_LIST_ACTIVE_TYPE_ALERT_ERROR:
          return {
             ...state,
             data: {
@@ -180,4 +181,4 @@ const typeAssetReducer = (state = initialState, action) => {
    }
 };
 
-export default typeAssetReducer;
+export default typeAlertReducer;

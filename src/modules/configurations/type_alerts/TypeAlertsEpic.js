@@ -223,7 +223,7 @@ export const getListActiveTypeAlert = (action$, state$) => action$.pipe(
                     obs.next(getListActiveTypeAlertError(error));
                     //obs.next(addMessage({variant:"error", message:error.message}));
                     obs.complete();
-                    action.onSuccess("ERROR");
+                    //action.onSuccess("ERROR");
                 });
         }).pipe(catchError(error => of (getListActiveTypeAlertError(error)
             // , addMessage({variant:"error", message:"Error"})

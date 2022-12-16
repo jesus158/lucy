@@ -6,49 +6,54 @@ import { Observable, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { configureTypeAlertError, configureTypeAlertSuccess, CONFIGURE_TYPE_ALERT, findTypeAlertError, findTypeAlertSuccess, FIND_TYPE_ALERT_LIST, getListActiveTypeAlertError, getListActiveTypeAlertSuccess, getTypeAlertByIdError, getTypeAlertByIdSuccess, GET_LIST_ACTIVE_TYPE_ALERT, GET_TYPE_ALERT_BY_ID, inactiveTypeAlertError, inactiveTypeAlertSuccess, INACTIVE_TYPE_ALERT } from 'modules/configurations/type_alerts/TypeAlertsActions.js';
 import RoomsBedApi from "modules/configurations/rooms_beds/RoomsBedApiClient.js";
+import {findRoomBedListError, findRoomBedListSuccess} from "./RoomsBedActions";
 
-export const findRoomBed = (action$, state$) => action$.pipe(
-    ofType(FIND_TYPE_ALERT_LIST), mergeMap(action =>
-        Observable.create(obs => {
-            axios.defaults.timeout = apiTimeout;
-            axios(RoomsBedApi.filterTypeAlert(action.apiPaginationAction, action.apiPaginationCurrentPage, action.apiPaginationDirection, action.apiPaginationLimit, action.apiPaginationOrderColumn, action.apiPaginationMoveToPage, action.apiPaginationFilter))
-                .then(response => {
-                    let code = response.data.apiResponse.code;
-                    if (response.status >= 200 && response.status < 300 && code === 200) {
-                        let data = response.data;
-                        obs.next(findTypeAlertSuccess(data));
-                        obs.complete();
-                    } else if (response.status === 401) {
-                        obs.next(findTypeAlertError(response.data.apiResponse.message));
+export const findRoomBed = (action$, state$) => {
+    console.log('$action', action$)
+    return action$.pipe(
+        ofType(FIND_TYPE_ALERT_LIST), mergeMap(action =>
+            Observable.create(obs => {
+                axios.defaults.timeout = apiTimeout;
+                console.log('find room')
+                axios(RoomsBedApi.filterRoomBed(action.apiPaginationAction, action.apiPaginationCurrentPage, action.apiPaginationDirection, action.apiPaginationLimit, action.apiPaginationOrderColumn, action.apiPaginationMoveToPage, action.apiPaginationFilter))
+                    .then(response => {
+                        let code = response.data.apiResponse.code;
+                        if (response.status >= 200 && response.status < 300 && code === 200) {
+                            let data = response.data;
+                            obs.next(findRoomBedListSuccess(data));
+                            obs.complete();
+                        } else if (response.status === 401) {
+                            obs.next(findRoomBedListError(response.data.apiResponse.message));
+                            obs.next(addMessage({
+                                variant: "error",
+                                message: response.data.apiResponse.message
+                            }));
+                            obs.complete();
+                        } else {
+                            obs.next(findRoomBedListError(response.data.apiResponse.message));
+                            obs.next(addMessage({
+                                variant: "error",
+                                message: response.data.apiResponse.message
+                            }));
+                            obs.complete();
+                        }
+                    })
+                    .catch(error => {
+                        obs.next(findTypeAlertError(error));
                         obs.next(addMessage({
                             variant: "error",
-                            message: response.data.apiResponse.message
+                            message: error.message
                         }));
                         obs.complete();
-                    } else {
-                        obs.next(findTypeAlertError(response.data.apiResponse.message));
-                        obs.next(addMessage({
-                            variant: "error",
-                            message: response.data.apiResponse.message
-                        }));
-                        obs.complete();
-                    }
-                })
-                .catch(error => {
-                    obs.next(findTypeAlertError(error));
-                    obs.next(addMessage({
-                        variant: "error",
-                        message: error.message
-                    }));
-                    obs.complete();
-                });
-        }).pipe(
-            catchError(error => of (findTypeAlertError("Error"), console.warn("ERROR OBSERVABLE"), addMessage({
-                variant: "error",
-                message: "Error"
-            }))))
-    )
-);
+                    });
+            }).pipe(
+                catchError(error => of(findTypeAlertError("Error"), console.warn("ERROR OBSERVABLE"), addMessage({
+                    variant: "error",
+                    message: "Error"
+                }))))
+        )
+    );
+}
 
 export const configureRoomBed = (action$, state$) => action$.pipe(
     ofType(CONFIGURE_TYPE_ALERT), mergeMap(action =>

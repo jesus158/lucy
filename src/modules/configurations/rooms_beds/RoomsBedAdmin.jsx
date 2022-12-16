@@ -51,8 +51,8 @@ class RoomsBedAdmin extends React.Component {
         super(props);
         this.state = {
             checked: [0],
-            openAlertInfo: false,
-            textAlertInfo: "",
+            openRoomInfo: false,
+            textRoomInfo: "",
             accountEmail: "",
         };
 
@@ -63,17 +63,17 @@ class RoomsBedAdmin extends React.Component {
 
 
         if (roomBed.name === "") {
-            this.showAlertInfo("Por favor debe ingresar el nombre de la Habitación o Cama");
+            this.showRoomInfo("Por favor debe ingresar el nombre de la Habitación o Cama");
             return;
         }
 
         if (roomBed.description === "") {
-            this.showAlertInfo("Por favor debe ingresar la descripción de la Habitación o Cama");
+            this.showRoomInfo("Por favor debe ingresar la descripción de la Habitación o Cama");
             return;
         }
 
         if (roomBed.category === "") {
-            this.showAlertInfo("Por favor debe ingresar la categoría Habitación o Cama");
+            this.showRoomInfo("Por favor debe ingresar la categoría Habitación o Cama");
             return;
         }
 
@@ -84,16 +84,16 @@ class RoomsBedAdmin extends React.Component {
         });
     }
 
-    showAlertInfo = (text) => {
+    showRoomInfo = (text) => {
         this.setState({
-            openAlertInfo: true,
-            textAlertInfo: text,
+            openRoomInfo: true,
+            textRoomInfo: text,
         });
     }
 
-    hideaAlertInfo = () => {
+    hideRoomInfo = () => {
         this.setState({
-            openAlertInfo: false
+            openRoomInfo: false
         });
     }
 
@@ -128,9 +128,9 @@ class RoomsBedAdmin extends React.Component {
         return (
             <GridItem xs={12}>
                 {isActivityIndicatorShown &&
-                    <WaitDialog text={this.state.textAlertInfo} />
+                    <WaitDialog text={this.state.textRoomInfo} />
                 }
-                <AlertInfo text={this.state.textAlertInfo} open={this.state.openAlertInfo} onDoneClick={this.hideaAlertInfo} />
+                <AlertInfo text={this.state.textRoomInfo} open={this.state.openRoomInfo} onDoneClick={this.hideRoomInfo} />
                 <Card>
                     <CardHeader color="info" icon>
                         <CardIcon color="info">

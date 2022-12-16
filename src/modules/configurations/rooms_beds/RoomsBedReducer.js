@@ -31,7 +31,7 @@ import {
 const initialState = {
    data: {
       isActivityIndicatorShown: false,
-      listResultSetTypeAlert: {},
+      listResultSetRoomBed: {},
       roomBed: {
          id: 0,
          name: "",
@@ -39,7 +39,7 @@ const initialState = {
          priority: 0,
          active: 1
       },
-      listTypeAlert: []
+      listRoomBed: []
    }
 };
 
@@ -58,11 +58,11 @@ const roomBedReducer = (state = initialState, action) => {
             ...state,
             data: {
                ...state.data,
-               listResultSetTypeAlert: action.listResultSetTypeAlert,
+               listResultSetRoomBed: action.listResultSetRoomBed,
                isActivityIndicatorShown: false,
             },
          };
-      case FIND_TYPE_ALERT_LIST_ERROR:
+      case FIND_ROOM_BED_LIST_ERROR:
          return {
             ...state,
             data: {
@@ -71,7 +71,7 @@ const roomBedReducer = (state = initialState, action) => {
             },
          };
 
-      case CONFIGURE_TYPE_ALERT:
+      case CONFIGURE_ROOM_BED:
          return {
             ...state,
             data: {
@@ -79,7 +79,7 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case CONFIGURE_TYPE_ALERT_SUCCESS:
+      case CONFIGURE_ROOM_BED_SUCCESS:
          return {
             ...state,
             data: {
@@ -87,7 +87,7 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case CONFIGURE_TYPE_ALERT_ERROR:
+      case CONFIGURE_ROOM_BED_ERROR:
          return {
             ...state,
             data: {
@@ -95,7 +95,7 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case GET_TYPE_ALERT_BY_ID:
+      case GET_ROOM_BED_BY_ID:
          return {
             ...state,
             data: {
@@ -103,16 +103,16 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case GET_TYPE_ALERT_BY_ID_SUCCESS:
+      case GET_ROOM_BED_BY_ID_SUCCESS:
          return {
             ...state,
             data: {
                ...state.data,
-               typeAlert: action.typeAlert,
+               roomBed: action.roomBed,
                isActivityIndicatorShown: false,
             },
          };
-      case GET_TYPE_ALERT_BY_ID_ERROR:
+      case GET_ROOM_BED_BY_ID_ERROR:
          return {
             ...state,
             data: {
@@ -120,7 +120,7 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case INACTIVE_TYPE_ALERT:
+      case INACTIVE_ROOM_BED:
          return {
             ...state,
             data: {
@@ -128,7 +128,7 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case INACTIVE_TYPE_ALERT_SUCCESS:
+      case INACTIVE_ROOM_BED_SUCCESS:
          return {
             ...state,
             data: {
@@ -136,7 +136,7 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case INACTIVE_TYPE_ALERT_ERROR:
+      case INACTIVE_ROOM_BED_ERROR:
          return {
             ...state,
             data: {
@@ -144,15 +144,15 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case SET_TYPE_ALERT:
+      case SET_ROOM_BED:
          return {
             ...state,
             data: {
                ...state.data,
-               typeAlert: action.typeAlert,
+               roomBed: action.roomBed,
             },
          };
-      case GET_LIST_ACTIVE_TYPE_ALERT:
+      case GET_LIST_ACTIVE_ROOM_BED:
          return {
             ...state,
             data: {
@@ -160,16 +160,16 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case GET_LIST_ACTIVE_TYPE_ALERT_SUCCESS:
+      case GET_LIST_ACTIVE_ROOM_BED_SUCCESS:
          return {
             ...state,
             data: {
                ...state.data,
-               listTypeAlert: action.listTypeAlert,
+               listRoomBed: action.listRoomBed,
                isActivityIndicatorShown: false,
             },
          };
-      case GET_LIST_ACTIVE_TYPE_ALERT_ERROR:
+      case GET_LIST_ACTIVE_ROOM_BED_ERROR:
          return {
             ...state,
             data: {
@@ -182,4 +182,4 @@ const roomBedReducer = (state = initialState, action) => {
    }
 };
 
-export default typeAlertReducer;
+export default roomBedReducer;

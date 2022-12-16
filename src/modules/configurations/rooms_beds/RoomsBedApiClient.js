@@ -44,7 +44,7 @@ class ApiClient {
 
         let request = {
             method: 'get',
-            url: `${this.url}/typeAlert/getByFilter/${this.account}` + encodeURI(uriFilter),
+            url: `${this.url}/typeRoom/getByFilter/${this.account}` + encodeURI(uriFilter),
             headers: {
                 "Accept": "application/json;charset=UTF-8"
             }
@@ -76,7 +76,7 @@ class ApiClient {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'get',
-            url: `${this.url}/typeAlert/getById/${this.account}?idTypeAlert=${id}`,
+            url: `${this.url}/typeRoom/getById/${this.account}?idTypeAlert=${id}`,
             headers: {
                 "Accept": "application/json;charset=UTF-8"
             }
@@ -85,11 +85,11 @@ class ApiClient {
         return request;
     }
 
-    inactiveTypeAlert = (id) => {
+    inactiveTypeRoomBed = (id) => {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'delete',
-            url: `${this.url}/typeAlert/delete/${this.account}?idTypeAlert=${id}`,
+            url: `${this.url}/room/delete/${this.account}?idTypeAlert=${id}`,
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Accept": "application/json;charset=UTF-8"
@@ -103,7 +103,7 @@ class ApiClient {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'get',
-            url: `${this.url}/typeAlert/getListActive/${this.account}`,
+            url: `${this.url}/typeRoom/getListActive/${this.account}`,
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Accept": "application/json;charset=UTF-8"

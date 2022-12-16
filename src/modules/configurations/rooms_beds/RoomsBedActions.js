@@ -25,7 +25,7 @@ export const SET_ROOM_BED = 'SET_ROOM_BED';
  * Filtrar Habitaciones y Camas *as
  ******************************/
 
-export const findRoomBed = (apiPaginationAction, apiPaginationCurrentPage, apiPaginationDirection, apiPaginationLimit, apiPaginationOrderColumn, apiPaginationMoveToPage, apiPaginationFilter) => ({
+export const findRoomBedList = (apiPaginationAction, apiPaginationCurrentPage, apiPaginationDirection, apiPaginationLimit, apiPaginationOrderColumn, apiPaginationMoveToPage, apiPaginationFilter) => ({
     type: FIND_ROOM_BED_LIST,
     apiPaginationAction,
     apiPaginationCurrentPage,
@@ -36,12 +36,12 @@ export const findRoomBed = (apiPaginationAction, apiPaginationCurrentPage, apiPa
     apiPaginationFilter
 });
 
-export const findRoomBedSuccess = (listResultSetRoomBed) => ({
+export const findRoomBedListSuccess = (listResultSetRoomBed) => ({
     type: FIND_ROOM_BED_LIST_SUCCESS,
     listResultSetRoomBed
 });
 
-export const findRoomBedError = (error) => ({
+export const findRoomBedListError = (error) => ({
     type: FIND_ROOM_BED_LIST_ERROR,
     error
 });
@@ -108,7 +108,6 @@ export const inactiveRoomBedSuccess = () => ({
 });
 
 export const inactiveRoomBedError = (error) => ({
-    type: INACTIVE_ROOM_BED_ERROR,
     error
 });
 

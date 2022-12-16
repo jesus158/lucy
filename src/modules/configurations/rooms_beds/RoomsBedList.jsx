@@ -32,11 +32,13 @@ import { connect } from 'react-redux';
 import { Redirect } from "react-router-dom";
 // module Components
 import {
-    findTypeAlert,
-    getListActiveTypeAlert,
-    inactiveTypeAlert,
-    setTypeAlert
-} from 'modules/configurations/type_alerts/TypeAlertsActions.js';
+    findRoomBedList,
+    setRoomBed,
+    inactiveRoomBed,
+
+
+} from 'modules/configurations/rooms_beds/RoomsBedActions';
+import {findRoomBed} from "./RoomsBedEpic";
 
 
 const rows = [
@@ -46,7 +48,7 @@ const rows = [
     { id: 0, numeric: false, disablePadding: true, isSorted: false, label: '' },
 ];
 
-class TypeAlertsList extends React.Component {
+class RoomBedList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -63,8 +65,8 @@ class TypeAlertsList extends React.Component {
     }
 
     componentDidMount = () => {
-        this.props.findTypeAlert(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
-        this.props.getListActiveTypeAlert()
+        console.log('happens')
+        this.props.findRoomBedList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
     }
 
 
@@ -76,20 +78,20 @@ class TypeAlertsList extends React.Component {
             order = 0;
         }
 
-        this.props.findTypeAlert(undefined, this.state.page, order, this.state.rowsPerPage, orderBy, this.state.page, this.state.filter.name);
+        this.props.findRoomBed(undefined, this.state.page, order, this.state.rowsPerPage, orderBy, this.state.page, this.state.filter.name);
         this.setState({ order, orderBy });
     };
 
-    handleEdit = (typeAlert) => {
+    handleEdit = (roomBed) => {
         this.props.setTypeAlert({
-            id: typeAlert.id,
-            name: typeAlert.name,
-            description: typeAlert.description,
-            active: typeAlert.active
+            id: roomBed.id,
+            name: roomBed.name,
+            description: roomBed.description,
+            active: roomBed.active
         });
         this.setState({
             toAdmin: true
-            , accountId: typeAlert.id
+            , accountId: roomBed.id
         });
     }
 
@@ -99,22 +101,22 @@ class TypeAlertsList extends React.Component {
             alertInactive: (
                 <Dialog
                     open={true}
-                    onClose={this.hideAlertInactive}
+                    onClose={this.hideRoomBedInactive}
                     aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">{nameAccountSelected}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            ¿Está seguro que quiere desactivar este tipo de alerta?
+                            ¿Está seguro que quiere desactivar este tipo de cama?
                     </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.hideAlertInactive} color="danger">
+                        <Button onClick={this.hideRoomBedInactive} color="danger">
                             Cancelar
                     </Button>
                         <Button onClick={() => {
-                            this.hideAlertInactive();
-                            this.props.inactiveTypeAlert(id, success => {
-                                this.props.findTypeAlert(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
+                            this.hideRoomBedInactive();
+                            this.props.inactiveRoomBed(id, success => {
+                                this.props.findRoomBed(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
                             });
                         }} color="info">
                             Aceptar
@@ -125,7 +127,7 @@ class TypeAlertsList extends React.Component {
         });
     }
 
-    hideAlertInactive = () => {
+    hideRoomBedInactive = () => {
         this.setState({
             alertInactive: null
         });
@@ -133,33 +135,33 @@ class TypeAlertsList extends React.Component {
 
     onFilter = filter => {
         this.setState({ filter });
-        this.props.findTypeAlert(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, filter.name);
+        this.props.findRoomBed(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, filter.name);
     }
 
     handleChangePage = (page) => {
-        this.props.findTypeAlert(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, page, this.state.filter.name);
+        this.props.findRoomBed(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, page, this.state.filter.name);
         this.setState({ page });
     };
 
     handleChangeRowsPerPage = rowsPerPage => {
-        this.props.findTypeAlert(undefined, this.state.page, this.state.order, rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
+        this.props.findRoomBed(undefined, this.state.page, this.state.order, rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
         this.setState({ rowsPerPage });
     };
 
     render() {
         const { classes } = this.props;
 
-        const { isActivityIndicatorShown } = this.props.typeAlertState?.data;
-        var {  listTypeAlert, apiPagination } = this.props.typeAlertState?.data?.listResultSetTypeAlert;
+        const { isActivityIndicatorShown } = this.props.roomBedState?.data;
+        var {  listRoomBed, apiPagination } = this.props.roomBedState?.data?.listRoomBed;
 
         const { order, orderBy } = this.state;
 
-        if (this.props.typeAlertState?.data?.listResultSetTypeAlert?.apiPagination === undefined) {
+        if (this.props.roomBedState?.data?.listResultSetTypeAlert?.apiPagination === undefined) {
             apiPagination = {};
         }
 
-        if (listTypeAlert === undefined) {
-            listTypeAlert = [];
+        if (listRoomBed === undefined) {
+            listRoomBed = [];
         }
         if (this.state.toAdmin === true) {
             return <Redirect to={'/admin/admin-type-alert/?code=' + this.state.accountId} />
@@ -167,7 +169,7 @@ class TypeAlertsList extends React.Component {
 
         return (
             <GridItem xs={12}>
-                {this.props.typeAlertState?.data?.isActivityIndicatorShown ?
+                {this.props.roomBedState?.data?.isActivityIndicatorShown ?
                     <WaitDialog text={"Cargando..."} />
                     : null
                 }
@@ -190,15 +192,15 @@ class TypeAlertsList extends React.Component {
                                 rows={rows}
                             />
                             <TableBody>
-                                {listTypeAlert.map((typeAlert, key) => {
+                                {listRoomBed.map((roomBed, key) => {
                                     return (
                                         <TableRow tabIndex={-1} key={`TableRow-${key}`} style={{ background: key % 2 === 0 ? ROW_GRAY : ROW_WHITE }}>
-                                            <TableCell align="left"><Link color="inherit" onClick={() => { this.handleEdit(typeAlert) }} component="button" size="sm" className={classes.marginRight}>{typeAlert.name}</Link></TableCell>
+                                            <TableCell align="left"><Link color="inherit" onClick={() => { this.handleEdit(roomBed) }} component="button" size="sm" className={classes.marginRight}>{roomBed.name}</Link></TableCell>
                                             <TableCell className="text-column">
-                                                {typeAlert.description}
+                                                {roomBed.description}
                                             </TableCell>
                                             <TableCell className="text-column">
-                                                {typeAlert.active === 1 ? (
+                                                {roomBed.active === 1 ? (
                                                     <Badge color="success">Activa</Badge>
                                                 ) : <Badge color="danger">Inactiva</Badge>}
                                             </TableCell>
@@ -208,16 +210,16 @@ class TypeAlertsList extends React.Component {
                                                         color="success"
                                                         simple
                                                         className={classes.actionButton}
-                                                        key={"edit_" + typeAlert.id}
-                                                        onClick={() => { this.handleEdit(typeAlert) }}>
+                                                        key={"edit_" + roomBed.id}
+                                                        onClick={() => { this.handleEdit(roomBed) }}>
                                                         <Edit className={classes.icon} />
                                                     </Button>
                                                     <Button
                                                         color="danger"
                                                         simple
                                                         className={classes.actionButton}
-                                                        key={"close_" + typeAlert.id}
-                                                        onClick={this.showAlertInactive.bind(this, typeAlert.name, typeAlert.id)}>
+                                                        key={"close_" + roomBed.id}
+                                                        onClick={this.showAlertInactive.bind(this, roomBed.name, roomBed.id)}>
                                                         <Block className={classes.icon} />
                                                     </Button>
 
@@ -247,29 +249,29 @@ class TypeAlertsList extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        typeAlertState: state.typeAlertState,
+        roomBedState: state.roomBedState,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        findTypeAlert: (apiPaginationAction
+        findRoomBedList: (apiPaginationAction
             , apiPaginationCurrentPage
             , apiPaginationDirection
             , apiPaginationLimit
             , apiPaginationOrderColumn
             , apiPaginationMoveToPage
-            , apiPaginationFilter) => dispatch(findTypeAlert(apiPaginationAction
+            , apiPaginationFilter) => dispatch(findRoomBed(apiPaginationAction
                 , apiPaginationCurrentPage
                 , apiPaginationDirection
                 , apiPaginationLimit
                 , apiPaginationOrderColumn
                 , apiPaginationMoveToPage
                 , apiPaginationFilter)),
-        setTypeAlert: (typeAlert) => dispatch(setTypeAlert(typeAlert)),
-        inactiveTypeAlert: (id, onSuccess) => dispatch(inactiveTypeAlert(id, onSuccess)),
-        getListActiveTypeAlert: (onSuccess) => dispatch(getListActiveTypeAlert(onSuccess))
+        setRoomBed: (roomBed) => dispatch(setRoomBed(roomBed)),
+        inactiveRoomBed: (id, onSuccess) => dispatch(inactiveRoomBed(id, onSuccess)),
+        //getListActiveTypeAlert: (onSuccess) => dispatch(getListActiveTypeAlert(onSuccess))
     };
 };
 
-export default withStyles(extendedTablesStyle)(connect(mapStateToProps, mapDispatchToProps)(TypeAlertsList));
+export default withStyles(extendedTablesStyle)(connect(mapStateToProps, mapDispatchToProps)(RoomBedList));

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { addMessage } from 'layouts/MessagesActions';
-import { configureAlertError, configureAlertSuccess, CONFIGURE_ALERT, findAlertError, findAlertSuccess, FIND_ALERT_LIST, getAlertByIdError, getAlertByIdSuccess, GET_ALERT_BY_ID, inactiveAlertError, inactiveAlertSuccess, INACTIVE_ALERT } from 'modules/alerts/AlertActions.js';
+import { configureAlertError, configureAlertSuccess, CONFIGURE_ALERT, findAlertError, findAlertSuccess, FIND_ALERT_LIST,getAvailableAssetsError, getAvailableAssetsSuccess, GET_AVAILABLE_ASSETS, getAlertByIdError, getAlertByIdSuccess, GET_ALERT_BY_ID, inactiveAlertError, inactiveAlertSuccess, INACTIVE_ALERT } from 'modules/alerts/AlertActions.js';
 import AlertApi from 'modules/alerts/AlertApiClient.js';
 import { apiTimeout } from 'modules/utils/ApiUtil';
 import { ofType } from 'redux-observable';
@@ -49,6 +49,41 @@ export const findAlert = (action$, state$) => action$.pipe(
     )
 );
 
+
+export const getAvailableAssets = (action$, state$) => action$.pipe(
+    ofType(GET_AVAILABLE_ASSETS)
+    , mergeMap(action =>
+        Observable.create(obs => {
+            axios.defaults.timeout = apiTimeout;
+            axios(AlertApi.getAvailableAssets(action.idUbication))
+                .then(response => {
+                    let code = response.data.apiResponse.code;
+                    if (response.status >= 200 && response.status < 300 && code === 200) {
+                        let data = response.data;
+                        obs.next(getAvailableAssetsSuccess(data));
+                        obs.complete();
+                    } else if (response.status === 401) {
+                        obs.next(getAvailableAssetsError(response.data.apiResponse.message));
+                        obs.next(addMessage({ variant: "error", message: response.data.apiResponse.message }));
+                        obs.complete();
+                    } else {
+                        obs.next(getAvailableAssetsError(response.data.apiResponse.message));
+                        obs.next(addMessage({ variant: "error", message: response.data.apiResponse.message }));
+                        obs.complete();
+                    }
+
+                })
+                .catch(error => {
+                    obs.next(getAvailableAssetsError(error));
+                    obs.next(addMessage({ variant: "error", message: error.message }));
+                    obs.complete();
+                });
+        }).pipe(
+            catchError(error => of(getAvailableAssetsError("Error")
+                , addMessage({ variant: "error", message: "Error" })
+            )))
+    )
+);
 
 export const configureAlert = (action$, state$) => action$.pipe(
     ofType(CONFIGURE_ALERT)
@@ -101,11 +136,16 @@ export const getAlertById = (action$, state$) => action$.pipe(
                             id: data.alert.id,
                             active: data.alert.active,
                             ubication: { id: data.alert.alertGateway },
-                            asset: { id: data.alert.alertTag },
+                            asset: data.alert.alertTag,
                             typeAlert: { id: data.alert.typeAlert.id },
                             time: data.alert.time
                           };
 
+
+                        console.log("Alert Servidor");
+                        console.log(data.alert);
+                        console.log("Alert cliente");
+                        console.log(AlertClient);
                         obs.next(getAlertByIdSuccess(AlertClient));
                         obs.complete();
                     } else if (response.status === 401) {

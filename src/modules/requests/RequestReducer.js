@@ -140,15 +140,17 @@ const requestReducer = (state = initialState, action) => {
       case CREATE_REQUEST:
         return {
           ...state,
-          isActivityIndicatorShown: true
+          isActivityIndicatorShown: true,
+          saveActive: false
         };
 
       case CREATE_REQUEST_SUCCESS:
+      
         return {
           ...state,
           data: {
             ...state.data,
-            isActivityIndicatorShown: false,
+            isActivityIndicatorShown: false
           },
         };
 

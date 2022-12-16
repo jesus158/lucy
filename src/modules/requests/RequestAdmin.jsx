@@ -39,7 +39,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 
 
-const ADMIN = 1;
+//const ADMIN = 1;
 
 const style = {
   gridContainer: {    padding: "0px 30px 30px 40px"
@@ -77,6 +77,7 @@ class RequestAdmin extends React.Component {
   constructor(props) {
     super(props);
 
+    props.requestState.saveActive=true;
     console.log("1propss");
     console.log(props);
 
@@ -164,16 +165,22 @@ class RequestAdmin extends React.Component {
    * desde el botón de la aplicación
    */
   onClickSave = () => {
+    this.props.requestState.saveActive = false;
+    //alert("prueba1");
     var idCarrierUserSystemAccount = undefined;
     if (this.props.requestState.data.carrier !== undefined) {
       idCarrierUserSystemAccount = this.props.requestState.data.carrier.userCarrier.id
     }
     var moreInformation = this.props.requestState.data.moreInformation;
     this.props.createRequest((success) => {
-
+      console.log("succes ok");
+      console.log(typeof(success));
+      console.log(success);
+      console.log(this.props.requestState);
       if (success === "OK") {
         this.props.history.push('/admin/requests');
       }
+
 
     },
       this.props.requestState.data.ubicationBegin.id,
@@ -184,7 +191,8 @@ class RequestAdmin extends React.Component {
       this.state.checked.freeAssetTimeByDefault,
       idCarrierUserSystemAccount,
       moreInformation
-    )
+    );
+
   }
 
   /**
@@ -348,9 +356,9 @@ class RequestAdmin extends React.Component {
    * asignado a la solicitud generada
    */
   renderListCarrierForAdmin = (listCarriers) => {
-    if (parseInt(sessionStorage["userAccountProfileId"], 10) !== ADMIN) {
+    /*if (parseInt(sessionStorage["userAccountProfileId"], 10) !== ADMIN) {
       return (<></>);
-    }
+    }*/
     const { classes } = this.props;
     return (
       <GridItem xs={12} sm={12} className={classes.gridItem}>
@@ -734,6 +742,7 @@ class RequestAdmin extends React.Component {
 
                 <GridItem xs={12} sm={12} className={classes.gridItem}>
                   <Button
+                    disabled={!this.props.requestState.saveActive}
                     onClick={this.onClickSave}
                     color="success"
                     round><SaveIcon />

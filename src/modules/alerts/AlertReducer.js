@@ -3,6 +3,10 @@ import {
    , FIND_ALERT_LIST_SUCCESS
    , FIND_ALERT_LIST_ERROR
 
+   , GET_AVAILABLE_ASSETS
+   , GET_AVAILABLE_ASSETS_SUCCESS
+   , GET_AVAILABLE_ASSETS_ERROR
+   
    , CONFIGURE_ALERT
    , CONFIGURE_ALERT_SUCCESS
    , CONFIGURE_ALERT_ERROR
@@ -55,6 +59,32 @@ const alertReducer = (state = initialState, action) => {
             },
          };
 
+      case GET_AVAILABLE_ASSETS:
+         return {
+            ...state,
+            data: {
+               ...state.data,
+               isActivityIndicatorShown: true,
+            },
+         };
+      case GET_AVAILABLE_ASSETS_SUCCESS:
+         return {
+            ...state,
+            data: {
+               ...state.data,
+               listResultSetAsset: action.listResultSetAsset,
+               isActivityIndicatorShown: false,
+            },
+         };
+      case GET_AVAILABLE_ASSETS_ERROR:
+         return {
+            ...state,
+            data: {
+               ...state.data,
+               isActivityIndicatorShown: false,
+            },
+         };
+         
       case CONFIGURE_ALERT:
          return {
             ...state,

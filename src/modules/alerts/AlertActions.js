@@ -2,6 +2,10 @@ export const FIND_ALERT_LIST = 'FIND_ALERT_LIST';
 export const FIND_ALERT_LIST_SUCCESS = 'FIND_ALERT_LIST_SUCCESS';
 export const FIND_ALERT_LIST_ERROR = 'FIND_ALERT_LIST_ERROR';
 
+export const GET_AVAILABLE_ASSETS = 'GET_AVAILABLE_ASSETS';
+export const GET_AVAILABLE_ASSETS_SUCCESS = 'GET_AVAILABLE_ASSETS_SUCCESS';
+export const GET_AVAILABLE_ASSETS_ERROR = 'GET_AVAILABLE_ASSETS_ERROR';
+
 export const CONFIGURE_ALERT = 'CONFIGURE_ALERT';
 export const CONFIGURE_ALERT_SUCCESS = 'CONFIGURE_ALERT_SUCCESS';
 export const CONFIGURE_ALERT_ERROR = 'CONFIGURE_ALERT_ERROR';
@@ -85,6 +89,39 @@ export const setAlert = (alert) => (
         , alert
     }
 );
+
+
+/********************************
+* Buscar activos disponiobles por antena para la configuracion de alertas
+*********************************/
+
+export const getAvailableAssets = (idUbication) => (
+    {
+        type: GET_AVAILABLE_ASSETS
+        , idUbication
+    }
+);
+
+
+
+
+export const getAvailableAssetsSuccess = (listResultSetAsset) => (
+    {
+        type: GET_AVAILABLE_ASSETS_SUCCESS
+        , listResultSetAsset
+    }
+);
+
+
+
+
+export const getAvailableAssetsError = (error) => (
+    {
+        type: GET_AVAILABLE_ASSETS_ERROR
+        , error
+    }
+);
+
 
 /********************************
 * Buscar tipo de servcio por ID *

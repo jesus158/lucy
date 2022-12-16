@@ -14,6 +14,7 @@ import typeCancellationReducer from 'modules/configurations/type_cancellation/Ty
 import typeRejectReducer from 'modules/configurations/type_reject/TypeRejectReducer';
 import typeAssetReducer from 'modules/configurations/type_actives/TypeActivesReducer';
 import typeAlertReducer from "./modules/configurations/type_alerts/TypeAlertsReducer";
+import roomBedReducer from "./modules/configurations/rooms_beds/RoomsBedReducer";
 import assetReducer from 'modules/assets/AssetReducer';
 import alertReducer from 'modules/alerts/AlertReducer';
 import typeServiceReducer from 'modules/configurations/type_services/TypeServicesReducer';
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
    , typeRejectState: typeRejectReducer
    , typeAssetState: typeAssetReducer
    , typeAlertState: typeAlertReducer
+   , roomBedState: roomBedReducer
    , typeCancellationState: typeCancellationReducer
    , typeAbsenceState: typeAbsenceReducer
    , typeBreakState: typeBreakReducer

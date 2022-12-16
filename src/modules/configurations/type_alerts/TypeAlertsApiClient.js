@@ -55,7 +55,6 @@ class ApiClient {
     }
 
     configureTypeAlert = (typeAsset) => {
-        console.log('type asset', typeAsset)
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'post',

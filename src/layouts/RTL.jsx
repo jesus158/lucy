@@ -181,6 +181,7 @@ class RTL extends React.Component {
                 <Redirect from="/rtl" to="/rtl/rtl-support-page" />
               </Switch>
             </div>
+
           </div>
           <Footer fluid rtlActive />
           <FixedPlugin

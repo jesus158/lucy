@@ -16,6 +16,7 @@ import CardBody from "components/Card/CardBody.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import Block from "@material-ui/icons/Block";
+import alertaMp3 from "assets/mp3/alerta.mp3"
 import EnhancedTableHead from "components/EnhancedTableHead/EnhancedTableHead.jsx";
 import TablePagination from "components/TablePagination/TablePagination.jsx";
 import { addMessage } from 'layouts/MessagesActions';
@@ -47,10 +48,12 @@ const rowsNewAlert = [
     { id: 0, numeric: false, disablePadding: true, isSorted: false, label: 'Hora' },
 ];
 var prevNowPlaying = null;
+
 class Alerts extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            alertTimer: null,
             openAlertInfo: false,
             newAlert: false,
             newAlerts:[],
@@ -67,7 +70,7 @@ class Alerts extends React.Component {
             isActivityIndicatorShown: false,
             cont: 0,
             play: false,
-            url: "http://streaming.tdiradio.com:8000/house.mp3",
+
 
         };
         this.loadContentList();
@@ -93,9 +96,30 @@ class Alerts extends React.Component {
         }
         prevNowPlaying = null;
 
+        if (this.state.alertTimer) {
+            clearInterval(this.state.alertTimer);
+            this.state.alertTimer = null;
+        }        
+
+    }
+
+    playAudio() {
+
+        if (this.state.alertTimer) {
+            clearInterval(this.state.alertTimer);
+            this.state.alertTimer = null;
+        }
+        const audioEl = document.getElementsByClassName("audio-element")[0];
+        console.log(document.getElementsByClassName("audio-element")[0]);
+        audioEl.play();
+        this.state.alertTimer = setInterval(() => {
+            this.playAudio();
+        }, 3000);
+        
     }
 
     loadContentList = () => {
+        //console.log("refrescando desde formulario");
         this.props.trackingStateAlerts(
             undefined,
             this.state.page,
@@ -194,6 +218,11 @@ class Alerts extends React.Component {
         this.setState({
             newAlert : false
         });
+
+        if (this.state.alertTimer) {
+            clearInterval(this.state.alertTimer);
+            this.state.alertTimer = null;
+        }
     };
 
     alertShowWindow
@@ -311,6 +340,7 @@ class Alerts extends React.Component {
                 let objAlert = listAlerts[i];
                 if (objAlert.new=== 1) {
                     this.state.newAlert = true;
+                    this.playAudio();
                     objAlert.new= 0;
                     this.state.newAlerts.push(objAlert);
                     console.log("Nueva Alerta");    
@@ -382,7 +412,12 @@ class Alerts extends React.Component {
                     </Button>
                     </DialogActions> 
                 </Dialog>
-
+                <div>
+                  
+                    <audio className="audio-element">
+                    <source src= {alertaMp3} ></source>
+                    </audio>
+                </div>
                 <Card key={`CardTracking`} >
                     <CardHeader color="primary" icon >
                         <CardIcon color="info">
@@ -462,7 +497,6 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    console.log("fdgfdgdf");
     return {
         trackingStateAlerts: (
             apiPaginationAction,

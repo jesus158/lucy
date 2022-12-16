@@ -114,11 +114,13 @@ export const createRequest = (action$, state$) =>
           .then(response => {
             let code = response.data.apiResponse.code;
             if (response.status >= 200 && response.status < 300 && code === 200) {
+              console.log("Request OK1");
               let data = response.data;
               obs.next(createRequestSuccess(data));
               obs.next(addMessage({ variant: "success", message: response.data.apiResponse.message }));
               obs.complete();
               action.onSuccess("OK");
+              console.log("Request OK2");
             } else if (response.status === 401) {
               obs.next(
                 createRequestError(
@@ -132,6 +134,7 @@ export const createRequest = (action$, state$) =>
                 })
               );
               obs.complete();
+              console.log("Request Error 1");
               action.onSuccess("error");
             } else {
               obs.next(
@@ -145,6 +148,7 @@ export const createRequest = (action$, state$) =>
                   message: response.data.apiResponse.message
                 })
               );
+              console.log("Request Error 2");
               obs.complete();
             }
           })
@@ -152,6 +156,7 @@ export const createRequest = (action$, state$) =>
             obs.next(createRequestError(error));
             obs.next(addMessage({ variant: "error", message: error.message }));
             obs.complete();
+            console.log("Request Error 3");
           });
       }).pipe(
         catchError(error =>

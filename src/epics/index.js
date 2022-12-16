@@ -1,7 +1,7 @@
 import { configureAccount, fetchAllAccount, findAccount, getAccountById, getListCostCenter, inactiveAccount } from 'modules/accounts/account/AccountEpic.js';
 import { configureUser, findUsers, getListTypeIdentification, getListTypeProfile, getUserByEmail, getUserById, inactiveUser, loginUser, sendEmailRememberAccess } from 'modules/accounts/user/UserEpic.js';
 import { configureCallButton, findCallButton, getCallButtonById, inactiveCallButton } from 'modules/buttons/button/ButtonServiceEpic.js';
-import { configureAlert, findAlert, getAlertById, inactiveAlert } from 'modules/alerts/AlertEpic.js';
+import { configureAlert, findAlert, getAlertById,getAvailableAssets, inactiveAlert } from 'modules/alerts/AlertEpic.js';
 import { configureHotspot, findHotspot, getHostspotListActive, getHotspotById, inactiveHotspot } from 'modules/buttons/hotspot/HotspotEpic.js';
 import { endCarrierBreakShift,endCarrierAbsenceShift,carrierAbsenceShift, carrierBreakShift, carrierEndShift, carrierStartShift, getCarrierById, getCarrierList, getInShiftByFilter } from 'modules/carriers/carrierEpic.js';
 import { configureNumberAttentionsHighPriorityWaiting, configureNumberAttentionsLowPriorityWaiting, configureNumberAttentionsMediumPriorityWaiting, configureTimeAlertCarrierInactivity, configureTimeAlertFinalizeRequest, configureTimeAlertServiceWithoutCarrier, getNumberAttentionsHighPriorityWaiting, getNumberAttentionsLowPriorityWaiting, getNumberAttentionsMediumPriorityWaiting, getTimeAlertCarrierInactivity, getTimeAlertFinalizeRequest, getTimeAlertServiceWithoutCarrier, inactiveNumberAttentionsHighPriorityWaiting, inactiveNumberAttentionsLowPriorityWaiting, inactiveNumberAttentionsMediumPriorityWaiting, inactiveTimeAlertCarrierInactivity, inactiveTimeAlertFinalizeRequest, inactiveTimeAlertServiceWithoutCarrier } from 'modules/configurations/general_parameters/GeneralParametersEpic.js';
@@ -25,12 +25,8 @@ import { getHistoryRequest, getHistoryRequestExport } from 'modules/reports/hist
 import { trackingStateSOS,trackingStateAlerts, trackingStateUsers, trackingStateAssets, closeAlert} from 'modules/reports/tracking/TrackingEpic.js';
 import { cancelRequest, carrierAcceptsAssignment, carrierRejectsAssignment, createRequest, endRequest, getRequestInProcessByUserByFilter, startRequest, updateRequest } from "modules/requests/RequestEpic.js";
 import { combineEpics } from 'redux-observable';
-import {
-    configureTypeAlert,
-    findTypeAlert,
-    getListActiveTypeAlert, getTypeAlertById,
-    inactiveTypeAlert
-} from "../modules/configurations/type_alerts/TypeAlertsEpic";
+import { configureTypeAlert, findTypeAlert, getListActiveTypeAlert, getTypeAlertById, inactiveTypeAlert } from "../modules/configurations/type_alerts/TypeAlertsEpic";
+import { configureRoomBed, findRoomBed, getListActiveRoomBed, getRoomBedById, inactiveRoomBed } from "../modules/configurations/rooms_beds/RoomsBedEpic"; //Habitaciones - camas
 
 export const rootEpic = combineEpics(
     findAccount
@@ -84,6 +80,12 @@ export const rootEpic = combineEpics(
     , inactiveAsset
     , getListActiveAsset
     , getListTypeAsset
+
+    , configureRoomBed
+    , findRoomBed
+    , getListActiveRoomBed
+    , getRoomBedById
+    , inactiveRoomBed
 
     , findTypeAbsence
     , configureTypeAbsence
@@ -141,6 +143,7 @@ export const rootEpic = combineEpics(
     , configureAlert
     , getAlertById
     , inactiveAlert
+    , getAvailableAssets
 
     , findGateway
     , configureGateway

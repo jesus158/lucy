@@ -11,25 +11,33 @@ import { connect } from 'react-redux';
 
 class Alert extends React.Component {
 
+
+
   render() {
 
     return (<GridContainer justify="center">
 
       <GridItem xs={12} >
-        <Button color="white" round onClick={() => {
-          this.props.setAlert({
-            id: 0,
-            active: 1,
-            ubication: { id: 0 },
-            asset: [],
-            typeAlert: { id: 2 },
-            time: 0
-          });
-          this.props.history.push('/admin/admin-alert');
-        }}>
+        <Button color="white" round onClick=
+          {() => 
+            {
+              this.props.setAlert(
+              {
+                id: 0,
+                active: 1,
+                ubication: { id: 0 },
+                asset: [],
+                typeAlert: { id: 2 },
+                time: 0
+              });
+              this.props.history.push('/admin/admin-alert');
+            }
+          }>
           <Warning /> Nueva alerta
-            </Button>
+        </Button>
       </GridItem>
+
+
       <AlertList />
 
     </GridContainer>);

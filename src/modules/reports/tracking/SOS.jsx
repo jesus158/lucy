@@ -229,6 +229,8 @@ class SOS extends React.Component {
                     : null
                 }
                 {this.state.alertInactive}
+
+                
                 <Card key={`CardTracking`} >
                     <CardHeader color="primary" icon >
                         <CardIcon color="info">

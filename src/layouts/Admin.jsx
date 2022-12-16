@@ -184,6 +184,7 @@ class Dashboard extends React.Component {
           {...rest}
         />
         <div className={mainPanel} ref={this.mainPanel}>
+
           <AdminNavbar
             sidebarMinimize={this.sidebarMinimize.bind(this)}
             miniActive={this.state.miniActive}

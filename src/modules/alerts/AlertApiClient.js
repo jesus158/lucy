@@ -65,7 +65,7 @@ class ApiClient {
             active:Alert.active,
             alertGateway:Alert.ubication.id,
             alertTag:Alert.asset,
-            typeAlert:Alert.typeAlert,
+            typeAlert:{id:Alert.typeAlert.id},
             time:Alert.time,
             account:{id:sessionStorage["accountId"] }
         };
@@ -90,6 +90,21 @@ class ApiClient {
         let request = {
             method: 'get'
             , url: `${this.url}/alert/getById/${this.account}?idAlert=${id}`
+            , headers: {
+                "Content-Type": "application/json;charset=UTF-8"
+                , "Accept": "application/json;charset=UTF-8"
+            }
+        }
+
+        return request;
+    }
+
+
+    getAvailableAssets = (idUbication) => {
+        this.account = sessionStorage["accountCode"];
+        let request = {
+            method: 'get'
+            , url: `${this.url}/asset/getByGateway/${this.account}?idGateway=${idUbication}`
             , headers: {
                 "Content-Type": "application/json;charset=UTF-8"
                 , "Accept": "application/json;charset=UTF-8"

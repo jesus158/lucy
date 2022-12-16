@@ -26,6 +26,7 @@ import Layers from "@material-ui/icons/Layers";
 import SettingsRemote from '@material-ui/icons/SettingsRemote';
 import Sms from "@material-ui/icons/Sms";
 import TrackChangesIcon from '@material-ui/icons/TrackChanges';
+import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import ViewList from "@material-ui/icons/ViewList";
 import Account from "modules/accounts/account";
 import AccountAdmin from "modules/accounts/account/AccountAdmin";
@@ -70,6 +71,10 @@ import Alert from "modules/alerts";
 import TypeAlerts from "modules/configurations/type_alerts";
 import TypeAlertAdmin from "modules/configurations/type_alerts/TypeAlertAdmin";
 
+/*ALTAS TEMPRANAS*/
+import RoomsBeds from "modules/configurations/rooms_beds"; //Habitaciones y camas
+import RoomsBedAdmin from "modules/configurations/rooms_beds/RoomsBedAdmin"; //Administrar habitaciones y camas
+
 export const routes = () => {
   return filterByProfile(dashRoutesFilter);
 }
@@ -102,7 +107,7 @@ var dashRoutesFilter = [
     name: "Reportes",
     icon: InsertChart,
     state: "componentsCollapse",
-    permition: [ADMIN, SUPER_MANAGER],
+    permition: [ADMIN, SUPER_MANAGER, REQUESTED],
     views: [
       {
         path: "/report-dashboard",
@@ -110,7 +115,7 @@ var dashRoutesFilter = [
         mini: "DA",
         component: Dashboard,
         layout: "/admin",
-        permition: [ADMIN, SUPER_MANAGER]
+        permition: [ADMIN, SUPER_MANAGER, REQUESTED]
       },
       {
         path: "/report-tracking",
@@ -169,6 +174,48 @@ var dashRoutesFilter = [
     state: "pageCollapse",
     permition: [ADMIN, SUPER_MANAGER],
     views: [
+      {
+        collapse: true,
+        name: "Altas Tempranas",
+        icon: AccessAlarmIcon,
+        state: "buttonsRequestCollapse",
+        permition: [ADMIN, SUPER_MANAGER],
+        views: [
+          {
+            path: "/buttons",
+            name: "Gestionar Zonas",
+            mini: "BO",
+            component: ButtonService,
+            layout: "/admin",
+            permition: [ADMIN, SUPER_MANAGER]
+          },
+          {
+            path: "/rooms-beds",
+            name: "Gestionar Habitación/Camas",
+            mini: "AT",
+            component: RoomsBeds,
+            layout: "/admin",
+            permition: [ADMIN, SUPER_MANAGER]
+          },
+          {
+            path: "/admin-rooms-beds",
+            name: "Administrar Habitación Camas",
+            icon: BookmarkBorder,
+            component: RoomsBedAdmin,
+            layout: "/admin",
+            redirect: true,
+            permition: [ADMIN, SUPER_MANAGER]
+          },
+          {
+            path: "/buttons",
+            name: "Tiempos ideales por áreas",
+            mini: "BO",
+            component: ButtonService,
+            layout: "/admin",
+            permition: [ADMIN, SUPER_MANAGER]
+          },
+        ]
+      },
       {
         path: "/config-typeservices",
         name: "Tipos de servicio",

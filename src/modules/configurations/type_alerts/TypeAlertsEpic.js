@@ -202,7 +202,6 @@ export const getListActiveTypeAlert = (action$, state$) => action$.pipe(
                     let code = response.data.apiResponse.code;
                     if (response.status >= 200 && response.status < 300 && code === 200) {
                         let data = response.data;
-                        console.log('get list Active', data)
                         obs.next(getListActiveTypeAlertSuccess(data.listTypeAlert));
                         //obs.next(addMessage({variant:"success", message:response.data.apiResponse.message}));
                         obs.complete();

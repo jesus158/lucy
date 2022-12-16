@@ -7,6 +7,7 @@ import Select from "@material-ui/core/Select";
 import withStyles from "@material-ui/core/styles/withStyles";
 import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
 import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
+import Layers from '@material-ui/icons/Layers';
 import NotesOutlined from "@material-ui/icons/NotesOutlined";
 import PersonOutline from '@material-ui/icons/PersonOutline';
 import SaveIcon from '@material-ui/icons/Save';
@@ -23,9 +24,9 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import { addMessage } from 'layouts/MessagesActions';
 import { findUsers } from 'modules/accounts/user/UserActions.js';
-import { configureAlert, getAlertById, setAlert } from 'modules/alerts/AlertActions.js';
+import { configureAlert, getAlertById,getAvailableAssets, setAlert } from 'modules/alerts/AlertActions.js';
 import WaitDialog from "modules/components/WaitDialog.jsx";
-// import { getListActiveTypeAlert } from 'modules/configurations/type_alerts/TypeAlertsActions.js';
+import { getListActiveTypeAlert } from 'modules/configurations/type_alerts/TypeAlertsActions.js';
 import { getListActiveShowService } from 'modules/locations/ubications/UbicationActions.js';
 import { getListActiveAsset } from 'modules/assets/AssetActions.js';
 
@@ -59,6 +60,7 @@ class AlertAdmin extends React.Component {
     this.state = {
       AlertInfo: "",
       butonId: 0,
+
     };
   }
 
@@ -67,11 +69,9 @@ class AlertAdmin extends React.Component {
     if (urlParams.has("code")) {
       this.props.getAlertById(urlParams.get("code"));
     }
-    // this.props.getListActiveTypeAlert((resul) => {
-    // });
+    this.props.getListActiveTypeAlert((result) => {});
     this.props.getListActiveShowService();
-    this.props.getListActiveAsset((result) => {
-    }); 
+    this.props.getListActiveAsset((result) => { }); 
 
   };
 
@@ -87,15 +87,15 @@ class AlertAdmin extends React.Component {
 
 
 
-    // message = "Debe seleccionar el tipo de alerta";
-    // try {
-    //   if (!(alert.typeAlert.id > 0)) {
-    //     throw message;
-    //   }
-    // } catch (ex) {
-    //   this.props.addMessage({ variant: "error", message: message });
-    //   return
-    // }
+    message = "Debe seleccionar el tipo de alerta";
+    try {
+      if (!(alert.typeAlert.id > 0)) {
+        throw message;
+      }
+    } catch (ex) {
+      this.props.addMessage({ variant: "error", message: message });
+      return
+    }
 
     message = "Debe seleccionar la ubicación";
     try {
@@ -129,6 +129,16 @@ class AlertAdmin extends React.Component {
     console.log("handleInputText");
     console.log(event.target.value);
     var alert = this.props.alertState.data.alert;
+
+    if (event.target.name == "ubication.id")
+    {
+      console.log("cambio ubicacion");
+
+      this.state.availableAssetsUbication = this.props.getAvailableAssets(event.target.value);
+      console.log(this.state.availableAssetsUbication);
+    }
+
+    
     if (event.target.name == "asset")
     {
       // if (alert.asset.includes(event.target.value) === true)
@@ -207,21 +217,35 @@ class AlertAdmin extends React.Component {
   }
 
   getDataForSelectAsset = (listAssets) => {
+
     var content = [];
     var classes = this.props;
     try {
-      content.push(
+      content.push
+      (
         <MenuItem
           classes={{
             root: classes.selectMenuItem
           }}
           value={0}>
           Seleccione el activo...
-        </MenuItem>);
-
-        listAssets.forEach(localAsset => {
-        content.push(<MenuItem value={localAsset.id}>{localAsset.nameAsset}</MenuItem>);
-      })
+        </MenuItem>
+      );
+      
+      // listAssets.forEach
+      // (
+      //   localAsset => 
+      //   {
+      //     content.push(<MenuItem value={localAsset.id}>{localAsset.nameAsset}</MenuItem>);
+      //   }
+      // )
+      listAssets.forEach
+      (
+        localAsset => 
+        {
+          content.push(<MenuItem value={localAsset.id}>{localAsset.nameAsset}</MenuItem>);
+        }
+      )
     } catch (ex) { }
     return content;
   }
@@ -260,24 +284,40 @@ class AlertAdmin extends React.Component {
     let isActivityIndicatorShown = this.props.alertState.data.isActivityIndicatorShown;
     const { classes } = this.props;
     var listTypeAlert = [];
-    var listUbication = []
-    var listAsset = []
+    var listUbication = [];
+    var listAsset = [];
+
+
+    try {
+      listTypeAlert = this.props.typeAlertState.data.listTypeAlert;
+    } catch (ex) { }
+    if (listTypeAlert === undefined || listTypeAlert === null) {
+      listTypeAlert = [];
+    }
+
 
 
     // try {
-    //   listTypeAlert = this.props.typeAlertState.data.listTypeAlert;
+
+    //   listAsset = this.props.alertState.data.listResultSetAsset.asset;
+
+  
     // } catch (ex) { }
-    // if (listTypeAlert === undefined || listTypeAlert === null) {
-    //   listTypeAlert = [];
+    // if (listAsset === undefined || listAsset === null) {
+    //   listAsset = [];
     // }
+    
 
     try {
+
       listAsset = this.props.assetState.data.listAsset;
+
+  
     } catch (ex) { }
     if (listAsset === undefined || listAsset === null) {
       listAsset = [];
     }
-
+    
     try {
       listUbication = this.props.ubicationState.data.listUbication;
     } catch (ex) { }
@@ -334,9 +374,11 @@ class AlertAdmin extends React.Component {
                         <InputAdornment
                           position="start"
                           className={classes.inputAdornment}>
-                          <PersonOutline className={classes.inputAdornmentIcon} />
+                          <LocationSearchingIcon className={classes.inputAdornmentIcon} />
                         </InputAdornment>
                       )}>
+
+
                       {this.getDataForSelectUbication(listUbication)}
                     </Select>
                   </FormControl>
@@ -364,10 +406,40 @@ class AlertAdmin extends React.Component {
                         <InputAdornment
                           position="start"
                           className={classes.inputAdornment}>
-                          <PersonOutline className={classes.inputAdornmentIcon} />
+                          <Layers className={classes.inputAdornmentIcon} />
                         </InputAdornment>
                       )}>
                       {this.getDataForSelectAsset(listAsset)}
+                    </Select>
+                  </FormControl>
+                </GridItem>
+
+                <GridItem xs={12} sm={12} className={classes.gridItem}>
+                  <FormControl
+                    fullWidth
+                    className={classes.selectFormControl}>
+                    <InputLabel
+                      htmlFor="simple-select"
+                      className={classes.selectLabel}>
+                      Tipo alerta
+                    </InputLabel>
+                    <Select
+                      
+                      id="typeAlert.id"
+                      inputProps={{
+                        name: "typeAlert.id",
+                        id: "typeAlert.id",
+                        value: alert.typeAlert.id,
+                        onChange: event => this.handleInputText(event),
+                      }}
+                      startAdornment={(
+                        <InputAdornment
+                          position="start"
+                          className={classes.inputAdornment}>
+                          <Warning className={classes.inputAdornmentIcon} />
+                        </InputAdornment>
+                      )}>
+                      {this.getDataForSelectTypeAlerts(listTypeAlert)}
                     </Select>
                   </FormControl>
                 </GridItem>
@@ -606,7 +678,7 @@ class AlertAdmin extends React.Component {
 }
 const mapStateToProps = state => {
   return {
-    // typeAlertState: state.typeAlertState,
+    typeAlertState: state.typeAlertState,
     ubicationState: state.ubicationState,
     alertState: state.alertState,
     assetState: state.assetState,
@@ -616,10 +688,11 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     configureAlert: (alert, onSuccess) => dispatch(configureAlert(alert, onSuccess)),
+    getAvailableAssets: (idUbication) => dispatch(getAvailableAssets(idUbication)),
     getAlertById: (id) => dispatch(getAlertById(id)),
     setAlert: (alert) => dispatch(setAlert(alert)),
     getListActiveAsset: (onSuccess) => dispatch(getListActiveAsset(onSuccess)),
-    // getListActiveTypeAlert: (onSuccess) => dispatch(getListActiveTypeAlert(onSuccess)),
+    getListActiveTypeAlert: (onSuccess) => dispatch(getListActiveTypeAlert(onSuccess)),
     getListActiveShowService: () => dispatch(getListActiveShowService()),
     addMessage: (message) => dispatch(addMessage(message)),
   }

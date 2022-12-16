@@ -91,7 +91,6 @@ class TypeAlertAdmin extends React.Component {
 
     handleToggle() {
         var typeAlert = this.props.typeAlertState.data.typeAlert;
-        console.log(typeAlert)
         if (typeAlert.active) {
             typeAlert.active = 0;
         } else {

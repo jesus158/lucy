@@ -10,17 +10,43 @@ const apiTimeout = 60000;
 // const LUCY_REPORT_SERVICE = "http://44.227.228.174:8080/lucy-reports-services";
 
 
+
 /**
  * TEST API'S
  */
-//const URL_BASE = (window.location.protocol.startsWith('https') ? 'https':'http')+"://"+window.location.hostname+":"+window.location.port;
-const URL_BASE = 'http://44.227.228.174:8080';
+
+const URL_BASE = "http://44.227.228.174:8080";
 
 const LUCY_LOCATION_SERVICE = URL_BASE+"/lucy-locations-services-dev";
 const LUCY_ACCOUNT_SERVICE = URL_BASE+"/lucy-account-services";
 const LUCY_CONFIGURATION_SERVICE = URL_BASE+"/lucy-configuration-services-dev";
 const LUCY_REQUEST_SERVICE = URL_BASE+"/lucy-requests-services-dev";
 const LUCY_REPORT_SERVICE = URL_BASE+"/lucy-reports-services-dev";
+
+
+//const URL_BASE = (window.location.protocol.startsWith('https') ? 'https':'http')+"://"+window.location.hostname+":"+window.location.port;
+// const URL_BASE = 'http://44.227.228.174:8080';
+
+// const LUCY_LOCATION_SERVICE = URL_BASE+"/lucy-locations-services";
+// const LUCY_ACCOUNT_SERVICE = URL_BASE+"/lucy-account-services";
+// const LUCY_CONFIGURATION_SERVICE = URL_BASE+"/lucy-configuration-services";
+// const LUCY_REQUEST_SERVICE = URL_BASE+"/lucy-requests-services";
+// const LUCY_REPORT_SERVICE = URL_BASE+"/lucy-reports-services";
+
+
+
+/**
+ * LOCALHOST DEVELOPMENT API'S LEANDRO
+ */
+
+// const URL_BASE = "http://localhost:8080";
+
+// const LUCY_LOCATION_SERVICE = URL_BASE+"/lucy-locations-services";
+// const LUCY_ACCOUNT_SERVICE = "http://44.227.228.174:8080" +"/lucy-account-services";
+// const LUCY_CONFIGURATION_SERVICE = URL_BASE+"/lucy-configuration-services";
+// const LUCY_REQUEST_SERVICE = URL_BASE+"/lucy-requests-services";
+// const LUCY_REPORT_SERVICE = URL_BASE+"/lucy-reports-services";
+
 
 
 /**
@@ -54,9 +80,9 @@ const LUCY_REPORT_SERVICE = "http://201.184.163.99:83/lucy-reports-services";*/
 
 
 const ADMIN = 1;
-const MILI_SECONDS_REFRESH_LIST = 3000;
-const MILI_SECONDS_REFRESH_TRACKING = 1000;
-const MILI_SECONDS_REFRESH_LIST_CARRIERS = 1000;
+const MILI_SECONDS_REFRESH_LIST = 10000;
+const MILI_SECONDS_REFRESH_TRACKING = 5000;
+const MILI_SECONDS_REFRESH_LIST_CARRIERS = 5000;
 const ROW_GRAY = '#f7f7f7';
 const ROW_WHITE = '#ffffff';
 const NAME_OPERATOR = "operador";

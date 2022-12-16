@@ -168,7 +168,6 @@ class ApiClient {
         , apiPaginationFilter) => {
         this.account = sessionStorage["accountCode"];
         var uriFilter = '';
-
         if (apiPaginationAction !== undefined) {
             uriFilter += '?ApiPaginationAction=' + apiPaginationAction
         } else {

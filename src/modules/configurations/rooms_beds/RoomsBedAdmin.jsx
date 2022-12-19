@@ -80,7 +80,7 @@ class RoomsBedAdmin extends React.Component {
 
         this.props.configureRoomBed(roomBed, this.props, (success) => {
             //Navegación a la lista
-            this.props.history.push('/admin/config-actives');
+            this.props.history.push('/admin/rooms-beds');
         });
     }
 

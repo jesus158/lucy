@@ -89,7 +89,7 @@ class ApiClient {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'delete',
-            url: `${this.url}/room/delete/${this.account}?idTypeAlert=${id}`,
+            url: `${this.url}/room/delete/${this.account}?idRoom=${id}`,
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Accept": "application/json;charset=UTF-8"

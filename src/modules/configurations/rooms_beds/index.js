@@ -19,7 +19,7 @@ class RoomBeds extends React.Component {
             description: "",
             active: 1
           });
-          this.props.history.push('/admin/admin-room-bed');
+          this.props.history.push('/admin/admin-rooms-beds');
         }}>
           <ViewList /> Nuevo tipo habitación/cama
             </Button>

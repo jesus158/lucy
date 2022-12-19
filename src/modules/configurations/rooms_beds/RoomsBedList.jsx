@@ -32,13 +32,12 @@ import { connect } from 'react-redux';
 import { Redirect } from "react-router-dom";
 // module Components
 import {
-    findRoomBedList,
+    findRoomBed,
     setRoomBed,
     inactiveRoomBed,
 
 
 } from 'modules/configurations/rooms_beds/RoomsBedActions';
-import {findRoomBed} from "./RoomsBedEpic";
 
 
 const rows = [
@@ -65,7 +64,6 @@ class RoomBedList extends React.Component {
     }
 
     componentDidMount = () => {
-        console.log('happens')
         this.props.findRoomBedList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
     }
 
@@ -78,12 +76,12 @@ class RoomBedList extends React.Component {
             order = 0;
         }
 
-        this.props.findRoomBed(undefined, this.state.page, order, this.state.rowsPerPage, orderBy, this.state.page, this.state.filter.name);
+        this.props.findRoomBedList(undefined, this.state.page, order, this.state.rowsPerPage, orderBy, this.state.page, this.state.filter.name);
         this.setState({ order, orderBy });
     };
 
     handleEdit = (roomBed) => {
-        this.props.setTypeAlert({
+        this.props.setRoomBed({
             id: roomBed.id,
             name: roomBed.name,
             description: roomBed.description,
@@ -106,7 +104,7 @@ class RoomBedList extends React.Component {
                     <DialogTitle id="form-dialog-title">{nameAccountSelected}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            ¿Está seguro que quiere desactivar este tipo de cama?
+                            ¿Está seguro que quiere desactivar este tipo de {nameAccountSelected}?
                     </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -116,7 +114,7 @@ class RoomBedList extends React.Component {
                         <Button onClick={() => {
                             this.hideRoomBedInactive();
                             this.props.inactiveRoomBed(id, success => {
-                                this.props.findRoomBed(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
+                                this.props.findRoomBedList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
                             });
                         }} color="info">
                             Aceptar
@@ -135,16 +133,16 @@ class RoomBedList extends React.Component {
 
     onFilter = filter => {
         this.setState({ filter });
-        this.props.findRoomBed(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, filter.name);
+        this.props.findRoomBedList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, filter.name);
     }
 
     handleChangePage = (page) => {
-        this.props.findRoomBed(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, page, this.state.filter.name);
+        this.props.findRoomBedList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, page, this.state.filter.name);
         this.setState({ page });
     };
 
     handleChangeRowsPerPage = rowsPerPage => {
-        this.props.findRoomBed(undefined, this.state.page, this.state.order, rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
+        this.props.findRoomBedList(undefined, this.state.page, this.state.order, rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
         this.setState({ rowsPerPage });
     };
 
@@ -152,7 +150,10 @@ class RoomBedList extends React.Component {
         const { classes } = this.props;
 
         const { isActivityIndicatorShown } = this.props.roomBedState?.data;
-        var {  listRoomBed, apiPagination } = this.props.roomBedState?.data?.listRoomBed;
+
+
+        let listTypeRoom = this.props.roomBedState?.data?.listResultSetRoomBed?.listTypeRoom;
+        let apiPagination = this.props.roomBedState?.data?.listResultSetRoomBed?.apiPagination;
 
         const { order, orderBy } = this.state;
 
@@ -160,11 +161,12 @@ class RoomBedList extends React.Component {
             apiPagination = {};
         }
 
-        if (listRoomBed === undefined) {
-            listRoomBed = [];
+        if (listTypeRoom === undefined || listTypeRoom === null) {
+            listTypeRoom = [];
         }
         if (this.state.toAdmin === true) {
-            return <Redirect to={'/admin/admin-type-alert/?code=' + this.state.accountId} />
+            console.log('toAdmin', this.state.toAdmin)
+            return <Redirect to={'/admin/admin-rooms-beds/?code=' + this.state.accountId} />
         }
 
         return (
@@ -182,7 +184,7 @@ class RoomBedList extends React.Component {
                         <h4 className={classes.cardIconTitle}>Tipo de Alerta</h4>
                     </CardHeader>
                     <CardBody style={{ overflow: "auto" }}>
-                        <Filter onFilter={this.onFilter} name={true} nameText={"Filtrar"} placeholder={"alerta"} />
+                        <Filter onFilter={this.onFilter} name={true} nameText={"Filtrar"} placeholder={"Habitación/cama"} />
                         <Table className={classes.table} aria-labelledby="tableTitle">
                             <EnhancedTableHead
                                 onRequestSort={this.handleRequestSort}
@@ -192,7 +194,7 @@ class RoomBedList extends React.Component {
                                 rows={rows}
                             />
                             <TableBody>
-                                {listRoomBed.map((roomBed, key) => {
+                                {listTypeRoom.map((roomBed, key) => {
                                     return (
                                         <TableRow tabIndex={-1} key={`TableRow-${key}`} style={{ background: key % 2 === 0 ? ROW_GRAY : ROW_WHITE }}>
                                             <TableCell align="left"><Link color="inherit" onClick={() => { this.handleEdit(roomBed) }} component="button" size="sm" className={classes.marginRight}>{roomBed.name}</Link></TableCell>

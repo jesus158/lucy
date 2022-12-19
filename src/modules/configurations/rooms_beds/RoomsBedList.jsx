@@ -43,6 +43,7 @@ import {
 const rows = [
     { id: 2, numeric: false, disablePadding: false, isSorted: true, label: 'Nombre' },
     { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Descripción' },
+    { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Categoría' },
     { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Estado' },
     { id: 0, numeric: false, disablePadding: true, isSorted: false, label: '' },
 ];
@@ -85,6 +86,7 @@ class RoomBedList extends React.Component {
             id: roomBed.id,
             name: roomBed.name,
             description: roomBed.description,
+            typeRoomBed: roomBed.typeRoom,
             active: roomBed.active
         });
         this.setState({
@@ -152,7 +154,7 @@ class RoomBedList extends React.Component {
         const { isActivityIndicatorShown } = this.props.roomBedState?.data;
 
 
-        let listTypeRoom = this.props.roomBedState?.data?.listResultSetRoomBed?.listTypeRoom;
+        let listRoom = this.props.roomBedState?.data?.listResultSetRoomBed?.listRoom;
         let apiPagination = this.props.roomBedState?.data?.listResultSetRoomBed?.apiPagination;
 
         const { order, orderBy } = this.state;
@@ -161,8 +163,8 @@ class RoomBedList extends React.Component {
             apiPagination = {};
         }
 
-        if (listTypeRoom === undefined || listTypeRoom === null) {
-            listTypeRoom = [];
+        if (listRoom === undefined || listRoom === null) {
+            listRoom = [];
         }
         if (this.state.toAdmin === true) {
             console.log('toAdmin', this.state.toAdmin)
@@ -181,7 +183,7 @@ class RoomBedList extends React.Component {
                         <CardIcon color="info">
                             <ViewList />
                         </CardIcon>
-                        <h4 className={classes.cardIconTitle}>Tipo de Alerta</h4>
+                        <h4 className={classes.cardIconTitle}>Habitaciones/Camas</h4>
                     </CardHeader>
                     <CardBody style={{ overflow: "auto" }}>
                         <Filter onFilter={this.onFilter} name={true} nameText={"Filtrar"} placeholder={"Habitación/cama"} />
@@ -194,12 +196,15 @@ class RoomBedList extends React.Component {
                                 rows={rows}
                             />
                             <TableBody>
-                                {listTypeRoom.map((roomBed, key) => {
+                                {listRoom.map((roomBed, key) => {
                                     return (
                                         <TableRow tabIndex={-1} key={`TableRow-${key}`} style={{ background: key % 2 === 0 ? ROW_GRAY : ROW_WHITE }}>
                                             <TableCell align="left"><Link color="inherit" onClick={() => { this.handleEdit(roomBed) }} component="button" size="sm" className={classes.marginRight}>{roomBed.name}</Link></TableCell>
                                             <TableCell className="text-column">
                                                 {roomBed.description}
+                                            </TableCell>
+                                            <TableCell className="text-column">
+                                                {roomBed.typeRoom.name}
                                             </TableCell>
                                             <TableCell className="text-column">
                                                 {roomBed.active === 1 ? (

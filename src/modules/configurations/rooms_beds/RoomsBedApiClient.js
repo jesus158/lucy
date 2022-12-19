@@ -44,7 +44,7 @@ class ApiClient {
 
         let request = {
             method: 'get',
-            url: `${this.url}/typeRoom/getByFilter/${this.account}` + encodeURI(uriFilter),
+            url: `${this.url}/room/getByFilter/${this.account}` + encodeURI(uriFilter),
             headers: {
                 "Accept": "application/json;charset=UTF-8"
             }
@@ -61,7 +61,7 @@ class ApiClient {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'post',
-            url: `${this.url}/typeRoom/createUpdate/${this.account}`,
+            url: `${this.url}/room/createUpdate/${this.account}`,
             data: roomBed,
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",

@@ -56,7 +56,7 @@ class RoomBedList extends React.Component {
             filter: {},
             order: 0,
             orderBy: 2,
-            page: 0,
+            page: 1,
             rowsPerPage: 5,
             toAdmin: false,
             accountId: 0,
@@ -156,18 +156,12 @@ class RoomBedList extends React.Component {
 
         let listRoom = this.props.roomBedState?.data?.listResultSetRoomBed?.listRoom;
         let apiPagination = this.props.roomBedState?.data?.listResultSetRoomBed?.apiPagination;
-
         const { order, orderBy } = this.state;
-
-        if (this.props.roomBedState?.data?.listResultSetTypeAlert?.apiPagination === undefined) {
-            apiPagination = {};
-        }
 
         if (listRoom === undefined || listRoom === null) {
             listRoom = [];
         }
         if (this.state.toAdmin === true) {
-            console.log('toAdmin', this.state.toAdmin)
             return <Redirect to={'/admin/admin-rooms-beds/?code=' + this.state.accountId} />
         }
 

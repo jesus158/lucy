@@ -78,8 +78,6 @@ class RequestAdmin extends React.Component {
     super(props);
 
     props.requestState.saveActive=true;
-    console.log("1propss");
-    console.log(props);
 
     this.state = {
       AlertInfo: "",

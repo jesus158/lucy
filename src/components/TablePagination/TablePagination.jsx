@@ -106,4 +106,4 @@ TablePagination.defaultProps = {
     onChangeRowsPerPage: PropTypes.func,
 };*/
 
-export default withStyles(regularFormsStyle)(TablePagination);;
+export default withStyles(regularFormsStyle)(TablePagination);

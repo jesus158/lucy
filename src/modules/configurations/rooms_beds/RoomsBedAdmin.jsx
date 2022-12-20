@@ -29,7 +29,13 @@ import GridItem from "components/Grid/GridItem.jsx";
 import WaitDialog from "modules/components/WaitDialog.jsx";
 import React from "react";
 import { connect } from 'react-redux';
-import { configureRoomBed, getRoomBedById, setRoomBed } from 'modules/configurations/rooms_beds/RoomsBedActions.js';
+import {
+    configureRoomBed,
+    getListActiveRoomBed,
+    getRoomBedById,
+    setRoomBed
+} from 'modules/configurations/rooms_beds/RoomsBedActions.js';
+
 
 const style = {
     gridContainer: {
@@ -58,6 +64,10 @@ class RoomsBedAdmin extends React.Component {
 
     }
 
+    componentDidMount() {
+        this.props.getListActiveRoomBed();
+    }
+
     configureRoomBed = () => {
         const { roomBed } = this.props.roomBedState.data;
 
@@ -77,8 +87,7 @@ class RoomsBedAdmin extends React.Component {
             return;
         }
 
-
-        this.props.configureRoomBed(roomBed, this.props, (success) => {
+        this.props.configureRoomBed({...roomBed, account: { id: 27}}, this.props, (success) => {
             //Navegación a la lista
             this.props.history.push('/admin/rooms-beds');
         });
@@ -114,9 +123,18 @@ class RoomsBedAdmin extends React.Component {
     }
 
     handlePriorityInput = event => {
-        var roomBed = this.props.roomBedState.data.roomBed;
-        roomBed[[event.target.name]] = event.target.value;
-        this.props.setRoomBed(roomBed);
+
+        if(event.target.name === "typeRoom"){
+            var roomBed = this.props.roomBedState.data.roomBed;
+            roomBed.typeRoom = {
+                id: event.target.value
+            }
+            this.props.setRoomBed(roomBed);
+        }else{
+            var roomBed = this.props.roomBedState.data.roomBed;
+            roomBed[[event.target.name]] = event.target.value;
+            this.props.setRoomBed(roomBed);
+        }
     }
 
     // debugger;
@@ -217,12 +235,11 @@ class RoomsBedAdmin extends React.Component {
                                         classes={{
                                             select: classes.select
                                         }}
-                                        value={roomBed.category}
+                                        value={roomBed.typeRoom?.id}
                                         onChange={this.handlePriorityInput}
                                         inputProps={{
-                                            name: "category",
-                                            id: "category",
-
+                                            name: "typeRoom",
+                                            id: "typeRoom",
                                         }}
                                         startAdornment={(
                                             <InputAdornment
@@ -238,8 +255,19 @@ class RoomsBedAdmin extends React.Component {
                                             value="0">
                                             Seleccione la categoría...
                                         </MenuItem>
-                                        <MenuItem value="1">Habitación</MenuItem>
-                                        <MenuItem value="2">Cama</MenuItem>
+                                            {this.props.roomBedState?.data?.listRoomBed?.map((roomBed, index) => {
+                                                return (
+                                                    <MenuItem
+                                                        classes={{
+                                                            root: classes.selectMenuItem,
+                                                            selected: classes.selectMenuItemSelected
+                                                        }}
+                                                        value={roomBed.id}
+                                                        key={index}>
+                                                        {roomBed.name}
+                                                    </MenuItem>
+                                                );
+                                            })}
                                         </Select>
                                     </FormControl>
                                 </GridItem>
@@ -288,6 +316,7 @@ class RoomsBedAdmin extends React.Component {
 const mapStateToProps = state => {
     return {
         roomBedState: state.roomBedState,
+        accountState: state.accountState
     };
 };
 
@@ -296,6 +325,7 @@ const mapDispatchToProps = dispatch => {
         configureRoomBed: (roomBed, ownProps, onSuccess) => dispatch(configureRoomBed(roomBed, ownProps, onSuccess)),
         setRoomBed: (roomBed) => dispatch(setRoomBed(roomBed)),
         getRoomBedById: (id) => dispatch(getRoomBedById(id)),
+        getListActiveRoomBed: () => dispatch(getListActiveRoomBed()),
     };
 };
 

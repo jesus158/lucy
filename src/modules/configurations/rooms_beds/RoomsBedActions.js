@@ -112,6 +112,20 @@ export const inactiveRoomBedError = (error) => ({
     error
 });
 
+export const getListActiveRoomBed = (onSuccess) => ({
+    type: GET_LIST_ACTIVE_ROOM_BED,
+    onSuccess
+})
+
+export const getListActiveRoomBedSuccess = (data) => ({
+        type: GET_LIST_ACTIVE_ROOM_BED_SUCCESS,
+        data
+})
+export const getListActiveRoomBedError = (error) => ({
+    type: GET_LIST_ACTIVE_ROOM_BED_ERROR,
+    error
+})
+
 // /*************************************************
 //  * Recuperar listado de tipos de alertas en modo alertas *
 //  *************************************************/

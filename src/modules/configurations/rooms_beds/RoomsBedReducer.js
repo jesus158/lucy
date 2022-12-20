@@ -165,7 +165,7 @@ const roomBedReducer = (state = initialState, action) => {
             ...state,
             data: {
                ...state.data,
-               listRoomBed: action.listRoomBed,
+               listRoomBed: action.data.listTypeRoom,
                isActivityIndicatorShown: false,
             },
          };

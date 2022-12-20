@@ -12,7 +12,7 @@ import {
     FIND_ROOM_BED_LIST,
     findRoomBedListError,
     findRoomBedListSuccess, GET_LIST_ACTIVE_ROOM_BED,
-    GET_ROOM_BED_BY_ID,
+    GET_ROOM_BED_BY_ID, getListActiveRoomBed, getListActiveRoomBedError, getListActiveRoomBedSuccess,
     getRoomBedByIdError,
     getRoomBedByIdSuccess,
     INACTIVE_ROOM_BED,
@@ -200,6 +200,53 @@ export const inactiveRoomBed = (action$, state$) => action$.pipe(
                     action.onSuccess("ERROR");
                 });
         }).pipe(catchError(error => of (inactiveRoomBedError(error), addMessage({
+            variant: "error",
+            message: "Error"
+        }))))
+    )
+);
+
+export const activeRoomBed = (action$, state$) => action$.pipe(
+    ofType(GET_LIST_ACTIVE_ROOM_BED), mergeMap(action =>
+        Observable.create(obs => {
+            axios.defaults.timeout = apiTimeout;
+            axios(RoomsBedApi.getListActiveRoomBed(action.id))
+                .then(response => {
+                    let code = response.data.apiResponse.code;
+                    if (response.status >= 200 && response.status < 300 && code === 200) {
+                        let data = response.data;
+                        obs.next(getListActiveRoomBedSuccess(data));
+                        obs.next(addMessage({
+                            variant: "success",
+                            message: response.data.apiResponse.message
+                        }));
+                        obs.complete();
+                    } else if (response.status === 401) {
+                        obs.next(getListActiveRoomBedError(response.data.apiResponse.message));
+                        obs.next(addMessage({
+                            variant: "error",
+                            message: response.data.apiResponse.message
+                        }));
+                        obs.complete();
+                    } else {
+                        obs.next(getListActiveRoomBedError(response.data.apiResponse.message));
+                        obs.next(addMessage({
+                            variant: "error",
+                            message: response.data.apiResponse.message
+                        }));
+                        obs.complete();
+
+                    }
+                })
+                .catch(error => {
+                    obs.next(getListActiveRoomBedError(error));
+                    obs.next(addMessage({
+                        variant: "error",
+                        message: error.message
+                    }));
+                    obs.complete();
+                });
+        }).pipe(catchError(error => of (getListActiveRoomBedError(error), addMessage({
             variant: "error",
             message: "Error"
         }))))

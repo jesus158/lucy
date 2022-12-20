@@ -61,7 +61,6 @@ class RoomsBedAdmin extends React.Component {
             textRoomInfo: "",
             accountEmail: "",
         };
-
     }
 
     componentDidMount() {
@@ -70,7 +69,7 @@ class RoomsBedAdmin extends React.Component {
 
     configureRoomBed = () => {
         const { roomBed } = this.props.roomBedState.data;
-
+        const accountId = sessionStorage["accountId"];
 
         if (roomBed.name === "") {
             this.showRoomInfo("Por favor debe ingresar el nombre de la Habitación o Cama");
@@ -87,7 +86,7 @@ class RoomsBedAdmin extends React.Component {
             return;
         }
 
-        this.props.configureRoomBed({...roomBed, account: { id: 27}}, this.props, (success) => {
+        this.props.configureRoomBed({...roomBed, account: { id: accountId}}, this.props, (success) => {
             //Navegación a la lista
             this.props.history.push('/admin/rooms-beds');
         });

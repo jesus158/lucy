@@ -99,6 +99,7 @@ class ApiClient {
         return request;
     }
 
+    // Obtiene las categorías Habitación o Cama
     getListActiveRoomBed = () => {
         this.account = sessionStorage["accountCode"];
         let request = {

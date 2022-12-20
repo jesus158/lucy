@@ -197,7 +197,6 @@ class RoomBedList extends React.Component {
                             />
                             <TableBody>
                                 {listRoom.map((roomBed, key) => {
-                                    console.log('roomBed', roomBed)
                                     return (
                                         <TableRow tabIndex={-1} key={`TableRow-${key}`} style={{ background: key % 2 === 0 ? ROW_GRAY : ROW_WHITE }}>
                                             <TableCell align="left"><Link color="inherit" onClick={() => { this.handleEdit(roomBed) }} component="button" size="sm" className={classes.marginRight}>{roomBed.name}</Link></TableCell>

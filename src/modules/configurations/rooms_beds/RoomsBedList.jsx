@@ -44,6 +44,7 @@ const rows = [
     { id: 2, numeric: false, disablePadding: false, isSorted: true, label: 'Nombre' },
     { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Descripción' },
     { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Categoría' },
+    { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Ubicación' },
     { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Estado' },
     { id: 0, numeric: false, disablePadding: true, isSorted: false, label: '' },
 ];
@@ -199,6 +200,9 @@ class RoomBedList extends React.Component {
                                             </TableCell>
                                             <TableCell className="text-column">
                                                 {roomBed.typeRoom.name}
+                                            </TableCell>
+                                            <TableCell className="text-column">
+                                                {roomBed.ubication.nameUbication}
                                             </TableCell>
                                             <TableCell className="text-column">
                                                 {roomBed.active === 1 ? (

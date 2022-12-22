@@ -32,6 +32,7 @@ class RoomBeds extends React.Component {
 const mapStateToProps = state => {
   return {
     roomBedState: state.roomBedState,
+    ubicationState: state.ubicationState,
   };
 };
 

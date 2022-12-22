@@ -29,12 +29,7 @@ import GridItem from "components/Grid/GridItem.jsx";
 import WaitDialog from "modules/components/WaitDialog.jsx";
 import React from "react";
 import { connect } from 'react-redux';
-import {
-    configureRoomBed,
-    getListActiveRoomBed,
-    getRoomBedById,
-    setRoomBed
-} from 'modules/configurations/rooms_beds/RoomsBedActions.js';
+import { configureRoomBed, getListActiveRoomBed, getListActiveShowSuccess, getRoomBedById, setRoomBed } from 'modules/configurations/rooms_beds/RoomsBedActions.js';
 
 
 const style = {
@@ -65,10 +60,12 @@ class RoomsBedAdmin extends React.Component {
 
     componentDidMount() {
         this.props.getListActiveRoomBed();
+        // this.props.getListActiveShowSuccess();
     }
 
     configureRoomBed = () => {
         const { roomBed } = this.props.roomBedState.data;
+        const { ubication } = this.props.ubicationState.data;
         const accountId = sessionStorage["accountId"];
 
         if (roomBed.name === "") {
@@ -136,7 +133,19 @@ class RoomsBedAdmin extends React.Component {
         }
     }
 
-    // debugger;
+    handleUbicationInput = event => {
+        if(event.target.name === "typeRoom"){
+            var ubication = this.props.ubicationState.data.ubication;
+            ubication.typeRoom = {
+                id: event.target.value
+            }
+            this.props.setRoomBed(roomBed);
+        }else{
+            var roomBed = this.props.roomBedState.data.roomBed;
+            roomBed[[event.target.name]] = event.target.value;
+            this.props.setRoomBed(roomBed);
+        }
+    }
 
     render() {
         const { classes } = this.props;
@@ -271,6 +280,60 @@ class RoomsBedAdmin extends React.Component {
                                     </FormControl>
                                 </GridItem>
 
+                                {/* Item ubicaciones */}
+                                {/* <GridItem xs={12} sm={12} className={classes.gridItem}>
+                                    <FormControl
+                                        fullWidth
+                                        className={classes.selectFormControl}>
+                                        <InputLabel
+                                            htmlFor="simple-select"
+                                            className={classes.selectLabel}>
+                                            Ubicaciones
+                                        </InputLabel>
+                                        <Select
+                                        MenuProps={{
+                                            className: classes.selectMenu
+                                        }}
+                                        classes={{
+                                            select: classes.select
+                                        }}
+                                        value={roomBed.typeRoom?.id}
+                                        onChange={this.handleUbicationInput}
+                                        inputProps={{
+                                            name: "typeRoom",
+                                            id: "typeRoom",
+                                        }}
+                                        startAdornment={(
+                                            <InputAdornment
+                                                position="start"
+                                                className={classes.inputAdornment}>
+                                                <ListIcon className={classes.inputAdornmentIcon} />
+                                            </InputAdornment>
+                                        )}>
+                                        <MenuItem
+                                            classes={{
+                                            root: classes.selectMenuItem
+                                            }}
+                                            value="0">
+                                            Seleccione la ubicación...
+                                        </MenuItem>
+                                            {this.props.ubicationState?.data?.listUbication?.map((ubication, index) => {
+                                                return (
+                                                    <MenuItem
+                                                        classes={{
+                                                            root: classes.selectMenuItem,
+                                                            selected: classes.selectMenuItemSelected
+                                                        }}
+                                                        value={ubication.id}
+                                                        key={index}>
+                                                        {ubication.nameUbication}
+                                                    </MenuItem>
+                                                );
+                                            })}getActive
+                                        </Select>
+                                    </FormControl>
+                                </GridItem> */}
+
                                 {roomBed.id > 0 &&
                                     <GridItem xs={12} sm={12}>
                                         <FormControlLabel
@@ -315,7 +378,8 @@ class RoomsBedAdmin extends React.Component {
 const mapStateToProps = state => {
     return {
         roomBedState: state.roomBedState,
-        accountState: state.accountState
+        accountState: state.accountState,
+        ubicationState: state.ubicationState,
     };
 };
 
@@ -325,6 +389,7 @@ const mapDispatchToProps = dispatch => {
         setRoomBed: (roomBed) => dispatch(setRoomBed(roomBed)),
         getRoomBedById: (id) => dispatch(getRoomBedById(id)),
         getListActiveRoomBed: () => dispatch(getListActiveRoomBed()),
+        getListActiveShowSuccess: () => dispatch(getListActiveShowSuccess()),
     };
 };
 

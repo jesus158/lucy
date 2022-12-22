@@ -114,8 +114,18 @@ class ApiClient {
         return request;
     }
 
+    getListActiveRoomBed = () => {
+        this.account = sessionStorage["accountCode"];
+        let request = {
+            method: 'get'
+            , url: `${this.url}/ubication/getListActiveShow/${this.account}`
+            , headers: {
+                "Accept": "application/json;charset=UTF-8"
+            }
+        }
 
-
+        return request;
+    }
 
 }
 

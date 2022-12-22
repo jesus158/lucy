@@ -16,16 +16,16 @@ import {
    ,
    INACTIVE_ROOM_BED,
    INACTIVE_ROOM_BED_SUCCESS,
-   INACTIVE_ROOM_BED_ERROR
-
-   ,
+   INACTIVE_ROOM_BED_ERROR,
    GET_LIST_ACTIVE_ROOM_BED,
    GET_LIST_ACTIVE_ROOM_BED_SUCCESS,
-   GET_LIST_ACTIVE_ROOM_BED_ERROR
-
-   ,
-   SET_ROOM_BED
+   GET_LIST_ACTIVE_ROOM_BED_ERROR,
+   SET_ROOM_BED,
+   GET_LIST_ACTIVE_SHOW,
+   GET_LIST_ACTIVE_SHOW_SUCCESS,
+   GET_LIST_ACTIVE_SHOW_ERROR
 } from 'modules/configurations/rooms_beds/RoomsBedActions.js';
+
 
 
 const initialState = {
@@ -39,7 +39,8 @@ const initialState = {
          priority: 0,
          active: 1
       },
-      listRoomBed: []
+      listRoomBed: [],
+      listUbication: [],
    }
 };
 
@@ -170,6 +171,31 @@ const roomBedReducer = (state = initialState, action) => {
             },
          };
       case GET_LIST_ACTIVE_ROOM_BED_ERROR:
+         return {
+            ...state,
+            data: {
+               ...state.data,
+               isActivityIndicatorShown: false,
+            },
+         };
+      case GET_LIST_ACTIVE_SHOW:
+         return {
+            ...state,
+            data: {
+               ...state.data,
+               isActivityIndicatorShown: true,
+            },
+         };
+      case GET_LIST_ACTIVE_SHOW_SUCCESS:
+         return {
+            ...state,
+            data: {
+               ...state.data,
+               listUbication: action.listUbication,
+               isActivityIndicatorShown: false,
+            },
+         };
+      case GET_LIST_ACTIVE_SHOW_ERROR:
          return {
             ...state,
             data: {

@@ -16,7 +16,7 @@ import {
     getRoomBedByIdError,
     getRoomBedByIdSuccess,
     INACTIVE_ROOM_BED,
-    inactiveRoomBedError, inactiveRoomBedSuccess
+    inactiveRoomBedError, inactiveRoomBedSuccess, GET_LIST_ACTIVE_SHOW, getListActiveShowSuccess, getListActiveShowError
 } from "./RoomsBedActions";
 
 export const findRoomBed = (action$, state$) => action$.pipe(
@@ -250,6 +250,42 @@ export const activeRoomBed = (action$, state$) => action$.pipe(
             variant: "error",
             message: "Error"
         }))))
+    )
+);
+
+export const getListActiveShowService = (action$, state$) => action$.pipe(
+    ofType(GET_LIST_ACTIVE_SHOW)
+    , mergeMap(action =>
+      Observable.create(obs => {
+        axios.defaults.timeout = apiTimeout;
+        axios(RoomsBedApi.getListActiveShowService())
+          .then(response => {
+            let code = response.data.apiResponse.code;
+            if (response.status >= 200 && response.status < 300 && code === 200) {
+              let data = response.data;
+              console.log(data)
+              obs.next(getListActiveShowSuccess(data.listUbication));
+              obs.complete();
+            } else if (response.status === 401) {
+              obs.next(getListActiveShowError(response.data.apiResponse.message));
+              // obs.next(addMessage({variant:"error", message:response.data.apiResponse.message}));
+              obs.complete();
+            } else {
+              obs.next(getListActiveShowError(response.data.apiResponse.message));
+              //obs.next(addMessage({variant:"error", message:response.data.apiResponse.message}));
+              obs.complete();
+            }
+  
+          })
+          .catch(error => {
+            obs.next(getListActiveShowError(error));
+            //obs.next(addMessage({variant:"error", message:error.message}));
+            obs.complete();
+          });
+      }).pipe(
+        catchError(error => of(getListActiveShowError("Error")
+          //, addMessage({variant:"error", message:"Error"})
+        )))
     )
 );
 

@@ -20,6 +20,11 @@ export const GET_LIST_ACTIVE_ROOM_BED_ERROR = 'GET_LIST_ACTIVE_TYPE_ERROR';
 
 export const SET_ROOM_BED = 'SET_ROOM_BED';
 
+// Ubicaciones
+export const GET_LIST_ACTIVE_SHOW = 'GET_LIST_ACTIVE_SHOW';
+export const GET_LIST_ACTIVE_SHOW_SUCCESS = 'GET_LIST_ACTIVE_SHOW_SUCCESS';
+export const GET_LIST_ACTIVE_SHOW_ERROR = 'GET_LIST_ACTIVE_SHOW_ERROR';
+
 /******************************
  * Filtrar Habitaciones y Camas *
  * Filtrar Habitaciones y Camas *as
@@ -126,21 +131,16 @@ export const getListActiveRoomBedError = (error) => ({
     error
 })
 
-// /*************************************************
-//  * Recuperar listado de tipos de alertas en modo alertas *
-//  *************************************************/
+export const getListActiveShowService = () => ({
+    type: GET_LIST_ACTIVE_SHOW
+});
 
-// export const getListActiveTypeAlert = (onSuccess) => ({
-//     type: GET_LIST_ACTIVE_TYPE_ALERT,
-//     onSuccess
-// });
+export const getListActiveShowSuccess = (listUbication) => ({
+    type: GET_LIST_ACTIVE_SHOW_SUCCESS
+    , listUbication
+});
 
-// export const getListActiveTypeAlertSuccess = (listTypeAlert) => ({
-//     type: GET_LIST_ACTIVE_TYPE_ALERT_SUCCESS,
-//     listTypeAlert
-// });
-
-// export const getListActiveTypeAlertError = (error) => ({
-//     type: GET_LIST_ACTIVE_TYPE_ALERT_ERROR,
-//     error
-// });
+export const getListActiveShowError = (error) => ({
+    type: GET_LIST_ACTIVE_SHOW_ERROR
+    , error
+});

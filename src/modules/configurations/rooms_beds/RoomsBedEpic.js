@@ -253,17 +253,16 @@ export const activeRoomBed = (action$, state$) => action$.pipe(
     )
 );
 
-export const getListActiveShowService = (action$, state$) => action$.pipe(
+export const getListActiveShow = (action$, state$) => action$.pipe(
     ofType(GET_LIST_ACTIVE_SHOW)
     , mergeMap(action =>
       Observable.create(obs => {
         axios.defaults.timeout = apiTimeout;
-        axios(RoomsBedApi.getListActiveShowService())
+        axios(RoomsBedApi.getListActiveRoomBedLocations())
           .then(response => {
             let code = response.data.apiResponse.code;
             if (response.status >= 200 && response.status < 300 && code === 200) {
               let data = response.data;
-              console.log(data)
               obs.next(getListActiveShowSuccess(data.listUbication));
               obs.complete();
             } else if (response.status === 401) {

@@ -29,7 +29,14 @@ import GridItem from "components/Grid/GridItem.jsx";
 import WaitDialog from "modules/components/WaitDialog.jsx";
 import React from "react";
 import { connect } from 'react-redux';
-import { configureRoomBed, getListActiveRoomBed, getListActiveShowSuccess, getRoomBedById, setRoomBed } from 'modules/configurations/rooms_beds/RoomsBedActions.js';
+import {
+    configureRoomBed,
+    getListActiveRoomBed,
+    getListActiveShowService,
+    getListActiveShowSuccess,
+    getRoomBedById,
+    setRoomBed
+} from 'modules/configurations/rooms_beds/RoomsBedActions.js';
 
 
 const style = {
@@ -60,12 +67,12 @@ class RoomsBedAdmin extends React.Component {
 
     componentDidMount() {
         this.props.getListActiveRoomBed();
-        // this.props.getListActiveShowSuccess();
+        this.props.getListActiveShow()
     }
 
     configureRoomBed = () => {
         const { roomBed } = this.props.roomBedState.data;
-        const { ubication } = this.props.ubicationState.data;
+
         const accountId = sessionStorage["accountId"];
 
         if (roomBed.name === "") {
@@ -134,9 +141,9 @@ class RoomsBedAdmin extends React.Component {
     }
 
     handleUbicationInput = event => {
-        if(event.target.name === "typeRoom"){
-            var ubication = this.props.ubicationState.data.ubication;
-            ubication.typeRoom = {
+        if(event.target.name === "ubication"){
+            var roomBed = this.props.roomBedState.data.roomBed;
+            roomBed.ubication = {
                 id: event.target.value
             }
             this.props.setRoomBed(roomBed);
@@ -281,7 +288,7 @@ class RoomsBedAdmin extends React.Component {
                                 </GridItem>
 
                                 {/* Item ubicaciones */}
-                                {/* <GridItem xs={12} sm={12} className={classes.gridItem}>
+                                <GridItem xs={12} sm={12} className={classes.gridItem}>
                                     <FormControl
                                         fullWidth
                                         className={classes.selectFormControl}>
@@ -297,11 +304,11 @@ class RoomsBedAdmin extends React.Component {
                                         classes={{
                                             select: classes.select
                                         }}
-                                        value={roomBed.typeRoom?.id}
+                                        value={roomBed?.ubication?.id}
                                         onChange={this.handleUbicationInput}
                                         inputProps={{
-                                            name: "typeRoom",
-                                            id: "typeRoom",
+                                            name: "ubication",
+                                            id: "ubication",
                                         }}
                                         startAdornment={(
                                             <InputAdornment
@@ -317,7 +324,7 @@ class RoomsBedAdmin extends React.Component {
                                             value="0">
                                             Seleccione la ubicación...
                                         </MenuItem>
-                                            {this.props.ubicationState?.data?.listUbication?.map((ubication, index) => {
+                                            {this.props.roomBedState?.data?.listUbication?.map((ubication, index) => {
                                                 return (
                                                     <MenuItem
                                                         classes={{
@@ -329,10 +336,10 @@ class RoomsBedAdmin extends React.Component {
                                                         {ubication.nameUbication}
                                                     </MenuItem>
                                                 );
-                                            })}getActive
+                                            })}
                                         </Select>
                                     </FormControl>
-                                </GridItem> */}
+                                </GridItem>
 
                                 {roomBed.id > 0 &&
                                     <GridItem xs={12} sm={12}>
@@ -389,6 +396,7 @@ const mapDispatchToProps = dispatch => {
         setRoomBed: (roomBed) => dispatch(setRoomBed(roomBed)),
         getRoomBedById: (id) => dispatch(getRoomBedById(id)),
         getListActiveRoomBed: () => dispatch(getListActiveRoomBed()),
+        getListActiveShow: () => dispatch(getListActiveShowService()),
         getListActiveShowSuccess: () => dispatch(getListActiveShowSuccess()),
     };
 };

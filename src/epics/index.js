@@ -29,7 +29,7 @@ import { configureTypeAlert, findTypeAlert, getListActiveTypeAlert, getTypeAlert
 import {
     activeRoomBed,
     configureRoomBed,
-    findRoomBed,
+    findRoomBed, getListActiveShow,
     getRoomBedById,
     inactiveRoomBed
 } from "../modules/configurations/rooms_beds/RoomsBedEpic"; //Habitaciones - camas
@@ -86,6 +86,7 @@ export const rootEpic = combineEpics(
     , inactiveAsset
     , getListActiveAsset
     , getListTypeAsset
+    , getListActiveShow
 
     , configureRoomBed
     , findRoomBed

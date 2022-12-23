@@ -1,11 +1,13 @@
 import {
     LUCY_CONFIGURATION_SERVICE
 } from 'modules/utils/ApiUtil.js'
+import {LUCY_LOCATION_SERVICE} from "../../utils/ApiUtil";
 
 class ApiClient {
 
     constructor() {
         this.url = LUCY_CONFIGURATION_SERVICE;
+        this.locationUrl = LUCY_LOCATION_SERVICE;
     }
 
     filterRoomBed = (apiPaginationAction, apiPaginationCurrentPage, apiPaginationDirection, apiPaginationLimit, apiPaginationOrderColumn, apiPaginationMoveToPage, apiPaginationFilter) => {
@@ -114,11 +116,11 @@ class ApiClient {
         return request;
     }
 
-    getListActiveRoomBed = () => {
+    getListActiveRoomBedLocations = () => {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'get'
-            , url: `${this.url}/ubication/getListActiveShow/${this.account}`
+            , url: `${this.locationUrl}/ubication/getListActiveShow/${this.account}`
             , headers: {
                 "Accept": "application/json;charset=UTF-8"
             }

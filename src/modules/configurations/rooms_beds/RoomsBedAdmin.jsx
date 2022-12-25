@@ -295,7 +295,7 @@ class RoomsBedAdmin extends React.Component {
                                         <InputLabel
                                             htmlFor="simple-select"
                                             className={classes.selectLabel}>
-                                            Ubicaciones
+                                            Ubicación
                                         </InputLabel>
                                         <Select
                                         MenuProps={{

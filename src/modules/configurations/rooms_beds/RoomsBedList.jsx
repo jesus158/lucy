@@ -88,7 +88,8 @@ class RoomBedList extends React.Component {
             name: roomBed.name,
             description: roomBed.description,
             typeRoom: roomBed.typeRoom,
-            active: roomBed.active
+            active: roomBed.active,
+            ubication: roomBed.ubication,
         });
         this.setState({
             toAdmin: true

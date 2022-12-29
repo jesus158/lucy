@@ -7,13 +7,16 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import NotesOutlined from "@material-ui/icons/NotesOutlined";
+
 // @material-ui/icons
 import ListIcon from '@material-ui/icons/List';
 import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
 import Check from "@material-ui/icons/Check";
 import SaveIcon from '@material-ui/icons/Save';
 import ViewList from "@material-ui/icons/ViewList";
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import NotesOutlined from "@material-ui/icons/NotesOutlined";
+
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle.jsx";
 import AlertInfo from "components/AlertInfo/AlertInfo.jsx";
 import Card from "components/Card/Card.jsx";
@@ -220,6 +223,36 @@ class IdealTimeAdmin extends React.Component {
                                         }}
                                     />
                                 </GridItem>
+
+                                <GridItem xs={12} sm={12} className={classes.gridItem}>
+                                    <FormControl fullWidth className={classes.selectFormControl}>
+                                        
+                                        <CustomInput
+                                            labelText={
+                                                <span>
+                                                    Tiempo Ideal
+                                                </span>
+                                            }
+                                            id="time"
+                                            formControlProps={{
+                                                fullWidth: true
+                                            }}
+                                            inputProps={{
+                                                name: "time",
+                                                id: "time",
+                                                value: idealTime.time,
+                                                onChange: event => this.handleInputText(event),
+                                                startAdornment: (
+                                                    <InputAdornment
+                                                        position="start"
+                                                        className={classes.inputAdornment}>
+                                                        <AccessTimeIcon className={classes.inputAdornmentIcon} />
+                                                    </InputAdornment>
+                                                )
+                                            }}/>
+                                    </FormControl>
+                                </GridItem>
+
                                 
                                 <GridItem xs={12} sm={12} className={classes.gridItem}>
                                     <FormControl

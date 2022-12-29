@@ -42,7 +42,7 @@ const rows = [
     { id: 2, numeric: false, disablePadding: false, isSorted: true, label: 'Nombre' },
     { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Descripción' },
     { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Categoría' },
-    { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Ubicación' },
+    { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Tiempo' },
     { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Estado' },
     { id: 0, numeric: false, disablePadding: true, isSorted: false, label: '' },
 ];
@@ -200,10 +200,10 @@ class IdealTimeList extends React.Component {
                                                 {idealTime.description}
                                             </TableCell>
                                             <TableCell className="text-column">
-                                                {idealTime.idealTimeType?.name}
+                                                {idealTime.typeIdealTime?.name}
                                             </TableCell>
                                             <TableCell className="text-column">
-                                                {idealTime.ubication?.nameUbication}
+                                                {idealTime.time}
                                             </TableCell>
                                             <TableCell className="text-column">
                                                 {idealTime.active === 1 ? (

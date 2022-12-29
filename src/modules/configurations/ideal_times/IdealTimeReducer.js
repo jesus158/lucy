@@ -1,38 +1,38 @@
 import {
-   FIND_ROOM_BED_LIST,
-   FIND_ROOM_BED_LIST_SUCCESS,
-   FIND_ROOM_BED_LIST_ERROR
+   FIND_IDEAL_TIME_LIST,
+   FIND_IDEAL_TIME_LIST_SUCCESS,
+   FIND_IDEAL_TIME_LIST_ERROR
 
    ,
-   CONFIGURE_ROOM_BED,
-   CONFIGURE_ROOM_BED_SUCCESS,
-   CONFIGURE_ROOM_BED_ERROR
+   CONFIGURE_IDEAL_TIME,
+   CONFIGURE_IDEAL_TIME_SUCCESS,
+   CONFIGURE_IDEAL_TIME_ERROR
 
    ,
-   GET_ROOM_BED_BY_ID,
-   GET_ROOM_BED_BY_ID_SUCCESS,
-   GET_ROOM_BED_BY_ID_ERROR
+   GET_IDEAL_TIME_BY_ID,
+   GET_IDEAL_TIME_BY_ID_SUCCESS,
+   GET_IDEAL_TIME_BY_ID_ERROR
 
    ,
-   INACTIVE_ROOM_BED,
-   INACTIVE_ROOM_BED_SUCCESS,
-   INACTIVE_ROOM_BED_ERROR,
-   GET_LIST_ACTIVE_ROOM_BED,
-   GET_LIST_ACTIVE_ROOM_BED_SUCCESS,
-   GET_LIST_ACTIVE_ROOM_BED_ERROR,
-   SET_ROOM_BED,
+   INACTIVE_IDEAL_TIME,
+   INACTIVE_IDEAL_TIME_SUCCESS,
+   INACTIVE_IDEAL_TIME_ERROR,
+   GET_LIST_ACTIVE_IDEAL_TIME,
+   GET_LIST_ACTIVE_IDEAL_TIME_SUCCESS,
+   GET_LIST_ACTIVE_IDEAL_TIME_ERROR,
+   SET_IDEAL_TIME,
    GET_LIST_ACTIVE_SHOW,
    GET_LIST_ACTIVE_SHOW_SUCCESS,
    GET_LIST_ACTIVE_SHOW_ERROR
-} from 'modules/configurations/rooms_beds/RoomsBedActions.js';
+} from './IdealTimeActions';
 
 
 
 const initialState = {
    data: {
       isActivityIndicatorShown: false,
-      listResultSetRoomBed: {},
-      roomBed: {
+      listResultSetIdealTime: {},
+      idealTime: {
          id: 0,
          name: "",
          description: "",
@@ -42,14 +42,14 @@ const initialState = {
             id: 0,
          }*/
       },
-      listRoomBed: [],
+      listIdealTime: [],
       listUbication: [],
    }
 };
 
-const roomBedReducer = (state = initialState, action) => {
+const idealTimeReducer = (state = initialState, action) => {
    switch (action.type) {
-      case FIND_ROOM_BED_LIST:
+      case FIND_IDEAL_TIME_LIST:
          return {
             ...state,
             data: {
@@ -57,16 +57,16 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case FIND_ROOM_BED_LIST_SUCCESS:
+      case FIND_IDEAL_TIME_LIST_SUCCESS:
          return {
             ...state,
             data: {
                ...state.data,
-               listResultSetRoomBed: action.listResultSetRoomBed,
+               listResultSetIdealTime: action.listResultSetIdealTime,
                isActivityIndicatorShown: false,
             },
          };
-      case FIND_ROOM_BED_LIST_ERROR:
+      case FIND_IDEAL_TIME_LIST_ERROR:
          return {
             ...state,
             data: {
@@ -75,7 +75,7 @@ const roomBedReducer = (state = initialState, action) => {
             },
          };
 
-      case CONFIGURE_ROOM_BED:
+      case CONFIGURE_IDEAL_TIME:
          return {
             ...state,
             data: {
@@ -83,7 +83,7 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case CONFIGURE_ROOM_BED_SUCCESS:
+      case CONFIGURE_IDEAL_TIME_SUCCESS:
          return {
             ...state,
             data: {
@@ -91,7 +91,7 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case CONFIGURE_ROOM_BED_ERROR:
+      case CONFIGURE_IDEAL_TIME_ERROR:
          return {
             ...state,
             data: {
@@ -99,7 +99,7 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case GET_ROOM_BED_BY_ID:
+      case GET_IDEAL_TIME_BY_ID:
          return {
             ...state,
             data: {
@@ -107,16 +107,16 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case GET_ROOM_BED_BY_ID_SUCCESS:
+      case GET_IDEAL_TIME_BY_ID_SUCCESS:
          return {
             ...state,
             data: {
                ...state.data,
-               roomBed: action.roomBed,
+               idealTime: action.idealTime,
                isActivityIndicatorShown: false,
             },
          };
-      case GET_ROOM_BED_BY_ID_ERROR:
+      case GET_IDEAL_TIME_BY_ID_ERROR:
          return {
             ...state,
             data: {
@@ -124,7 +124,7 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case INACTIVE_ROOM_BED:
+      case INACTIVE_IDEAL_TIME:
          return {
             ...state,
             data: {
@@ -132,7 +132,7 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case INACTIVE_ROOM_BED_SUCCESS:
+      case INACTIVE_IDEAL_TIME_SUCCESS:
          return {
             ...state,
             data: {
@@ -140,7 +140,7 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case INACTIVE_ROOM_BED_ERROR:
+      case INACTIVE_IDEAL_TIME_ERROR:
          return {
             ...state,
             data: {
@@ -148,15 +148,15 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: false,
             },
          };
-      case SET_ROOM_BED:
+      case SET_IDEAL_TIME:
          return {
             ...state,
             data: {
                ...state.data,
-               roomBed: action.roomBed,
+               idealTime: action.idealTime,
             },
          };
-      case GET_LIST_ACTIVE_ROOM_BED:
+      case GET_LIST_ACTIVE_IDEAL_TIME:
          return {
             ...state,
             data: {
@@ -164,16 +164,16 @@ const roomBedReducer = (state = initialState, action) => {
                isActivityIndicatorShown: true,
             },
          };
-      case GET_LIST_ACTIVE_ROOM_BED_SUCCESS:
+      case GET_LIST_ACTIVE_IDEAL_TIME_SUCCESS:
          return {
             ...state,
             data: {
                ...state.data,
-               listRoomBed: action.data.listTypeRoom,
+               listTypeIdealTime: action.data.listTypeIdealTime,
                isActivityIndicatorShown: false,
             },
          };
-      case GET_LIST_ACTIVE_ROOM_BED_ERROR:
+      case GET_LIST_ACTIVE_IDEAL_TIME_ERROR:
          return {
             ...state,
             data: {
@@ -211,4 +211,4 @@ const roomBedReducer = (state = initialState, action) => {
    }
 };
 
-export default roomBedReducer;
+export default idealTimeReducer;

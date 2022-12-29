@@ -4,41 +4,42 @@ import { apiTimeout } from 'modules/utils/ApiUtil';
 import { ofType } from 'redux-observable';
 import { Observable, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
-import RoomsBedApi from "modules/configurations/rooms_beds/RoomsBedApiClient.js";
-import {
-    CONFIGURE_ROOM_BED,
-    configureRoomBedError,
-    configureRoomBedSuccess,
-    FIND_ROOM_BED_LIST,
-    findRoomBedListError,
-    findRoomBedListSuccess, GET_LIST_ACTIVE_ROOM_BED,
-    GET_ROOM_BED_BY_ID, getListActiveRoomBed, getListActiveRoomBedError, getListActiveRoomBedSuccess,
-    getRoomBedByIdError,
-    getRoomBedByIdSuccess,
-    INACTIVE_ROOM_BED,
-    inactiveRoomBedError, inactiveRoomBedSuccess, GET_LIST_ACTIVE_SHOW, getListActiveShowSuccess, getListActiveShowError
-} from "./RoomsBedActions";
 
-export const findRoomBed = (action$, state$) => action$.pipe(
-        ofType(FIND_ROOM_BED_LIST), mergeMap(action =>
+import {
+    CONFIGURE_IDEAL_TIME,
+    configureIdealTimeError,
+    configureIdealTimeSuccess,
+    FIND_IDEAL_TIME_LIST,
+    findIdealTimeListError,
+    findIdealTimeListSuccess, GET_LIST_ACTIVE_IDEAL_TIME,
+    GET_IDEAL_TIME_BY_ID, getListActiveIdealTime, getListActiveIdealTimeError, getListActiveIdealTimeSuccess,
+    getIdealTimeByIdError,
+    getIdealTimeByIdSuccess,
+    INACTIVE_IDEAL_TIME,
+    inactiveIdealTimeError, inactiveIdealTimeSuccess, GET_LIST_ACTIVE_SHOW, getListActiveShowSuccess, getListActiveShowError
+} from "./IdealTimeActions";
+import IdealTimeApi from "./IdealTimeApiClient";
+
+export const findIdealTime = (action$, state$) => action$.pipe(
+        ofType(FIND_IDEAL_TIME_LIST), mergeMap(action =>
             Observable.create(obs => {
                 axios.defaults.timeout = apiTimeout;
-                axios(RoomsBedApi.filterRoomBed(action.apiPaginationAction, action.apiPaginationCurrentPage, action.apiPaginationDirection, action.apiPaginationLimit, action.apiPaginationOrderColumn, action.apiPaginationMoveToPage, action.apiPaginationFilter))
+                axios(IdealTimeApi.filterIdealTime(action.apiPaginationAction, action.apiPaginationCurrentPage, action.apiPaginationDirection, action.apiPaginationLimit, action.apiPaginationOrderColumn, action.apiPaginationMoveToPage, action.apiPaginationFilter))
                     .then(response => {
                         let code = response.data.apiResponse.code;
                         if (response.status >= 200 && response.status < 300 && code === 200) {
                             let data = response.data;
-                            obs.next(findRoomBedListSuccess(data));
+                            obs.next(findIdealTimeListSuccess(data));
                             obs.complete();
                         } else if (response.status === 401) {
-                            obs.next(findRoomBedListError(response.data.apiResponse.message));
+                            obs.next(findIdealTimeListError(response.data.apiResponse.message));
                             obs.next(addMessage({
                                 variant: "error",
                                 message: response.data.apiResponse.message
                             }));
                             obs.complete();
                         } else {
-                            obs.next(findRoomBedListError(response.data.apiResponse.message));
+                            obs.next(findIdealTimeListError(response.data.apiResponse.message));
                             obs.next(addMessage({
                                 variant: "error",
                                 message: response.data.apiResponse.message
@@ -47,7 +48,7 @@ export const findRoomBed = (action$, state$) => action$.pipe(
                         }
                     })
                     .catch(error => {
-                        obs.next(findRoomBedListError(error));
+                        obs.next(findIdealTimeListError(error));
                         obs.next(addMessage({
                             variant: "error",
                             message: error.message
@@ -55,7 +56,7 @@ export const findRoomBed = (action$, state$) => action$.pipe(
                         obs.complete();
                     });
             }).pipe(
-                catchError(error => of(findRoomBedListError("Error"), console.warn("ERROR OBSERVABLE"), addMessage({
+                catchError(error => of(findIdealTimeListError("Error"), console.warn("ERROR OBSERVABLE"), addMessage({
                     variant: "error",
                     message: "Error"
                 }))))
@@ -63,15 +64,15 @@ export const findRoomBed = (action$, state$) => action$.pipe(
     );
 
 
-export const configureRoomBed = (action$, state$) => action$.pipe(
-    ofType(CONFIGURE_ROOM_BED), mergeMap(action =>
+export const configureIdealTime = (action$, state$) => action$.pipe(
+    ofType(CONFIGURE_IDEAL_TIME), mergeMap(action =>
         Observable.create(obs => {
             axios.defaults.timeout = apiTimeout;
-            axios(RoomsBedApi.configureRoomBed(action.roomBed))
+            axios(IdealTimeApi.configureIdealTime(action.idealTime))
                 .then(response => {
                     let code = response.data.apiResponse.code;
                     if (response.status >= 200 && response.status < 300 && code === 200) {
-                        obs.next(configureRoomBedSuccess());
+                        obs.next(configureIdealTimeSuccess());
                         obs.next(addMessage({
                             variant: "success",
                             message: response.data.apiResponse.message
@@ -79,7 +80,7 @@ export const configureRoomBed = (action$, state$) => action$.pipe(
                         obs.complete();
                         action.onSuccess("OK"); //Callback de suceso
                     } else if (response.status === 401) {
-                        obs.next(configureRoomBedError(""));
+                        obs.next(configureIdealTimeError(""));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
@@ -87,7 +88,7 @@ export const configureRoomBed = (action$, state$) => action$.pipe(
                         obs.complete();
                         action.onSuccess("ERROR");
                     } else {
-                        obs.next(configureRoomBedError(response.data.message));
+                        obs.next(configureIdealTimeError(response.data.message));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
@@ -98,7 +99,7 @@ export const configureRoomBed = (action$, state$) => action$.pipe(
 
                 })
                 .catch(error => {
-                    obs.next(configureRoomBedError(error));
+                    obs.next(configureIdealTimeError(error));
                     obs.next(addMessage({
                         variant: "error",
                         message: error.message
@@ -106,33 +107,33 @@ export const configureRoomBed = (action$, state$) => action$.pipe(
                     obs.complete();
                     action.onSuccess("ERROR");
                 });
-        }).pipe(catchError(error => of (configureRoomBedError(error), addMessage({
+        }).pipe(catchError(error => of (configureIdealTimeError(error), addMessage({
             variant: "error",
             message: "Error"
         }))))
     )
 );
 
-export const getRoomBedById = (action$, state$) => action$.pipe(
-    ofType(GET_ROOM_BED_BY_ID), mergeMap(action =>
+export const getIdealTimeById = (action$, state$) => action$.pipe(
+    ofType(GET_IDEAL_TIME_BY_ID), mergeMap(action =>
         Observable.create(obs => {
             axios.defaults.timeout = apiTimeout;
-            axios(RoomsBedApi.getRoomBedById(action.id))
+            axios(IdealTimeApi.getIdealTimeById(action.id))
                 .then(response => {
                     let code = response.data.apiResponse.code;
                     if (response.status >= 200 && response.status < 300 && code === 200) {
                         let data = response.data;
-                        obs.next(getRoomBedByIdSuccess(data.roomBed));
+                        obs.next(getIdealTimeByIdSuccess(data.idealTime));
                         obs.complete();
                     } else if (response.status === 401) {
-                        obs.next(getRoomBedByIdError(""));
+                        obs.next(getIdealTimeByIdError(""));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
                         }));
                         obs.complete();
                     } else {
-                        obs.next(getRoomBedByIdError(response.data.message));
+                        obs.next(getIdealTimeByIdError(response.data.message));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
@@ -142,29 +143,29 @@ export const getRoomBedById = (action$, state$) => action$.pipe(
 
                 })
                 .catch(error => {
-                    obs.next(getRoomBedByIdError(error));
+                    obs.next(getIdealTimeByIdError(error));
                     obs.next(addMessage({
                         variant: "error",
                         message: error.message
                     }));
                     obs.complete();
                 });
-        }).pipe(catchError(error => of (getRoomBedByIdError(error), addMessage({
+        }).pipe(catchError(error => of (getIdealTimeByIdError(error), addMessage({
             variant: "error",
             message: "Error"
         }))))
     )
 );
 
-export const inactiveRoomBed = (action$, state$) => action$.pipe(
-    ofType(INACTIVE_ROOM_BED), mergeMap(action =>
+export const inactiveIdealTime = (action$, state$) => action$.pipe(
+    ofType(INACTIVE_IDEAL_TIME), mergeMap(action =>
         Observable.create(obs => {
             axios.defaults.timeout = apiTimeout;
-            axios(RoomsBedApi.inactiveTypeRoomBed(action.id))
+            axios(IdealTimeApi.inactiveTypeIdealTime(action.id))
                 .then(response => {
                     let code = response.data.apiResponse.code;
                     if (response.status >= 200 && response.status < 300 && code === 200) {
-                        obs.next(inactiveRoomBedSuccess());
+                        obs.next(inactiveIdealTimeSuccess());
                         obs.next(addMessage({
                             variant: "success",
                             message: response.data.apiResponse.message
@@ -172,7 +173,7 @@ export const inactiveRoomBed = (action$, state$) => action$.pipe(
                         obs.complete();
                         action.onSuccess("OK"); //Callback de suceso
                     } else if (response.status === 401) {
-                        obs.next(inactiveRoomBedError(response.data.apiResponse.message));
+                        obs.next(inactiveIdealTimeError(response.data.apiResponse.message));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
@@ -180,7 +181,7 @@ export const inactiveRoomBed = (action$, state$) => action$.pipe(
                         obs.complete();
                         action.onSuccess("ERROR");
                     } else {
-                        obs.next(inactiveRoomBedError(response.data.apiResponse.message));
+                        obs.next(inactiveIdealTimeError(response.data.apiResponse.message));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
@@ -191,7 +192,7 @@ export const inactiveRoomBed = (action$, state$) => action$.pipe(
 
                 })
                 .catch(error => {
-                    obs.next(inactiveRoomBedError(error));
+                    obs.next(inactiveIdealTimeError(error));
                     obs.next(addMessage({
                         variant: "error",
                         message: error.message
@@ -199,37 +200,37 @@ export const inactiveRoomBed = (action$, state$) => action$.pipe(
                     obs.complete();
                     action.onSuccess("ERROR");
                 });
-        }).pipe(catchError(error => of (inactiveRoomBedError(error), addMessage({
+        }).pipe(catchError(error => of (inactiveIdealTimeError(error), addMessage({
             variant: "error",
             message: "Error"
         }))))
     )
 );
 
-export const activeRoomBed = (action$, state$) => action$.pipe(
-    ofType(GET_LIST_ACTIVE_ROOM_BED), mergeMap(action =>
+export const activeIdealTime = (action$, state$) => action$.pipe(
+    ofType(GET_LIST_ACTIVE_IDEAL_TIME), mergeMap(action =>
         Observable.create(obs => {
             axios.defaults.timeout = apiTimeout;
-            axios(RoomsBedApi.getListActiveRoomBed(action.id))
+            axios(IdealTimeApi.getListActiveIdealTime(action.id))
                 .then(response => {
                     let code = response.data.apiResponse.code;
                     if (response.status >= 200 && response.status < 300 && code === 200) {
                         let data = response.data;
-                        obs.next(getListActiveRoomBedSuccess(data));
+                        obs.next(getListActiveIdealTimeSuccess(data));
                         obs.next(addMessage({
                             variant: "success",
                             message: response.data.apiResponse.message
                         }));
                         obs.complete();
                     } else if (response.status === 401) {
-                        obs.next(getListActiveRoomBedError(response.data.apiResponse.message));
+                        obs.next(getListActiveIdealTimeError(response.data.apiResponse.message));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
                         }));
                         obs.complete();
                     } else {
-                        obs.next(getListActiveRoomBedError(response.data.apiResponse.message));
+                        obs.next(getListActiveIdealTimeError(response.data.apiResponse.message));
                         obs.next(addMessage({
                             variant: "error",
                             message: response.data.apiResponse.message
@@ -239,14 +240,14 @@ export const activeRoomBed = (action$, state$) => action$.pipe(
                     }
                 })
                 .catch(error => {
-                    obs.next(getListActiveRoomBedError(error));
+                    obs.next(getListActiveIdealTimeError(error));
                     obs.next(addMessage({
                         variant: "error",
                         message: error.message
                     }));
                     obs.complete();
                 });
-        }).pipe(catchError(error => of (getListActiveRoomBedError(error), addMessage({
+        }).pipe(catchError(error => of (getListActiveIdealTimeError(error), addMessage({
             variant: "error",
             message: "Error"
         }))))
@@ -258,7 +259,7 @@ export const getListActiveShow = (action$, state$) => action$.pipe(
     , mergeMap(action =>
       Observable.create(obs => {
         axios.defaults.timeout = apiTimeout;
-        axios(RoomsBedApi.getListActiveRoomBedLocations())
+        axios(IdealTimeApi.getListActiveIdealTimeLocations())
           .then(response => {
             let code = response.data.apiResponse.code;
             if (response.status >= 200 && response.status < 300 && code === 200) {

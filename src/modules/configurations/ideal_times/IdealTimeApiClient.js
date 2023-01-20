@@ -10,7 +10,7 @@ class ApiClient {
         this.locationUrl = LUCY_LOCATION_SERVICE;
     }
 
-    filterRoomBed = (apiPaginationAction, apiPaginationCurrentPage, apiPaginationDirection, apiPaginationLimit, apiPaginationOrderColumn, apiPaginationMoveToPage, apiPaginationFilter) => {
+    filterIdealTime = (apiPaginationAction, apiPaginationCurrentPage, apiPaginationDirection, apiPaginationLimit, apiPaginationOrderColumn, apiPaginationMoveToPage, apiPaginationFilter) => {
         this.account = sessionStorage["accountCode"];
         var uriFilter = '';
 
@@ -46,7 +46,7 @@ class ApiClient {
 
         let request = {
             method: 'get',
-            url: `${this.url}/room/getByFilter/${this.account}` + encodeURI(uriFilter),
+            url: `${this.url}/idealTime/getByFilter/${this.account}` + encodeURI(uriFilter),
             headers: {
                 "Accept": "application/json;charset=UTF-8"
             }
@@ -56,15 +56,15 @@ class ApiClient {
         return request;
     }
 
-    //add data to roomsBed json
+
     
 
-    configureRoomBed = (roomBed) => {
+    configureIdealTime = (idealTime) => {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'post',
-            url: `${this.url}/room/createUpdate/${this.account}`,
-            data: roomBed,
+            url: `${this.url}/idealTime/createUpdate/${this.account}`,
+            data: idealTime,
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Accept": "application/json;charset=UTF-8"
@@ -74,11 +74,11 @@ class ApiClient {
         return request;
     }
 
-    getRoomBedById = (id) => {
+    getIdealTimeById = (id) => {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'get',
-            url: `${this.url}/typeRoom/getById/${this.account}?idTypeAlert=${id}`,
+            url: `${this.url}/typeIdealTime/getById/${this.account}?idTypeAlert=${id}`,
             headers: {
                 "Accept": "application/json;charset=UTF-8"
             }
@@ -87,11 +87,11 @@ class ApiClient {
         return request;
     }
 
-    inactiveTypeRoomBed = (id) => {
+    inactiveTypeIdealTime = (id) => {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'delete',
-            url: `${this.url}/room/delete/${this.account}?idRoom=${id}`,
+            url: `${this.url}/idealTime/delete/${this.account}?idIdealTime=${id}`,
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Accept": "application/json;charset=UTF-8"
@@ -102,11 +102,11 @@ class ApiClient {
     }
 
     // Obtiene las categorías Habitación o Cama
-    getListActiveRoomBed = () => {
+    getListActiveIdealTime = () => {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'get',
-            url: `${this.url}/typeRoom/getListActive/${this.account}`,
+            url: `${this.url}/typeIdealTime/getListActive/${this.account}`,
             headers: {
                 "Content-Type": "application/json;charset=UTF-8",
                 "Accept": "application/json;charset=UTF-8"
@@ -116,7 +116,7 @@ class ApiClient {
         return request;
     }
 
-    getListActiveRoomBedLocations = () => {
+    getListActiveIdealTimeLocations = () => {
         this.account = sessionStorage["accountCode"];
         let request = {
             method: 'get'
@@ -131,5 +131,5 @@ class ApiClient {
 
 }
 
-const RoomBedApi = new ApiClient();
-export default RoomBedApi;
+const IdealTimeApi = new ApiClient();
+export default IdealTimeApi;

@@ -32,24 +32,22 @@ import { connect } from 'react-redux';
 import { Redirect } from "react-router-dom";
 // module Components
 import {
-    findRoomBed,
-    setRoomBed,
-    inactiveRoomBed,
-
-
-} from 'modules/configurations/rooms_beds/RoomsBedActions';
+    findIdealTime,
+    setIdealTime,
+    inactiveIdealTime,
+} from './IdealTimeActions';
 
 
 const rows = [
     { id: 2, numeric: false, disablePadding: false, isSorted: true, label: 'Nombre' },
     { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Descripción' },
     { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Categoría' },
-    { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Ubicación' },
+    { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Tiempo' },
     { id: 0, numeric: false, disablePadding: false, isSorted: false, label: 'Estado' },
     { id: 0, numeric: false, disablePadding: true, isSorted: false, label: '' },
 ];
 
-class RoomBedList extends React.Component {
+class IdealTimeList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -66,7 +64,7 @@ class RoomBedList extends React.Component {
     }
 
     componentDidMount = () => {
-        this.props.findRoomBedList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
+        this.props.findIdealTimeList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
     }
 
 
@@ -78,22 +76,24 @@ class RoomBedList extends React.Component {
             order = 0;
         }
 
-        this.props.findRoomBedList(undefined, this.state.page, order, this.state.rowsPerPage, orderBy, this.state.page, this.state.filter.name);
+        this.props.findIdealTimeList(undefined, this.state.page, order, this.state.rowsPerPage, orderBy, this.state.page, this.state.filter.name);
         this.setState({ order, orderBy });
     };
 
-    handleEdit = (roomBed) => {
-        this.props.setRoomBed({
-            id: roomBed.id,
-            name: roomBed.name,
-            description: roomBed.description,
-            typeRoom: roomBed.typeRoom,
-            active: roomBed.active,
-            ubication: roomBed.ubication,
+    handleEdit = (idealTime) => {
+
+        this.props.setIdealTime({
+            id: idealTime.id,
+            name: idealTime.name,
+            description: idealTime.description,
+            typeIdealTime: idealTime.typeIdealTime,
+            active: idealTime.active,
+            ubication: idealTime.ubication,
+            time: idealTime.time
         });
         this.setState({
             toAdmin: true
-            , accountId: roomBed.id
+            , accountId: idealTime.id
         });
     }
 
@@ -103,7 +103,7 @@ class RoomBedList extends React.Component {
             alertInactive: (
                 <Dialog
                     open={true}
-                    onClose={this.hideRoomBedInactive}
+                    onClose={this.hideIdealTimeInactive}
                     aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">{nameAccountSelected}</DialogTitle>
                     <DialogContent>
@@ -112,13 +112,13 @@ class RoomBedList extends React.Component {
                     </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.hideRoomBedInactive} color="danger">
+                        <Button onClick={this.hideIdealTimeInactive} color="danger">
                             Cancelar
                     </Button>
                         <Button onClick={() => {
-                            this.hideRoomBedInactive();
-                            this.props.inactiveRoomBed(id, success => {
-                                this.props.findRoomBedList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
+                            this.hideIdealTimeInactive();
+                            this.props.inactiveIdealTime(id, success => {
+                                this.props.findIdealTimeList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
                             });
                         }} color="info">
                             Aceptar
@@ -129,7 +129,7 @@ class RoomBedList extends React.Component {
         });
     }
 
-    hideRoomBedInactive = () => {
+    hideIdealTimeInactive = () => {
         this.setState({
             alertInactive: null
         });
@@ -137,39 +137,39 @@ class RoomBedList extends React.Component {
 
     onFilter = filter => {
         this.setState({ filter });
-        this.props.findRoomBedList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, filter.name);
+        this.props.findIdealTimeList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, this.state.page, filter.name);
     }
 
     handleChangePage = (page) => {
-        this.props.findRoomBedList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, page, this.state.filter.name);
+        this.props.findIdealTimeList(undefined, this.state.page, this.state.order, this.state.rowsPerPage, this.state.orderBy, page, this.state.filter.name);
         this.setState({ page });
     };
 
     handleChangeRowsPerPage = rowsPerPage => {
-        this.props.findRoomBedList(undefined, this.state.page, this.state.order, rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
+        this.props.findIdealTimeList(undefined, this.state.page, this.state.order, rowsPerPage, this.state.orderBy, this.state.page, this.state.filter.name);
         this.setState({ rowsPerPage });
     };
 
     render() {
         const { classes } = this.props;
 
-        const { isActivityIndicatorShown } = this.props.roomBedState?.data;
+        const { isActivityIndicatorShown } = this.props.idealTimeState?.data;
 
 
-        let listRoom = this.props.roomBedState?.data?.listResultSetRoomBed?.listRoom;
-        let apiPagination = this.props.roomBedState?.data?.listResultSetRoomBed?.apiPagination;
+        let listIdealTime = this.props.idealTimeState?.data?.listResultSetIdealTime?.listIdealTime;
+        let apiPagination = this.props.idealTimeState?.data?.listResultSetIdealTime?.apiPagination;
         const { order, orderBy } = this.state;
 
-        if (listRoom === undefined || listRoom === null) {
-            listRoom = [];
+        if (listIdealTime === undefined || listIdealTime === null) {
+            listIdealTime = [];
         }
         if (this.state.toAdmin === true) {
-            return <Redirect to={'/admin/admin-rooms-beds/?code=' + this.state.accountId} />
+            return <Redirect to={'/admin/admin-ideal-times/?code=' + this.state.accountId} />
         }
 
         return (
             <GridItem xs={12}>
-                {this.props.roomBedState?.data?.isActivityIndicatorShown ?
+                {this.props.idealTimeState?.data?.isActivityIndicatorShown ?
                     <WaitDialog text={"Cargando..."} />
                     : null
                 }
@@ -179,10 +179,10 @@ class RoomBedList extends React.Component {
                         <CardIcon color="info">
                             <ViewList />
                         </CardIcon>
-                        <h4 className={classes.cardIconTitle}>Habitaciones/Camas</h4>
+                        <h4 className={classes.cardIconTitle}>Tiempos ideales</h4>
                     </CardHeader>
                     <CardBody style={{ overflow: "auto" }}>
-                        <Filter onFilter={this.onFilter} name={true} nameText={"Filtrar"} placeholder={"Habitación/cama"} />
+                        <Filter onFilter={this.onFilter} name={true} nameText={"Filtrar"} placeholder={"Tiempo ideal"} />
                         <Table className={classes.table} aria-labelledby="tableTitle">
                             <EnhancedTableHead
                                 onRequestSort={this.handleRequestSort}
@@ -192,21 +192,21 @@ class RoomBedList extends React.Component {
                                 rows={rows}
                             />
                             <TableBody>
-                                {listRoom.map((roomBed, key) => {
+                                {listIdealTime.map((idealTime, key) => {
                                     return (
                                         <TableRow tabIndex={-1} key={`TableRow-${key}`} style={{ background: key % 2 === 0 ? ROW_GRAY : ROW_WHITE }}>
-                                            <TableCell align="left"><Link color="inherit" onClick={() => { this.handleEdit(roomBed) }} component="button" size="sm" className={classes.marginRight}>{roomBed.name}</Link></TableCell>
+                                            <TableCell align="left"><Link color="inherit" onClick={() => { this.handleEdit(idealTime) }} component="button" size="sm" className={classes.marginRight}>{idealTime.name}</Link></TableCell>
                                             <TableCell className="text-column">
-                                                {roomBed.description}
+                                                {idealTime.description}
                                             </TableCell>
                                             <TableCell className="text-column">
-                                                {roomBed.typeRoom.name}
+                                                {idealTime.typeIdealTime?.name}
                                             </TableCell>
                                             <TableCell className="text-column">
-                                                {roomBed.ubication.nameUbication}
+                                                {idealTime.time}
                                             </TableCell>
                                             <TableCell className="text-column">
-                                                {roomBed.active === 1 ? (
+                                                {idealTime.active === 1 ? (
                                                     <Badge color="success">Activa</Badge>
                                                 ) : <Badge color="danger">Inactiva</Badge>}
                                             </TableCell>
@@ -216,16 +216,16 @@ class RoomBedList extends React.Component {
                                                         color="success"
                                                         simple
                                                         className={classes.actionButton}
-                                                        key={"edit_" + roomBed.id}
-                                                        onClick={() => { this.handleEdit(roomBed) }}>
+                                                        key={"edit_" + idealTime.id}
+                                                        onClick={() => { this.handleEdit(idealTime) }}>
                                                         <Edit className={classes.icon} />
                                                     </Button>
                                                     <Button
                                                         color="danger"
                                                         simple
                                                         className={classes.actionButton}
-                                                        key={"close_" + roomBed.id}
-                                                        onClick={this.showAlertInactive.bind(this, roomBed.name, roomBed.id)}>
+                                                        key={"close_" + idealTime.id}
+                                                        onClick={this.showAlertInactive.bind(this, idealTime.name, idealTime.id)}>
                                                         <Block className={classes.icon} />
                                                     </Button>
 
@@ -255,29 +255,29 @@ class RoomBedList extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        roomBedState: state.roomBedState,
+        idealTimeState: state.idealTimeState,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        findRoomBedList: (apiPaginationAction
+        findIdealTimeList: (apiPaginationAction
             , apiPaginationCurrentPage
             , apiPaginationDirection
             , apiPaginationLimit
             , apiPaginationOrderColumn
             , apiPaginationMoveToPage
-            , apiPaginationFilter) => dispatch(findRoomBed(apiPaginationAction
+            , apiPaginationFilter) => dispatch(findIdealTime(apiPaginationAction
                 , apiPaginationCurrentPage
                 , apiPaginationDirection
                 , apiPaginationLimit
                 , apiPaginationOrderColumn
                 , apiPaginationMoveToPage
                 , apiPaginationFilter)),
-        setRoomBed: (roomBed) => dispatch(setRoomBed(roomBed)),
-        inactiveRoomBed: (id, onSuccess) => dispatch(inactiveRoomBed(id, onSuccess)),
+        setIdealTime: (idealTime) => dispatch(setIdealTime(idealTime)),
+        inactiveIdealTime: (id, onSuccess) => dispatch(inactiveIdealTime(id, onSuccess)),
         //getListActiveTypeAlert: (onSuccess) => dispatch(getListActiveTypeAlert(onSuccess))
     };
 };
 
-export default withStyles(extendedTablesStyle)(connect(mapStateToProps, mapDispatchToProps)(RoomBedList));
+export default withStyles(extendedTablesStyle)(connect(mapStateToProps, mapDispatchToProps)(IdealTimeList));

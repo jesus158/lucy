@@ -75,6 +75,10 @@ import TypeAlertAdmin from "modules/configurations/type_alerts/TypeAlertAdmin";
 import RoomsBeds from "modules/configurations/rooms_beds"; //Habitaciones y camas
 import RoomsBedAdmin from "modules/configurations/rooms_beds/RoomsBedAdmin"; //Administrar habitaciones y camas
 
+/*TIEMPOS IDEALES*/
+import IdealTimes from "modules/configurations/ideal_times";
+import IdealTimeAdmin from "../modules/configurations/ideal_times/IdealTimeAdmin"; //Tiempos ideales
+
 export const routes = () => {
   return filterByProfile(dashRoutesFilter);
 }
@@ -207,13 +211,20 @@ var dashRoutesFilter = [
             permition: [ADMIN, SUPER_MANAGER]
           },
           {
-            path: "/buttons",
+            path: "/ideal-times",
             name: "Tiempos ideales por áreas",
             mini: "BO",
-            component: ButtonService,
+            component: IdealTimes,
             layout: "/admin",
             permition: [ADMIN, SUPER_MANAGER]
           },
+          {
+            path: "/admin-ideal-times",
+            name: "Administrar tiempos ideales",
+            component: IdealTimeAdmin,
+            layout: "/admin",
+            permition: [ADMIN, SUPER_MANAGER]
+          }
         ]
       },
       {

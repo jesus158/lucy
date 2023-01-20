@@ -20,6 +20,12 @@ export const GET_LIST_ACTIVE_ROOM_BED_ERROR = 'GET_LIST_ACTIVE_TYPE_ERROR';
 
 export const SET_ROOM_BED = 'SET_ROOM_BED';
 
+// Ubicaciones
+export const GET_LIST_ACTIVE_SHOW = 'GET_LIST_ACTIVE_SHOW';
+export const GET_LIST_ACTIVE_SHOW_SUCCESS = 'GET_LIST_ACTIVE_SHOW_SUCCESS';
+export const GET_LIST_ACTIVE_SHOW_ERROR = 'GET_LIST_ACTIVE_SHOW_ERROR';
+
+
 /******************************
  * Filtrar Habitaciones y Camas *
  * Filtrar Habitaciones y Camas *as
@@ -36,12 +42,12 @@ export const findRoomBed = (apiPaginationAction, apiPaginationCurrentPage, apiPa
     apiPaginationFilter
 });
 
-export const findRoomBedSuccess = (listResultSetRoomBed) => ({
+export const findRoomBedListSuccess = (listResultSetRoomBed) => ({
     type: FIND_ROOM_BED_LIST_SUCCESS,
     listResultSetRoomBed
 });
 
-export const findRoomBedError = (error) => ({
+export const findRoomBedListError = (error) => ({
     type: FIND_ROOM_BED_LIST_ERROR,
     error
 });
@@ -112,21 +118,30 @@ export const inactiveRoomBedError = (error) => ({
     error
 });
 
-// /*************************************************
-//  * Recuperar listado de tipos de alertas en modo alertas *
-//  *************************************************/
+export const getListActiveRoomBed = (onSuccess) => ({
+    type: GET_LIST_ACTIVE_ROOM_BED,
+    onSuccess
+})
 
-// export const getListActiveTypeAlert = (onSuccess) => ({
-//     type: GET_LIST_ACTIVE_TYPE_ALERT,
-//     onSuccess
-// });
+export const getListActiveRoomBedSuccess = (data) => ({
+        type: GET_LIST_ACTIVE_ROOM_BED_SUCCESS,
+        data
+})
+export const getListActiveRoomBedError = (error) => ({
+    type: GET_LIST_ACTIVE_ROOM_BED_ERROR,
+    error
+})
 
-// export const getListActiveTypeAlertSuccess = (listTypeAlert) => ({
-//     type: GET_LIST_ACTIVE_TYPE_ALERT_SUCCESS,
-//     listTypeAlert
-// });
+export const getListActiveShowService = () => ({
+    type: GET_LIST_ACTIVE_SHOW
+});
 
-// export const getListActiveTypeAlertError = (error) => ({
-//     type: GET_LIST_ACTIVE_TYPE_ALERT_ERROR,
-//     error
-// });
+export const getListActiveShowSuccess = (listUbication) => ({
+    type: GET_LIST_ACTIVE_SHOW_SUCCESS
+    , listUbication
+});
+
+export const getListActiveShowError = (error) => ({
+    type: GET_LIST_ACTIVE_SHOW_ERROR
+    , error
+});

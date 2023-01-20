@@ -26,7 +26,20 @@ import { trackingStateSOS,trackingStateAlerts, trackingStateUsers, trackingState
 import { cancelRequest, carrierAcceptsAssignment, carrierRejectsAssignment, createRequest, endRequest, getRequestInProcessByUserByFilter, startRequest, updateRequest } from "modules/requests/RequestEpic.js";
 import { combineEpics } from 'redux-observable';
 import { configureTypeAlert, findTypeAlert, getListActiveTypeAlert, getTypeAlertById, inactiveTypeAlert } from "../modules/configurations/type_alerts/TypeAlertsEpic";
-import { configureRoomBed, findRoomBed, getListActiveRoomBed, getRoomBedById, inactiveRoomBed } from "../modules/configurations/rooms_beds/RoomsBedEpic"; //Habitaciones - camas
+import {
+    activeRoomBed,
+    configureRoomBed,
+    findRoomBed, getListActiveShow,
+    getRoomBedById,
+    inactiveRoomBed
+} from "../modules/configurations/rooms_beds/RoomsBedEpic";
+import {
+    activeIdealTime,
+    configureIdealTime,
+    findIdealTime,
+    getIdealTimeById,
+    inactiveIdealTime
+} from "../modules/configurations/ideal_times/IdealTimeEpic"; //Habitaciones - camas
 
 export const rootEpic = combineEpics(
     findAccount
@@ -80,12 +93,13 @@ export const rootEpic = combineEpics(
     , inactiveAsset
     , getListActiveAsset
     , getListTypeAsset
+    , getListActiveShow
 
     , configureRoomBed
     , findRoomBed
-    , getListActiveRoomBed
     , getRoomBedById
     , inactiveRoomBed
+    , activeRoomBed
 
     , findTypeAbsence
     , configureTypeAbsence
@@ -201,4 +215,10 @@ export const rootEpic = combineEpics(
 
     , getServiceAccount
     , getServiceAccountExport
+
+    , findIdealTime
+    , configureIdealTime
+    , getIdealTimeById
+    , inactiveIdealTime
+    , activeIdealTime
 );

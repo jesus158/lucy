@@ -7,13 +7,16 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import NotesOutlined from "@material-ui/icons/NotesOutlined";
+
 // @material-ui/icons
 import ListIcon from '@material-ui/icons/List';
 import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
 import Check from "@material-ui/icons/Check";
 import SaveIcon from '@material-ui/icons/Save';
 import ViewList from "@material-ui/icons/ViewList";
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import NotesOutlined from "@material-ui/icons/NotesOutlined";
+
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle.jsx";
 import AlertInfo from "components/AlertInfo/AlertInfo.jsx";
 import Card from "components/Card/Card.jsx";
@@ -30,13 +33,13 @@ import WaitDialog from "modules/components/WaitDialog.jsx";
 import React from "react";
 import { connect } from 'react-redux';
 import {
-    configureRoomBed,
-    getListActiveRoomBed,
+    configureIdealTime,
+    getListActiveIdealTime,
     getListActiveShowService,
     getListActiveShowSuccess,
-    getRoomBedById,
-    setRoomBed
-} from 'modules/configurations/rooms_beds/RoomsBedActions.js';
+    getIdealTimeById,
+    setIdealTime
+} from './IdealTimeActions';
 
 
 const style = {
@@ -54,116 +57,103 @@ const style = {
     , ...regularFormsStyle
   };
 
-class RoomsBedAdmin extends React.Component {
+class IdealTimeAdmin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             checked: [0],
-            openRoomInfo: false,
-            textRoomInfo: "",
+            openIdealTimeInfo: false,
+            textIdealTimeInfo: "",
             accountEmail: "",
         };
     }
 
     componentDidMount() {
-        this.props.getListActiveRoomBed();
+        this.props.getListActiveIdealTime();
         this.props.getListActiveShow()
     }
 
-    configureRoomBed = () => {
-        const { roomBed } = this.props.roomBedState.data;
+    configureIdealTime = () => {
+        const { idealTime } = this.props.idealTimeState.data;
 
         const accountId = sessionStorage["accountId"];
 
-        if (roomBed.name === "") {
-            this.showRoomInfo("Por favor debe ingresar el nombre de la Habitación o Cama");
+        if (idealTime.name === "") {
+            this.showIdealTimeInfo("Por favor debe ingresar el nombre de la Habitación o Cama");
             return;
         }
 
-        if (roomBed.description === "") {
-            this.showRoomInfo("Por favor debe ingresar la descripción de la Habitación o Cama");
+        if (idealTime.description === "") {
+            this.showIdealTimeInfo("Por favor debe ingresar la descripción de la Habitación o Cama");
             return;
         }
 
-        if (roomBed.category === "") {
-            this.showRoomInfo("Por favor debe ingresar la categoría Habitación o Cama");
+        if (idealTime.category === "") {
+            this.showIdealTimeInfo("Por favor debe ingresar la categoría tiempo ideal");
             return;
         }
 
-        this.props.configureRoomBed({...roomBed, account: { id: accountId}}, this.props, (success) => {
+        this.props.configureIdealTime({...idealTime, account: { id: Number(accountId)}}, this.props, (success) => {
             //Navegación a la lista
-            this.props.history.push('/admin/rooms-beds');
+            this.props.history.push('/admin/ideal-times');
         });
     }
 
-    showRoomInfo = (text) => {
+    showIdealTimeInfo = (text) => {
         this.setState({
-            openRoomInfo: true,
-            textRoomInfo: text,
+            openIdealTimeInfo: true,
+            textIdealTimeInfo: text,
         });
     }
 
-    hideRoomInfo = () => {
+    hideIdealTimeInfo = () => {
         this.setState({
-            openRoomInfo: false
+            openIdealTimeInfo: false
         });
     }
 
     handleInputText = event => {
-        var roomBed = this.props.roomBedState.data.roomBed;
-        roomBed[[event.target.name]] = event.target.value;
-        this.props.setRoomBed(roomBed);
+        var idealTime = this.props.idealTimeState.data.idealTime;
+        idealTime[[event.target.name]] = event.target.value;
+        this.props.setIdealTime(idealTime);
     };
 
     handleToggle() {
-        var roomBed = this.props.roomBedState.data.roomBed;
-        if (roomBed.active) {
-            roomBed.active = 0;
+        var idealTime = this.props.idealTimeState.data.idealTime;
+        if (idealTime.active) {
+            idealTime.active = 0;
         } else {
-            roomBed.active = 1;
+            idealTime.active = 1;
         }
-        this.props.setRoomBed(roomBed);
+        this.props.setIdealTime(idealTime);
     }
 
     handlePriorityInput = event => {
 
-        if(event.target.name === "typeRoom"){
-            var roomBed = this.props.roomBedState.data.roomBed;
-            roomBed.typeRoom = {
+        if(event.target.name === "typeIdealTime"){
+            var idealTime = this.props.idealTimeState.data.idealTime;
+            idealTime.typeIdealTime = {
                 id: event.target.value
             }
-            this.props.setRoomBed(roomBed);
+            this.props.setIdealTime(idealTime);
         }else{
-            var roomBed = this.props.roomBedState.data.roomBed;
-            roomBed[[event.target.name]] = event.target.value;
-            this.props.setRoomBed(roomBed);
+            var idealTime = this.props.idealTimeState.data.idealTime;
+            idealTime[[event.target.name]] = event.target.value;
+            this.props.setIdealTime(idealTime);
         }
     }
 
-    handleUbicationInput = event => {
-        if(event.target.name === "ubication"){
-            var roomBed = this.props.roomBedState.data.roomBed;
-            roomBed.ubication = {
-                id: event.target.value
-            }
-            this.props.setRoomBed(roomBed);
-        }else{
-            var roomBed = this.props.roomBedState.data.roomBed;
-            roomBed[[event.target.name]] = event.target.value;
-            this.props.setRoomBed(roomBed);
-        }
-    }
 
     render() {
         const { classes } = this.props;
-        let isActivityIndicatorShown = this.props.roomBedState.data.isActivityIndicatorShown;
-        const { roomBed } = this.props.roomBedState.data;
+        let isActivityIndicatorShown = this.props.idealTimeState.data.isActivityIndicatorShown;
+        const { idealTime } = this.props.idealTimeState.data;
         return (
             <GridItem xs={12}>
                 {isActivityIndicatorShown &&
-                    <WaitDialog text={this.state.textRoomInfo} />
+                    <WaitDialog text={this.state.textIdealTimeInfo} />
                 }
-                <AlertInfo text={this.state.textRoomInfo} open={this.state.openRoomInfo} onDoneClick={this.hideRoomInfo} />
+                <AlertInfo text={this.state.textIdealTimeInfo} open={this.state.openIdealTimeInfo} onDoneClick={this.hideIdealTimeInfo} />
                 <Card>
                     <CardHeader color="info" icon>
                         <CardIcon color="info">
@@ -194,7 +184,7 @@ class RoomsBedAdmin extends React.Component {
                                         inputProps={{
                                             name: "name",
                                             id: "name",
-                                            value: roomBed.name,
+                                            value: idealTime.name,
                                             onChange: event => this.handleInputText(event),
                                             startAdornment: (
                                                 <InputAdornment
@@ -221,7 +211,7 @@ class RoomsBedAdmin extends React.Component {
                                         inputProps={{
                                             name: "description",
                                             id: "description",
-                                            value: roomBed.description,
+                                            value: idealTime.description,
                                             onChange: event => this.handleInputText(event),
                                             startAdornment: (
                                                 <InputAdornment
@@ -233,6 +223,36 @@ class RoomsBedAdmin extends React.Component {
                                         }}
                                     />
                                 </GridItem>
+
+                                <GridItem xs={12} sm={12} className={classes.gridItem}>
+                                    <FormControl fullWidth className={classes.selectFormControl}>
+                                        
+                                        <CustomInput
+                                            labelText={
+                                                <span>
+                                                    Tiempo Ideal
+                                                </span>
+                                            }
+                                            id="time"
+                                            formControlProps={{
+                                                fullWidth: true
+                                            }}
+                                            inputProps={{
+                                                name: "time",
+                                                id: "time",
+                                                value: idealTime.time,
+                                                onChange: event => this.handleInputText(event),
+                                                startAdornment: (
+                                                    <InputAdornment
+                                                        position="start"
+                                                        className={classes.inputAdornment}>
+                                                        <AccessTimeIcon className={classes.inputAdornmentIcon} />
+                                                    </InputAdornment>
+                                                )
+                                            }}/>
+                                    </FormControl>
+                                </GridItem>
+
                                 
                                 <GridItem xs={12} sm={12} className={classes.gridItem}>
                                     <FormControl
@@ -241,7 +261,7 @@ class RoomsBedAdmin extends React.Component {
                                         <InputLabel
                                             htmlFor="simple-select"
                                             className={classes.selectLabel}>
-                                            Categoria - Habitación/Cama
+                                            Categoria - Tiempos ideales
                                         </InputLabel>
                                         <Select
                                         MenuProps={{
@@ -250,11 +270,11 @@ class RoomsBedAdmin extends React.Component {
                                         classes={{
                                             select: classes.select
                                         }}
-                                        value={roomBed.typeRoom?.id}
+                                        value={idealTime.typeIdealTime?.id}
                                         onChange={this.handlePriorityInput}
                                         inputProps={{
-                                            name: "typeRoom",
-                                            id: "typeRoom",
+                                            name: "typeIdealTime",
+                                            id: "typeIdealTime",
                                         }}
                                         startAdornment={(
                                             <InputAdornment
@@ -270,16 +290,16 @@ class RoomsBedAdmin extends React.Component {
                                             value="0">
                                             Seleccione la categoría...
                                         </MenuItem>
-                                            {this.props.roomBedState?.data?.listRoomBed?.map((roomBed, index) => {
+                                            {this.props.idealTimeState?.data?.listTypeIdealTime?.map((idealTime, index) => {
                                                 return (
                                                     <MenuItem
                                                         classes={{
                                                             root: classes.selectMenuItem,
                                                             selected: classes.selectMenuItemSelected
                                                         }}
-                                                        value={roomBed.id}
+                                                        value={idealTime.id}
                                                         key={index}>
-                                                        {roomBed.name}
+                                                        {idealTime.name}
                                                     </MenuItem>
                                                 );
                                             })}
@@ -287,61 +307,9 @@ class RoomsBedAdmin extends React.Component {
                                     </FormControl>
                                 </GridItem>
 
-                                {/* Item ubicaciones */}
-                                <GridItem xs={12} sm={12} className={classes.gridItem}>
-                                    <FormControl
-                                        fullWidth
-                                        className={classes.selectFormControl}>
-                                        <InputLabel
-                                            htmlFor="simple-select"
-                                            className={classes.selectLabel}>
-                                            Ubicación
-                                        </InputLabel>
-                                        <Select
-                                        MenuProps={{
-                                            className: classes.selectMenu
-                                        }}
-                                        classes={{
-                                            select: classes.select
-                                        }}
-                                        value={roomBed?.ubication?.id}
-                                        onChange={this.handleUbicationInput}
-                                        inputProps={{
-                                            name: "ubication",
-                                            id: "ubication",
-                                        }}
-                                        startAdornment={(
-                                            <InputAdornment
-                                                position="start"
-                                                className={classes.inputAdornment}>
-                                                <ListIcon className={classes.inputAdornmentIcon} />
-                                            </InputAdornment>
-                                        )}>
-                                        <MenuItem
-                                            classes={{
-                                            root: classes.selectMenuItem
-                                            }}
-                                            value="0">
-                                            Seleccione la ubicación...
-                                        </MenuItem>
-                                            {this.props.roomBedState?.data?.listUbication?.map((ubication, index) => {
-                                                return (
-                                                    <MenuItem
-                                                        classes={{
-                                                            root: classes.selectMenuItem,
-                                                            selected: classes.selectMenuItemSelected
-                                                        }}
-                                                        value={ubication.id}
-                                                        key={index}>
-                                                        {ubication.nameUbication}
-                                                    </MenuItem>
-                                                );
-                                            })}
-                                        </Select>
-                                    </FormControl>
-                                </GridItem>
 
-                                {roomBed.id > 0 &&
+
+                                {idealTime.id > 0 &&
                                     <GridItem xs={12} sm={12}>
                                         <FormControlLabel
                                             control={
@@ -353,7 +321,7 @@ class RoomsBedAdmin extends React.Component {
                                                     classes={{
                                                         checked: classes.checked
                                                     }}
-                                                    checked={roomBed.active}
+                                                    checked={idealTime.active}
                                                     onClick={() => this.handleToggle()}
                                                     disableRipple
                                                 />
@@ -368,7 +336,7 @@ class RoomsBedAdmin extends React.Component {
 
                             <GridItem xs={12} sm={12} className={classes.gridItem}>
                                 <Button
-                                    onClick={this.configureRoomBed}
+                                    onClick={this.configureIdealTime}
                                     color="success"
                                     round><SaveIcon />
                                     Guardar
@@ -384,21 +352,20 @@ class RoomsBedAdmin extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        roomBedState: state.roomBedState,
+        idealTimeState: state.idealTimeState,
         accountState: state.accountState,
-        ubicationState: state.ubicationState,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        configureRoomBed: (roomBed, ownProps, onSuccess) => dispatch(configureRoomBed(roomBed, ownProps, onSuccess)),
-        setRoomBed: (roomBed) => dispatch(setRoomBed(roomBed)),
-        getRoomBedById: (id) => dispatch(getRoomBedById(id)),
-        getListActiveRoomBed: () => dispatch(getListActiveRoomBed()),
+        configureIdealTime: (idealTime, ownProps, onSuccess) => dispatch(configureIdealTime(idealTime, ownProps, onSuccess)),
+        setIdealTime: (idealTime) => dispatch(setIdealTime(idealTime)),
+        getIdealTimeById: (id) => dispatch(getIdealTimeById(id)),
+        getListActiveIdealTime: () => dispatch(getListActiveIdealTime()),
         getListActiveShow: () => dispatch(getListActiveShowService()),
         getListActiveShowSuccess: () => dispatch(getListActiveShowSuccess()),
     };
 };
 
-export default withStyles(style)(connect(mapStateToProps, mapDispatchToProps)(RoomsBedAdmin));
+export default withStyles(style)(connect(mapStateToProps, mapDispatchToProps)(IdealTimeAdmin));

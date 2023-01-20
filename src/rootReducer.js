@@ -31,6 +31,7 @@ import historyRequestReducer from 'modules/reports/history_request/HistoryReques
 import countServicesReportReducer from 'modules/reports/count_services/CountServicesReportReducer';
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
+import idealTimeReducer from "./modules/configurations/ideal_times/IdealTimeReducer";
 
 const epicMiddleware = createEpicMiddleware();
 
@@ -64,6 +65,7 @@ const rootReducer = combineReducers({
    , countServicesReportState: countServicesReportReducer
    , assetState: assetReducer
    , alertState: alertReducer
+   , idealTimeState: idealTimeReducer
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

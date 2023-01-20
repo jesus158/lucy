@@ -87,7 +87,8 @@ class ApiClient {
         freeAsset,
         freeAssetTime,
         idCarrierUserSystemAccount,
-        moreInformation
+        moreInformation,
+        nameReceived,
     ) => {
         this.account = sessionStorage["accountCode"];
         this.idUserSystemAccount = sessionStorage["userAccountId"];
@@ -105,12 +106,12 @@ class ApiClient {
             }
             uriFilter += prefix + "moreInformation=" + moreInformation;
         }
-
+        
         let request = {
             method: "post",
             url:
                 `${this.url}/requests/create/${this.account}/${idUbicationBegin}/${idUbicationEnd}/${this.idUserSystemAccount}/${idTypeService}/${idAsset}/${freeAsset}/${freeAssetTime}` +
-                encodeURI(uriFilter),
+                encodeURI(uriFilter)+"&nameReceived="+nameReceived,
             headers: {
                 Accept: "application/json;charset=UTF-8"
             }
@@ -132,7 +133,8 @@ class ApiClient {
         freeAsset,
         freeAssetTime,
         idCarrierUserSystemAccount,
-        moreInformation
+        moreInformation,
+        nameReceived,
     ) => {
         this.account = sessionStorage["accountCode"];
         this.idUserSystemAccount = sessionStorage["userAccountId"];
@@ -155,7 +157,7 @@ class ApiClient {
             method: "post",
             url:
                 `${this.url}/requests/update/${idUpdateRequest}/${this.account}/${idUbicationBegin}/${idUbicationEnd}/${this.idUserSystemAccount}/${idTypeService}/${idAsset}/${freeAsset}/${freeAssetTime}`+
-                encodeURI(uriFilter),
+                encodeURI(uriFilter)+"&nameReceived="+nameReceived,
             headers: {
                 Accept: "application/json;charset=UTF-8"
             }

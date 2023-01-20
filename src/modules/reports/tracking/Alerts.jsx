@@ -320,36 +320,41 @@ class Alerts extends React.Component {
         var { apiPaginationAlerts, listAlerts } = this.props.trackingState.data;
         const { order, orderBy } = this.state;
 
+        // console.log("Lista Alertas:");
+        // console.log(listAlerts);
+
         if (apiPaginationAlerts === undefined) {
             apiPaginationAlerts = {};
         }
         if (listAlerts === undefined) {
+            //console.log("ALERTA INDEFINIDO");
             listAlerts = [];
+        }else{
+            //console.log("***ALERTA DEFINIDO");
         }
+
         //console.log("render");
 
         //this.state.cont++;
         //console.log(this.state.cont%30);
 
             
-        if (listAlerts.length > 0 && this.state.newAlert === false)  {
+        if (listAlerts.length > 0 && this.state.newAlert === false)  
+        {
             this.state.newAlerts =[];
-
             var arrayLength = listAlerts.length;
-            for (var i = 0; i < arrayLength; i++) {
+            for (var i = 0; i < arrayLength; i++) 
+            {
                 let objAlert = listAlerts[i];
-                if (objAlert.new=== 1) {
+                if (objAlert.new=== 1) 
+                {
                     this.state.newAlert = true;
                     this.playAudio();
                     objAlert.new= 0;
                     this.state.newAlerts.push(objAlert);
-                    console.log("Nueva Alerta");    
-        
+                    console.log("Nueva Alerta");           
                 } 
             }
-
-          
-    
         }            
 
         //console.log(listAlerts.length);

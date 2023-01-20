@@ -32,14 +32,14 @@ import {
     findRoomBed, getListActiveShow,
     getRoomBedById,
     inactiveRoomBed
-} from "../modules/configurations/rooms_beds/RoomsBedEpic";
+} from "../modules/configurations/rooms_beds/RoomsBedEpic";//Habitaciones - camas
 import {
     activeIdealTime,
     configureIdealTime,
     findIdealTime,
     getIdealTimeById,
     inactiveIdealTime
-} from "../modules/configurations/ideal_times/IdealTimeEpic"; //Habitaciones - camas
+} from "../modules/configurations/ideal_times/IdealTimeEpic";//Tiempos Ideales
 
 export const rootEpic = combineEpics(
     findAccount

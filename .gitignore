@@ -44,6 +44,3 @@ dist
 .DS_Store
 
 .vscode
-
-docker-compose.dev.yml
-Dockerfile

@@ -48,6 +48,8 @@ export const SET_TYPE_CANCELLATION = "SET_TYPE_CANCELLATION";
 
 export const SET_ASSET = "SET_ASSET"
 
+export const SET_NAME_RECEIVED = "SET_NAME_RECEIVED";
+
 /**
  * Recupera el listado de las solicitudes no terminadas
  * y no canceladas, para el usuario actual, que en el caso
@@ -108,7 +110,8 @@ export const createRequest = (
   freeAsset,
   freeAssetTime,
   idCarrierUserSystemAccount,
-  moreInformation) => ({
+  moreInformation,
+  nameReceived) => ({
     type: CREATE_REQUEST,
     onSuccess,
     idUbicationBegin,
@@ -118,7 +121,8 @@ export const createRequest = (
     freeAsset,
     freeAssetTime,
     idCarrierUserSystemAccount,
-    moreInformation
+    moreInformation,
+    nameReceived
   });
 
 export const createRequestSuccess = data => ({
@@ -143,7 +147,8 @@ export const updateRequest = (
     freeAsset,
     freeAssetTime,
     idCarrierUserSystemAccount,
-    newInfo) => ({
+    newInfo,
+    nameReceived) => ({
   type: UPDATE_REQUEST,
   onSuccess,
   idUpdateRequest,
@@ -154,7 +159,8 @@ export const updateRequest = (
   freeAsset,
   freeAssetTime,
   idCarrierUserSystemAccount,
-  newInfo
+  newInfo,
+  nameReceived
 });
 
 export const updateRequestSuccess = data => ({
@@ -325,6 +331,11 @@ export const setCarrier = carrier => ({
 export const setMoreInformation = moreInformation => ({
   type: SET_MORE_INFORMATION,
   moreInformation
+});
+
+export const setNameReceived = nameReceived => ({
+  type: SET_NAME_RECEIVED,
+  nameReceived
 });
 
 export const setTypeReject = (typeReject, onSuccess) => ({

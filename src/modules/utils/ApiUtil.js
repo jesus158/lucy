@@ -3,11 +3,12 @@ const apiTimeout = 60000;
  * PRODUCTION API'S
  */
 
-// const LUCY_LOCATION_SERVICE = "http://44.227.228.174:8080/lucy-locations-services";
-// const LUCY_ACCOUNT_SERVICE = "http://44.227.228.174:8080/lucy-account-services";
-// const LUCY_CONFIGURATION_SERVICE = "http://44.227.228.174:8080/lucy-configuration-services";
-// const LUCY_REQUEST_SERVICE = "http://44.227.228.174:8080/lucy-requests-services";
-// const LUCY_REPORT_SERVICE = "http://44.227.228.174:8080/lucy-reports-services";
+const LUCY_LOCATION_SERVICE = "http://44.227.228.174:8080/lucy-locations-services";
+const LUCY_ACCOUNT_SERVICE = "http://44.227.228.174:8080/lucy-account-services";
+const LUCY_CONFIGURATION_SERVICE = "http://44.227.228.174:8080/lucy-configuration-services";
+const LUCY_REQUEST_SERVICE = "http://44.227.228.174:8080/lucy-requests-services";
+const LUCY_REPORT_SERVICE = "http://44.227.228.174:8080/lucy-reports-services";
+
 
 
 
@@ -15,13 +16,13 @@ const apiTimeout = 60000;
  * TEST API'S
  */
 
-const URL_BASE = "http://44.227.228.174:8080";
+// const URL_BASE = "http://10.0.0.85:8080";
 
-const LUCY_LOCATION_SERVICE = URL_BASE+"/lucy-locations-services-dev";
-const LUCY_ACCOUNT_SERVICE = URL_BASE+"/lucy-account-services";
-const LUCY_CONFIGURATION_SERVICE = URL_BASE+"/lucy-configuration-services-dev";
-const LUCY_REQUEST_SERVICE = URL_BASE+"/lucy-requests-services-dev";
-const LUCY_REPORT_SERVICE = URL_BASE+"/lucy-reports-services-dev";
+// const LUCY_LOCATION_SERVICE = URL_BASE+"/lucy-locations-services-dev";
+// const LUCY_ACCOUNT_SERVICE = URL_BASE+"/lucy-account-services";
+// const LUCY_CONFIGURATION_SERVICE = URL_BASE+"/lucy-configuration-services-dev";
+// const LUCY_REQUEST_SERVICE = URL_BASE+"/lucy-requests-services-dev";
+// const LUCY_REPORT_SERVICE = URL_BASE+"/lucy-reports-services-dev";
 
 
 //const URL_BASE = (window.location.protocol.startsWith('https') ? 'https':'http')+"://"+window.location.hostname+":"+window.location.port;

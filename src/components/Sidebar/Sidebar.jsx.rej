@@ -1,0 +1,9 @@
+diff a/src/components/Sidebar/Sidebar.jsx b/src/components/Sidebar/Sidebar.jsx	(rejected hunks)
+@@ -535,7 +535,6 @@
+               links={links}
+             />
+             {image !== undefined ? (
+-              <div
+               <div 
+                 className={classes.background}
+                 style={{ backgroundImage: "url(" + image + ")" }}

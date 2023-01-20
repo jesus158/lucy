@@ -186,14 +186,6 @@ var dashRoutesFilter = [
         permition: [ADMIN, SUPER_MANAGER],
         views: [
           {
-            path: "/buttons",
-            name: "Gestionar Zonas",
-            mini: "BO",
-            component: ButtonService,
-            layout: "/admin",
-            permition: [ADMIN, SUPER_MANAGER]
-          },
-          {
             path: "/rooms-beds",
             name: "Gestionar Habitación/Camas",
             mini: "AT",

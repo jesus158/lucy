@@ -21,7 +21,7 @@ class IdealTimes extends React.Component {
           });
           this.props.history.push('/admin/admin-ideal-times');
         }}>
-          <ViewList /> Nuevo tipo de tiempo ideal
+          <ViewList /> Nuevo Tiempo ideal
             </Button>
             </GridItem>
             <IdealTimeList/>

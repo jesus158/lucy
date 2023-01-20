@@ -1258,7 +1258,8 @@ class RequestList extends React.Component {
                             dataRequest.freeAsset,
                             dataRequest.freeAssetTime,
                             dataRequest.userCarrier ? dataRequest.userCarrier.id : 0,
-                            dataRequest.moreInformation
+                            dataRequest.moreInformation,
+                            dataRequest.nameReceived,
                         )
 
                     }}
@@ -1428,6 +1429,14 @@ class RequestList extends React.Component {
                                                 </TableCell>
                                                 <TableCell style={gunnarStyle2}>
                                                     {` ${request.id}`}
+                                                </TableCell>
+                                            </TableRow>
+                                            <TableRow key={`TableRow1-${key}`} style={{background: ROW_WHITE}}>
+                                                <TableCell style={gunnarStyle}>
+                                                    <b>Solicitado Por:</b>
+                                                </TableCell>
+                                                <TableCell style={gunnarStyle2}>
+                                                    {` ${request.nameReceived}`}
                                                 </TableCell>
                                             </TableRow>
                                             <TableRow key={`TableRow2-${key}`} style={{background: ROW_GRAY}}>

@@ -110,7 +110,7 @@ export const createRequest = (action$, state$) =>
     mergeMap(action =>
       Observable.create(obs => {
         axios.defaults.timeout = apiTimeout;
-        axios(RequestApiClient.createRequest(action.onSucess, action.idUbicationBegin, action.idUbicationEnd, action.idTypeService, action.idAsset, action.freeAsset, action.freeAssetTime, action.idCarrierUserSystemAccount, action.moreInformation))
+        axios(RequestApiClient.createRequest(action.onSucess, action.idUbicationBegin, action.idUbicationEnd, action.idTypeService, action.idAsset, action.freeAsset, action.freeAssetTime, action.idCarrierUserSystemAccount, action.moreInformation, action.nameReceived))
           .then(response => {
             let code = response.data.apiResponse.code;
             if (response.status >= 200 && response.status < 300 && code === 200) {
@@ -181,7 +181,7 @@ export const updateRequest = (action$, state$) =>
         mergeMap(action =>
             Observable.create(obs => {
                 axios.defaults.timeout = apiTimeout;
-                axios(RequestApiClient.updateRequest(action.idUpdateRequest, action.idUbicationBegin, action.idUbicationEnd, action.idTypeService, action.idAsset, action.freeAsset, action.freeAssetTime, action.idCarrierUserSystemAccount, action.newInfo))
+                axios(RequestApiClient.updateRequest(action.idUpdateRequest, action.idUbicationBegin, action.idUbicationEnd, action.idTypeService, action.idAsset, action.freeAsset, action.freeAssetTime, action.idCarrierUserSystemAccount, action.newInfo, action.nameReceived))
                     .then(response => {
                         let code = response.data.apiResponse.code;
                         if (response.status >= 200 && response.status < 300 && code === 200) {

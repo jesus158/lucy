@@ -105,8 +105,8 @@ const trackingReducer = (state = initialState, action) => {
             data: {
                ...state.data,
                listSOS: action.listSOS,
-               listAlerts: action.listAlerts,
-               apiPaginationSOS: action.apiPaginationSOS,
+               apiPaginationSOS: action.apiPaginationSOS,              
+               
                isActivityIndicatorShown: false,
             },
          };
@@ -133,9 +133,10 @@ const trackingReducer = (state = initialState, action) => {
                ...state,
                data: {
                   ...state.data,
-                  listSOS: action.listSOS,
-                  listAlerts: action.listAlerts,
-                  apiPaginationSOS: action.apiPaginationSOS,
+                  
+                  listAlerts: action.listAlerts, 
+                  apiPaginationAlerts: action.apiPaginationAlerts,
+                  
                   isActivityIndicatorShown: false,
                },
             };

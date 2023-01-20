@@ -147,7 +147,7 @@ class ApiClient {
         if (apiPaginationFilter !== undefined) {
             uriFilter += '&ApiPaginationFilter=' + apiPaginationFilter
         }
-
+        //console.log("request sos");
         let request = {
             method: 'get'
             , url: `${this.url}/tracking/state/SOS/${this.account}` + encodeURI(uriFilter)
@@ -197,7 +197,7 @@ class ApiClient {
         if (apiPaginationFilter !== undefined) {
             uriFilter += '&ApiPaginationFilter=' + apiPaginationFilter
         }
-
+        //console.log("request alert");
         let request = {
             method: 'get'
             , url: `${this.url}/tracking/state/alerts/${this.account}` + encodeURI(uriFilter)

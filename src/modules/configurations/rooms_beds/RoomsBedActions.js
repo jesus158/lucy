@@ -25,7 +25,6 @@ export const GET_LIST_ACTIVE_SHOW = 'GET_LIST_ACTIVE_SHOW';
 export const GET_LIST_ACTIVE_SHOW_SUCCESS = 'GET_LIST_ACTIVE_SHOW_SUCCESS';
 export const GET_LIST_ACTIVE_SHOW_ERROR = 'GET_LIST_ACTIVE_SHOW_ERROR';
 
-
 /******************************
  * Filtrar Habitaciones y Camas *
  * Filtrar Habitaciones y Camas *as

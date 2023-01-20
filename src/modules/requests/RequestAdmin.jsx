@@ -28,7 +28,7 @@ import WaitDialog from "modules/components/WaitDialog.jsx";
 import { getListActiveTypeService } from 'modules/configurations/type_services/TypeServicesActions.js';
 import { getListActiveShowService } from 'modules/locations/ubications/UbicationActions.js';
 import { getListActiveAsset, configureAsset, getListAssetType } from 'modules/assets/AssetActions.js';
-import { createRequest, setCarrier, setMoreInformation, setTypeService, setAsset, setUbicationBegin, setUbicationEnd } from 'modules/requests/RequestActions.js';
+import { createRequest, setCarrier, setMoreInformation, setTypeService, setAsset, setUbicationBegin, setUbicationEnd, setNameReceived } from 'modules/requests/RequestActions.js';
 import React from "react";
 import { connect } from 'react-redux';
 import { NAME_OPERATOR } from "modules/utils/ApiUtil.js";
@@ -156,6 +156,7 @@ class RequestAdmin extends React.Component {
     this.props.setUbicationEnd(this.state.ubicationByDefault);
     this.props.setCarrier(this.state.carrierByDefault);
     this.props.setMoreInformation("");
+    this.props.setNameReceived("");
   };
 
   /**
@@ -170,6 +171,7 @@ class RequestAdmin extends React.Component {
       idCarrierUserSystemAccount = this.props.requestState.data.carrier.userCarrier.id
     }
     var moreInformation = this.props.requestState.data.moreInformation;
+    var nameReceived = this.props.requestState.data.nameReceived;
     this.props.createRequest((success) => {
       console.log("succes ok");
       console.log(typeof(success));
@@ -188,7 +190,8 @@ class RequestAdmin extends React.Component {
       this.state.checked.freeAssetByDefault,
       this.state.checked.freeAssetTimeByDefault,
       idCarrierUserSystemAccount,
-      moreInformation
+      moreInformation,
+      nameReceived,
     );
 
   }
@@ -242,6 +245,11 @@ class RequestAdmin extends React.Component {
   handleMoreInformationInput = event => {
     var moreInformation = event.target.value;
     this.props.setMoreInformation(moreInformation);
+  }
+
+  handleNameReceivedInput = event => {
+    var nameReceived = event.target.value;
+    this.props.setNameReceived(nameReceived);
   }
 
   handleInputTimeText = event => {
@@ -636,6 +644,33 @@ class RequestAdmin extends React.Component {
             <CardBody>
               <GridContainer>
 
+              <GridItem xs={12} sm={12}>
+                  <CustomInput
+                    labelText={
+                      <span>
+                        Solicitado Por
+                      </span>
+                    }
+                    id="nameReceived"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    inputProps={{
+                      name: "nameReceived",
+                      id: "nameReceived",
+                      value: this.props.requestState.data.nameReceived,
+                      onChange: this.handleNameReceivedInput,
+                      startAdornment: (
+                        <InputAdornment
+                          position="start"
+                          className={classes.inputAdornment}>
+                          <NotesOutlined className={classes.inputAdornmentIcon} />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                </GridItem>
+
                 <GridItem xs={12} sm={12} className={classes.gridItem}>
                   <FormControl
                     fullWidth
@@ -787,6 +822,7 @@ const mapDispatchToProps = dispatch => {
     setUbicationEnd: (ubicationEnd) => dispatch(setUbicationEnd(ubicationEnd)),
     setCarrier: (carrier) => dispatch(setCarrier(carrier)),
     setMoreInformation: (moreInformation) => dispatch(setMoreInformation(moreInformation)),
+    setNameReceived: (nameReceived) => dispatch(setNameReceived(nameReceived)),
     configureAsset: (asset, ownProps, onSuccess) => dispatch(configureAsset(asset, ownProps, onSuccess)),
     createRequest: (
       onSucess,
@@ -797,7 +833,8 @@ const mapDispatchToProps = dispatch => {
       freeAsset,
       freeAssetTime,
       idCarrierUserSystemAccount,
-      moreInformation) => dispatch(createRequest(
+      moreInformation,
+      nameReceived) => dispatch(createRequest(
         onSucess,
         idUbicationBegin,
         idUbicationEnd,
@@ -806,7 +843,8 @@ const mapDispatchToProps = dispatch => {
         freeAsset,
         freeAssetTime,
         idCarrierUserSystemAccount,
-        moreInformation))
+        moreInformation,
+        nameReceived))
   };
 };
 

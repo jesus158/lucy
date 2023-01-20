@@ -535,7 +535,7 @@ class Sidebar extends React.Component {
               links={links}
             />
             {image !== undefined ? (
-              <div 
+              <div
                 className={classes.background}
                 style={{ backgroundImage: "url(" + image + ")" }}
               />

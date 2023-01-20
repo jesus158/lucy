@@ -1,4 +1,9 @@
 // @material-ui/core components
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import withStyles from "@material-ui/core/styles/withStyles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -14,6 +19,7 @@ import EnhancedTableHead from "components/EnhancedTableHead/EnhancedTableHead.js
 import TablePagination from "components/TablePagination/TablePagination.jsx";
 import { addMessage } from 'layouts/MessagesActions';
 import Filter from "modules/components/Filter.jsx";
+import Button from "components/CustomButtons/Button.jsx";
 // module components
 import WaitDialog from "modules/components/WaitDialog.jsx";
 import { trackingStateSOS } from "modules/reports/tracking/TrackingActions.js";
@@ -29,13 +35,21 @@ const rows = [
     { id: 0, numeric: false, disablePadding: true, isSorted: false, label: 'Ubicación' },
     { id: 0, numeric: false, disablePadding: true, isSorted: false, label: 'Fecha' },
 ];
+const rowsNewSOS = [
+    { id: 0, numeric: false, disablePadding: true, isSorted: false, label: 'Nombre' },
+    { id: 0, numeric: false, disablePadding: true, isSorted: false, label: 'Ubicación' },
+    { id: 0, numeric: false, disablePadding: true, isSorted: false, label: 'Fecha' },
+];
 var prevNowPlaying = null;
 class SOS extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            alertTimer: null,
             openAlertInfo: false,
             textAlertInfo: "",
+            newSOS: false,
+            newSOSs:[],
             filter: {},
             order: 0,
             orderBy: 16,
@@ -55,6 +69,7 @@ class SOS extends React.Component {
             prevNowPlaying = null;
         }
         prevNowPlaying = setInterval(() => {
+            
             this.loadContentList();
         }, MILI_SECONDS_REFRESH_LIST);
     }
@@ -64,9 +79,30 @@ class SOS extends React.Component {
             clearInterval(prevNowPlaying);
         }
         prevNowPlaying = null;
+
+        if (this.state.alertTimer) {
+            clearInterval(this.state.alertTimer);
+            this.state.alertTimer = null;
+        }          
+    }
+
+    playAudio() {
+
+        if (this.state.alertTimer) {
+            clearInterval(this.state.alertTimer);
+            this.state.alertTimer = null;
+        }
+        const audioEl = document.getElementsByClassName("audio-element")[0];
+        console.log(document.getElementsByClassName("audio-element")[0]);
+        audioEl.play();
+        this.state.alertTimer = setInterval(() => {
+            this.playAudio();
+        }, 3000);
+        
     }
 
     loadContentList = () => {
+        //console.log("cargando lista desde el timer");
         this.props.trackingStateSOS(
             undefined,
             this.state.page,
@@ -123,6 +159,32 @@ class SOS extends React.Component {
             alertInactive: null
         });
     };
+
+
+    hideAlertShowWindow = () => {
+        this.setState({
+            newSOS : false
+        });
+
+        if (this.state.alertTimer) {
+            clearInterval(this.state.alertTimer);
+            this.state.alertTimer = null;
+        }
+    };
+
+    alertShowWindow
+    onFilter = filter => {
+        this.setState({ filter });
+        this.props.trackingStateSOS(
+            undefined,
+            this.state.page,
+            this.state.order,
+            this.state.rowsPerPage,
+            this.state.orderBy,
+            this.state.page,
+            filter.name
+        );
+    };   
 
     onFilter = filter => {
         this.setState({ filter });
@@ -215,13 +277,37 @@ class SOS extends React.Component {
         const isActivityIndicatorShown = this.state.isActivityIndicatorShown;
         var { apiPaginationSOS, listSOS } = this.props.trackingState.data;
         const { order, orderBy } = this.state;
-
+        //console.log("Lista SOS:");
+        //console.log(listSOS);
         if (apiPaginationSOS === undefined) {
             apiPaginationSOS = {};
         }
         if (listSOS === undefined) {
+            //console.log("SOS INDEFINIDO");
             listSOS = [];
+        }else{
+            console.log(listSOS);
+            //console.log("***SOS DEFINIDO");
         }
+
+        if (listSOS.length > 0 && this.state.newSOS === false)  
+        {
+            this.state.newSOSs =[];
+            var arrayLength = listSOS.length;
+            for (var i = 0; i < arrayLength; i++) 
+            {
+                let objSOS = listSOS[i];
+                if (objSOS.new=== 1) 
+                {
+                    this.state.newSOS = true;
+                    this.playAudio();
+                    objSOS.new= 0;
+                    this.state.newSOSs.push(objSOS);
+                    console.log("Nueva Alerta SOS");           
+                } 
+            }
+        }  
+
         return (
             <>
                 {isActivityIndicatorShown ?
@@ -230,6 +316,49 @@ class SOS extends React.Component {
                 }
                 {this.state.alertInactive}
 
+                <Dialog open={this.state.newSOS}>
+    
+                    <DialogTitle id="form-dialog-title">Alerta</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Activos detectados:
+                        </DialogContentText>
+                        <Table className={classes.table} aria-labelledby="tableTitle" key={`TableCardTracking`}>
+                            <EnhancedTableHead
+                                key={`EnhancedTableHead-${Math.random()}`}
+                                onRequestSort={this.handleRequestSort}
+                                order={order === 0 ? 'asc' : 'desc'}
+                                orderBy={orderBy+''}
+                                rowCount={20}
+                                rows={rowsNewSOS}
+                            />                    
+                            <TableBody>
+                                {this.state.newSOSs.map((objAlerta, key) => {
+                                    return (
+                                        <TableRow tabIndex={-1} key={`TableRow-${key}`} style={{ background: key % 2 === 0 ? ROW_GRAY : ROW_WHITE }}>
+
+                                            <TableCell className="text-column">
+                                                {objAlerta.userAccount.nameUser}
+                                            </TableCell>
+                                            <TableCell className="text-column">
+                                                {this.renderContentUbication(objAlerta)}
+                                            </TableCell>
+                                            <TableCell className="text-column">
+                                                {this.renderContentDate(objAlerta)}
+                                            </TableCell>                                         
+
+                                        </TableRow>
+                                    )
+                                })}
+                            </TableBody>
+                        </Table>                       
+                    </DialogContent> 
+                    <DialogActions>
+                    <Button onClick={this.hideAlertShowWindow} color="info">
+                        Aceptar
+                    </Button>
+                    </DialogActions> 
+                </Dialog>
                 
                 <Card key={`CardTracking`} >
                     <CardHeader color="primary" icon >

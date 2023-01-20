@@ -38,9 +38,6 @@ const initialState = {
          description: "",
          priority: 0,
          active: 1,
-        /* ubication: {
-            id: 0,
-         }*/
       },
       listRoomBed: [],
       listUbication: [],

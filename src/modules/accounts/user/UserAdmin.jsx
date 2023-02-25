@@ -447,7 +447,7 @@ class UserAdmin extends React.Component {
               </GridItem>
 
 
-              <GridItem xs={12} sm={12}>
+              {/* <GridItem xs={12} sm={12}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -465,7 +465,7 @@ class UserAdmin extends React.Component {
                   }
                   label={"Mostrar contraseña"}>
                 </FormControlLabel>
-              </GridItem>
+              </GridItem> */}
 
 
               <GridItem xs={12} sm={12} className={classes.gridItem}>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { addMessage } from 'layouts/MessagesActions';
-import { configureNumberAttentionsHighPriorityWaitingError, configureNumberAttentionsHighPriorityWaitingSuccess, configureNumberAttentionsLowPriorityWaitingError, configureNumberAttentionsLowPriorityWaitingSuccess, configureNumberAttentionsMediumPriorityWaitingError, configureNumberAttentionsMediumPriorityWaitingSuccess, configureTimeAlertCarrierInactivityError, configureTimeAlertCarrierInactivitySuccess, configureTimeAlertFinalizeRequestError, configureTimeAlertFinalizeRequestSuccess, configureTimeAlertServiceWithoutCarrierError, configureTimeAlertServiceWithoutCarrierSuccess, CONFIGURE_NUMBER_ATTENTIONS_HIGH_PRIORITY_WAITING, CONFIGURE_NUMBER_ATTENTIONS_LOW_PRIORITY_WAITING, CONFIGURE_NUMBER_ATTENTIONS_MEDIUM_PRIORITY_WAITING, CONFIGURE_TIME_ALERT_CARRIER_INACTIVITY, CONFIGURE_TIME_ALERT_FINALIZE_REQUEST, CONFIGURE_TIME_ALERT_SERVICE_WITHOUT_CARRIER, getNumberAttentionsHighPriorityWaitingError, getNumberAttentionsHighPriorityWaitingSuccess, getNumberAttentionsLowPriorityWaitingError, getNumberAttentionsLowPriorityWaitingSuccess, getNumberAttentionsMediumPriorityWaitingError, getNumberAttentionsMediumPriorityWaitingSuccess, getTimeAlertCarrierInactivityError, getTimeAlertCarrierInactivitySuccess, getTimeAlertFinalizeRequestError, getTimeAlertFinalizeRequestSuccess, getTimeAlertServiceWithoutCarrierError, getTimeAlertServiceWithoutCarrierSuccess, GET_NUMBER_ATTENTIONS_HIGH_PRIORITY_WAITING, GET_NUMBER_ATTENTIONS_LOW_PRIORITY_WAITING, GET_NUMBER_ATTENTIONS_MEDIUM_PRIORITY_WAITING, GET_TIME_ALERT_CARRIER_INACTIVITY, GET_TIME_ALERT_FINALIZE_REQUEST, GET_TIME_ALERT_SERVICE_WITHOUT_CARRIER, inactiveNumberAttentionsHighPriorityWaitingError, inactiveNumberAttentionsHighPriorityWaitingSuccess, inactiveNumberAttentionsLowPriorityWaitingError, inactiveNumberAttentionsLowPriorityWaitingSuccess, inactiveNumberAttentionsMediumPriorityWaitingError, inactiveNumberAttentionsMediumPriorityWaitingSuccess, inactiveTimeAlertCarrierInactivityError, inactiveTimeAlertCarrierInactivitySuccess, inactiveTimeAlertFinalizeRequestError, inactiveTimeAlertFinalizeRequestSuccess, inactiveTimeAlertServiceWithoutCarrierError, inactiveTimeAlertServiceWithoutCarrierSuccess, INACTIVE_NUMBER_ATTENTIONS_HIGH_PRIORITY_WAITING, INACTIVE_NUMBER_ATTENTIONS_LOW_PRIORITY_WAITING, INACTIVE_NUMBER_ATTENTIONS_MEDIUM_PRIORITY_WAITING, INACTIVE_TIME_ALERT_CARRIER_INACTIVITY, INACTIVE_TIME_ALERT_FINALIZE_REQUEST, INACTIVE_TIME_ALERT_SERVICE_WITHOUT_CARRIER } from 'modules/configurations/general_parameters/GeneralParametersActions.js';
+import { configureNumberAttentionsHighPriorityWaitingError, configureNumberAttentionsHighPriorityWaitingSuccess, configureNumberAttentionsLowPriorityWaitingError, configureNumberAttentionsLowPriorityWaitingSuccess, configureExpirationTimeError, configureExpirationTimeSuccess, configureNumberAttentionsMediumPriorityWaitingError, configureNumberAttentionsMediumPriorityWaitingSuccess, configureTimeAlertCarrierInactivityError, configureTimeAlertCarrierInactivitySuccess, configureTimeAlertFinalizeRequestError, configureTimeAlertFinalizeRequestSuccess, configureTimeAlertServiceWithoutCarrierError, configureTimeAlertServiceWithoutCarrierSuccess, CONFIGURE_NUMBER_ATTENTIONS_HIGH_PRIORITY_WAITING, CONFIGURE_NUMBER_ATTENTIONS_LOW_PRIORITY_WAITING, CONFIGURE_NUMBER_ATTENTIONS_MEDIUM_PRIORITY_WAITING, CONFIGURE_TIME_ALERT_CARRIER_INACTIVITY, CONFIGURE_TIME_ALERT_FINALIZE_REQUEST, CONFIGURE_TIME_ALERT_SERVICE_WITHOUT_CARRIER, CONFIGURE_EXPIRATION_TIME, getNumberAttentionsHighPriorityWaitingError, getNumberAttentionsHighPriorityWaitingSuccess, getNumberAttentionsLowPriorityWaitingError, getNumberAttentionsLowPriorityWaitingSuccess, getExpirationTimeError, getExpirationTimeSuccess, getNumberAttentionsMediumPriorityWaitingError, getNumberAttentionsMediumPriorityWaitingSuccess, getTimeAlertCarrierInactivityError, getTimeAlertCarrierInactivitySuccess, getTimeAlertFinalizeRequestError, getTimeAlertFinalizeRequestSuccess, getTimeAlertServiceWithoutCarrierError, getTimeAlertServiceWithoutCarrierSuccess, GET_NUMBER_ATTENTIONS_HIGH_PRIORITY_WAITING, GET_NUMBER_ATTENTIONS_LOW_PRIORITY_WAITING, GET_NUMBER_ATTENTIONS_MEDIUM_PRIORITY_WAITING, GET_TIME_ALERT_CARRIER_INACTIVITY, GET_TIME_ALERT_FINALIZE_REQUEST, GET_TIME_ALERT_SERVICE_WITHOUT_CARRIER, inactiveNumberAttentionsHighPriorityWaitingError, inactiveNumberAttentionsHighPriorityWaitingSuccess, inactiveNumberAttentionsLowPriorityWaitingError, inactiveNumberAttentionsLowPriorityWaitingSuccess, inactiveNumberAttentionsMediumPriorityWaitingError, inactiveNumberAttentionsMediumPriorityWaitingSuccess, inactiveTimeAlertCarrierInactivityError, inactiveTimeAlertCarrierInactivitySuccess, inactiveTimeAlertFinalizeRequestError, inactiveTimeAlertFinalizeRequestSuccess, inactiveTimeAlertServiceWithoutCarrierError, inactiveTimeAlertServiceWithoutCarrierSuccess, INACTIVE_NUMBER_ATTENTIONS_HIGH_PRIORITY_WAITING, INACTIVE_NUMBER_ATTENTIONS_LOW_PRIORITY_WAITING, INACTIVE_NUMBER_ATTENTIONS_MEDIUM_PRIORITY_WAITING, INACTIVE_TIME_ALERT_CARRIER_INACTIVITY, INACTIVE_TIME_ALERT_FINALIZE_REQUEST, INACTIVE_TIME_ALERT_SERVICE_WITHOUT_CARRIER } from 'modules/configurations/general_parameters/GeneralParametersActions.js';
 import GeneralParametersApiClient from 'modules/configurations/general_parameters/GeneralParametersApiClient.js';
 import { apiTimeout } from 'modules/utils/ApiUtil';
 import { ofType } from 'redux-observable';
@@ -667,6 +667,44 @@ export const configureNumberAttentionsLowPriorityWaiting = (action$, state$) => 
                     action.onSuccess("ERROR");
                 });
         }).pipe(catchError(error => of(configureNumberAttentionsLowPriorityWaitingError(error)
+            , addMessage({ variant: "error", message: "Error" })
+        )))
+    )
+);
+
+export const configureExpirationTime = (action$, state$) => action$.pipe(
+    ofType(CONFIGURE_EXPIRATION_TIME)
+    , mergeMap(action =>
+        Observable.create(obs => {
+            axios.defaults.timeout = apiTimeout;
+            axios(GeneralParametersApiClient.configureExpirationTime(action.expirationTime))
+                .then(response => {
+                    let code = response.data.apiResponse.code;
+                    if (response.status >= 200 && response.status < 300 && code === 200) {
+                        obs.next(configureExpirationTimeSuccess());
+                        obs.next(addMessage({ variant: "success", message: response.data.apiResponse.message }));
+                        obs.complete();
+                        action.onSuccess("OK"); //Callback de suceso
+                    } else if (response.status === 401) {
+                        obs.next(configureExpirationTimeError(response.data.apiResponse.message));
+                        obs.next(addMessage({ variant: "error", message: response.data.apiResponse.message }));
+                        obs.complete();
+                        action.onSuccess("ERROR");
+                    } else {
+                        obs.next(configureExpirationTimeError(response.data.message));
+                        obs.next(addMessage({ variant: "error", message: response.data.apiResponse.message }));
+                        obs.complete();
+                        action.onSuccess("ERROR");
+                    }
+
+                })
+                .catch(error => {
+                    obs.next(configureExpirationTimeError(error));
+                    obs.next(addMessage({ variant: "error", message: error.message }));
+                    obs.complete();
+                    action.onSuccess("ERROR");
+                });
+        }).pipe(catchError(error => of(configureExpirationTimeError(error)
             , addMessage({ variant: "error", message: "Error" })
         )))
     )

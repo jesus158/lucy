@@ -21,7 +21,7 @@ import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 // module components
 import WaitDialog from "modules/components/WaitDialog.jsx";
-import { configureNumberAttentionsHighPriorityWaiting, configureNumberAttentionsLowPriorityWaiting, configureNumberAttentionsMediumPriorityWaiting, configureTimeAlertCarrierInactivity, configureTimeAlertFinalizeRequest, configureTimeAlertServiceWithoutCarrier, getNumberAttentionsHighPriorityWaiting, getNumberAttentionsLowPriorityWaiting, getNumberAttentionsMediumPriorityWaiting, getTimeAlertCarrierInactivity, getTimeAlertFinalizeRequest, getTimeAlertServiceWithoutCarrier, setNumberAttentionsHighPriorityWaiting, setNumberAttentionsLowPriorityWaiting, setNumberAttentionsMediumPriorityWaiting, setTimeAlertCarrierInactivity, setTimeAlertFinalizeRequest, setTimeAlertServiceWithoutCarrier } from 'modules/configurations/general_parameters/GeneralParametersActions.js';
+import { configureNumberAttentionsHighPriorityWaiting, configureNumberAttentionsLowPriorityWaiting, configureNumberAttentionsMediumPriorityWaiting, configureTimeAlertCarrierInactivity, configureTimeAlertFinalizeRequest, configureTimeAlertServiceWithoutCarrier, configureExpirationTime, getNumberAttentionsHighPriorityWaiting, getNumberAttentionsLowPriorityWaiting, getNumberAttentionsMediumPriorityWaiting, getTimeAlertCarrierInactivity, getTimeAlertFinalizeRequest, getTimeAlertServiceWithoutCarrier, getExpirationTime, setNumberAttentionsHighPriorityWaiting, setNumberAttentionsLowPriorityWaiting, setNumberAttentionsMediumPriorityWaiting, setTimeAlertCarrierInactivity, setTimeAlertFinalizeRequest, setTimeAlertServiceWithoutCarrier, setExpirationTime } from 'modules/configurations/general_parameters/GeneralParametersActions.js';
 import { ROW_GRAY, ROW_WHITE, NAME_OPERATOR } from "modules/utils/ApiUtil.js";
 import React from "react";
 import { connect } from 'react-redux';
@@ -60,6 +60,7 @@ class GeneralParametersAdmin extends React.Component {
     this.props.getNumberAttentionsHighPriorityWaiting();
     this.props.getNumberAttentionsMediumPriorityWaiting();
     this.props.getNumberAttentionsLowPriorityWaiting();
+    this.props.getExpirationTime();
   }
 
 
@@ -112,6 +113,11 @@ class GeneralParametersAdmin extends React.Component {
         var numberAttentionsLowPriorityWaiting = this.props.generalParametersState.data.numberAttentionsLowPriorityWaiting;
         numberAttentionsLowPriorityWaiting.value = event.target.value;
         this.props.setNumberAttentionsLowPriorityWaiting(numberAttentionsLowPriorityWaiting);
+        break;
+      case 'expirationTime':
+        var expirationTime = this.props.generalParametersState.data.expirationTime;
+        expirationTime.value = event.target.value;
+        this.props.setExpirationTime(expirationTime);
         break;
       default:
         break;
@@ -211,6 +217,21 @@ class GeneralParametersAdmin extends React.Component {
         let value6 = parseInt(numberAttentionsLowPriorityWaiting.value) + 1;
         numberAttentionsLowPriorityWaiting.value = "" + value6;
         this.props.setNumberAttentionsLowPriorityWaiting(numberAttentionsLowPriorityWaiting);
+        break;
+      case 'expirationTime':
+        var expirationTime = this.props.generalParametersState.data.expirationTime;
+
+        if (expirationTime === undefined || expirationTime === null) {
+          expirationTime = {
+            id: 0,
+            value: "1",
+            active: 1
+          };
+        }
+
+        let value7 = parseInt(expirationTime.value) + 1;
+        expirationTime.value = "" + value7;
+        this.props.setExpirationTime(expirationTime);
         break;
       default:
         break;
@@ -329,6 +350,24 @@ class GeneralParametersAdmin extends React.Component {
         }
 
         break;
+      case 'expirationTime':
+        var expirationTime = this.props.generalParametersState.data.expirationTime;
+
+        if (expirationTime === undefined || expirationTime === null) {
+          expirationTime = {
+            id: 0,
+            value: "1",
+            active: 1
+          };
+        }
+
+        let value7 = parseInt(expirationTime.value) - 1;
+        if (value7 > 0) {
+          expirationTime.value = "" + value7;
+          this.props.setExpirationTime(expirationTime);
+        }
+
+        break;
       default:
         break;
     }
@@ -427,6 +466,21 @@ class GeneralParametersAdmin extends React.Component {
           this.props.getNumberAttentionsLowPriorityWaiting();
         });
         break;
+      case 'expirationTime':
+        var expirationTime = this.props.generalParametersState.data.expirationTime;
+
+        if (expirationTime === undefined || expirationTime === null) {
+          expirationTime = {
+            id: 0,
+            value: "1",
+            active: 1
+          };
+        }
+
+        this.props.configureExpirationTime(expirationTime, this.props, () => {
+          this.props.getExpirationTime();
+        });
+        break;
       default:
         break;
     }
@@ -442,7 +496,8 @@ class GeneralParametersAdmin extends React.Component {
 
       , numberAttentionsHighPriorityWaiting
       , numberAttentionsMediumPriorityWaiting
-      , numberAttentionsLowPriorityWaiting } = this.props.generalParametersState.data;
+      , numberAttentionsLowPriorityWaiting
+      , expirationTime } = this.props.generalParametersState.data;
 
     if (timeAlertServiceWithoutCarrier === undefined || timeAlertServiceWithoutCarrier === null) {
       timeAlertServiceWithoutCarrier = {
@@ -613,6 +668,8 @@ class GeneralParametersAdmin extends React.Component {
                     </TableCell>
                   </TableRow>
 
+                  {/*  */}
+
                   <TableRow tabIndex={-1} key={`TableRow-6`} style={{ background: 2 % 2 === 0 ? ROW_GRAY : ROW_WHITE }}>
                     <TableCell align="left">
                       <span>Número de solicitudes de prioridad baja en periodo de cola</span>
@@ -632,6 +689,27 @@ class GeneralParametersAdmin extends React.Component {
                       </Button>
                     </TableCell>
                   </TableRow>
+
+                  <TableRow tabIndex={-1} key={`TableRow-6`} style={{ background: 1 % 2 === 0 ? ROW_GRAY : ROW_WHITE }}>
+                    <TableCell align="left">
+                      <span>Días de vencimiento contraseñas</span>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Button color="white" round justIcon onClick={() => this.actionRemove("expirationTime")}>
+                        <Remove />
+                      </Button>
+                      <Input id="standard-uncontrolled" margin="none" type="number" name="expirationTime" value={expirationTime.value} onChange={this.handleInputText} inputProps={{ style: { textAlign: "center" } }} style={{ width: 56 }} />
+                      <Button color="white" round justIcon onClick={() => this.actionAdd("expirationTime")}>
+                        <Add />
+                      </Button>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Button color="success" round justIcon onClick={() => this.save("expirationTime")}>
+                        <Save />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+
                 </TableBody>
               </Table>
 
@@ -658,18 +736,21 @@ const mapDispatchToProps = dispatch => {
     getNumberAttentionsHighPriorityWaiting: () => dispatch(getNumberAttentionsHighPriorityWaiting()),
     getNumberAttentionsMediumPriorityWaiting: () => dispatch(getNumberAttentionsMediumPriorityWaiting()),
     getNumberAttentionsLowPriorityWaiting: () => dispatch(getNumberAttentionsLowPriorityWaiting()),
+    getExpirationTime: () => dispatch(getExpirationTime()),
     configureTimeAlertServiceWithoutCarrier: (timeAlertServiceWithoutCarrier, ownProps, onSuccess) => dispatch(configureTimeAlertServiceWithoutCarrier(timeAlertServiceWithoutCarrier, ownProps, onSuccess)),
     configureTimeAlertFinalizeRequest: (timeAlertServiceWithoutCarrier, ownProps, onSuccess) => dispatch(configureTimeAlertFinalizeRequest(timeAlertServiceWithoutCarrier, ownProps, onSuccess)),
     configureTimeAlertCarrierInactivity: (timeAlertServiceWithoutCarrier, ownProps, onSuccess) => dispatch(configureTimeAlertCarrierInactivity(timeAlertServiceWithoutCarrier, ownProps, onSuccess)),
     configureNumberAttentionsHighPriorityWaiting: (numberAttentionsHighPriorityWaiting, ownProps, onSuccess) => dispatch(configureNumberAttentionsHighPriorityWaiting(numberAttentionsHighPriorityWaiting, ownProps, onSuccess)),
     configureNumberAttentionsMediumPriorityWaiting: (numberAttentionsMediumPriorityWaiting, ownProps, onSuccess) => dispatch(configureNumberAttentionsMediumPriorityWaiting(numberAttentionsMediumPriorityWaiting, ownProps, onSuccess)),
     configureNumberAttentionsLowPriorityWaiting: (numberAttentionsLowPriorityWaiting, ownProps, onSuccess) => dispatch(configureNumberAttentionsLowPriorityWaiting(numberAttentionsLowPriorityWaiting, ownProps, onSuccess)),
+    configureExpirationTime: (expirationTime, ownProps, onSuccess) => dispatch(configureExpirationTime(expirationTime, ownProps, onSuccess)),
     setTimeAlertServiceWithoutCarrier: (timeAlertServiceWithoutCarrier) => dispatch(setTimeAlertServiceWithoutCarrier(timeAlertServiceWithoutCarrier)),
     setTimeAlertFinalizeRequest: (timeAlertFinalizeRequest) => dispatch(setTimeAlertFinalizeRequest(timeAlertFinalizeRequest)),
     setTimeAlertCarrierInactivity: (timeAlertCarrierInactivity) => dispatch(setTimeAlertCarrierInactivity(timeAlertCarrierInactivity)),
     setNumberAttentionsHighPriorityWaiting: (numberAttentionsHighPriorityWaiting) => dispatch(setNumberAttentionsHighPriorityWaiting(numberAttentionsHighPriorityWaiting)),
     setNumberAttentionsMediumPriorityWaiting: (numberAttentionsMediumPriorityWaiting) => dispatch(setNumberAttentionsMediumPriorityWaiting(numberAttentionsMediumPriorityWaiting)),
     setNumberAttentionsLowPriorityWaiting: (numberAttentionsLowPriorityWaiting) => dispatch(setNumberAttentionsLowPriorityWaiting(numberAttentionsLowPriorityWaiting)),
+    setExpirationTime: (expirationTime) => dispatch(setExpirationTime(expirationTime)),
   };
 };
 

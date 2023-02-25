@@ -11,12 +11,11 @@ const LUCY_REPORT_SERVICE = "http://44.227.228.174:8080/lucy-reports-services";
 
 
 
-
 /**
  * TEST API'S
  */
 
-// const URL_BASE = "http://10.0.0.85:8080";
+// const URL_BASE = "http://44.227.228.174:8080";
 
 // const LUCY_LOCATION_SERVICE = URL_BASE+"/lucy-locations-services-dev";
 // const LUCY_ACCOUNT_SERVICE = URL_BASE+"/lucy-account-services";

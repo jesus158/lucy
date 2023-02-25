@@ -40,6 +40,7 @@ import Hotspot from "modules/buttons/hotspot";
 import HotspotAdmmin from "modules/buttons/hotspot/HotspotAdmin.jsx";
 import Carrier from "modules/carriers";
 import GeneralParameters from "modules/configurations/general_parameters";
+import ChangePasswordAdmin from "modules/configurations/change_password/ChangePasswordAdmin";
 import TypeAbsence from "modules/configurations/type_absence";
 import TypeAbsenceAdmin from "modules/configurations/type_absence/TypeAbsenceAdmin";
 import TypeBreak from "modules/configurations/type_break";
@@ -178,47 +179,47 @@ var dashRoutesFilter = [
     state: "pageCollapse",
     permition: [ADMIN, SUPER_MANAGER],
     views: [
-      {
-        collapse: true,
-        name: "Altas Tempranas",
-        icon: AccessAlarmIcon,
-        state: "buttonsRequestCollapse",
-        permition: [ADMIN, SUPER_MANAGER],
-        views: [
-          {
-            path: "/rooms-beds",
-            name: "Gestionar Habitación/Camas",
-            mini: "AT",
-            component: RoomsBeds,
-            layout: "/admin",
-            permition: [ADMIN, SUPER_MANAGER]
-          },
-          {
-            path: "/admin-rooms-beds",
-            name: "Administrar Habitación Camas",
-            icon: BookmarkBorder,
-            component: RoomsBedAdmin,
-            layout: "/admin",
-            redirect: true,
-            permition: [ADMIN, SUPER_MANAGER]
-          },
-          {
-            path: "/ideal-times",
-            name: "Tiempos ideales por áreas",
-            mini: "BO",
-            component: IdealTimes,
-            layout: "/admin",
-            permition: [ADMIN, SUPER_MANAGER]
-          },
-          {
-            path: "/admin-ideal-times",
-            name: "Administrar tiempos ideales",
-            component: IdealTimeAdmin,
-            layout: "/admin",
-            permition: [ADMIN, SUPER_MANAGER]
-          }
-        ]
-      },
+      // {
+      //   collapse: true,
+      //   name: "Altas Tempranas",
+      //   icon: AccessAlarmIcon,
+      //   state: "buttonsRequestCollapse",
+      //   permition: [ADMIN, SUPER_MANAGER],
+      //   views: [
+      //     {
+      //       path: "/rooms-beds",
+      //       name: "Gestionar Habitación/Camas",
+      //       mini: "AT",
+      //       component: RoomsBeds,
+      //       layout: "/admin",
+      //       permition: [ADMIN, SUPER_MANAGER]
+      //     },
+      //     {
+      //       path: "/admin-rooms-beds",
+      //       name: "Administrar Habitación Camas",
+      //       icon: BookmarkBorder,
+      //       component: RoomsBedAdmin,
+      //       layout: "/admin",
+      //       redirect: true,
+      //       permition: [ADMIN, SUPER_MANAGER]
+      //     },
+      //     {
+      //       path: "/ideal-times",
+      //       name: "Tiempos ideales por áreas",
+      //       mini: "BO",
+      //       component: IdealTimes,
+      //       layout: "/admin",
+      //       permition: [ADMIN, SUPER_MANAGER]
+      //     },
+      //     {
+      //       path: "/admin-ideal-times",
+      //       name: "Administrar tiempos ideales",
+      //       component: IdealTimeAdmin,
+      //       layout: "/admin",
+      //       permition: [ADMIN, SUPER_MANAGER]
+      //     }
+      //   ]
+      // },
       {
         path: "/config-typeservices",
         name: "Tipos de servicio",
@@ -299,7 +300,15 @@ var dashRoutesFilter = [
         component: GeneralParameters,
         layout: "/admin",
         permition: [ADMIN, SUPER_MANAGER]
-      }
+      },      
+      {
+        path: "/config-change-password",
+        name: " Cambiar Contraseña",
+        mini: "CP",
+        component: ChangePasswordAdmin,
+        layout: "/admin",
+        permition: [ADMIN, SUPER_MANAGER]
+      },
     ]
   },
   {

@@ -19,7 +19,7 @@ import {
   GET_REQUEST_IN_PROCESS_BY_USER_BY_FILTER_SUCCESS,
   SET_CARRIER,
   SET_MORE_INFORMATION,
-  SET_NAME_RECEIVED,
+  SET_NAME_REQUESTED,
   SET_TYPE_CANCELLATION,
   SET_TYPE_REJECT,
   SET_TYPE_SERVICE,
@@ -83,7 +83,7 @@ const initialState = {
     freeAssetTime: 0,
     carrier: undefined,
     moreInformation: "",
-    nameReceived: "",
+    nameRequested: "",
   }
 };
 
@@ -317,12 +317,12 @@ const requestReducer = (state = initialState, action) => {
           },
         };
 
-      case SET_NAME_RECEIVED:
+      case SET_NAME_REQUESTED:
         return {
           ...state,
           data: {
             ...state.data,
-            nameReceived: action.nameReceived,
+            nameRequested: action.nameRequested,
           },
         };
 

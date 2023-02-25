@@ -276,6 +276,21 @@ class ApiClient {
       return request;
    }
 
+   configureExpirationTime = (expirationTime) => {
+      this.account = sessionStorage["accountCode"];
+      let request = {
+         method: 'post'
+         , url: `${this.url}/expirationTime/createUpdate/${this.account}`
+         , data: expirationTime
+         , headers: {
+            "Content-Type": "application/json;charset=UTF-8"
+            , "Accept": "application/json;charset=UTF-8"
+         }
+      }
+
+      return request;
+   }
+
    inactiveNumberAttentionsLowPriorityWaiting = () => {
       this.account = sessionStorage["accountCode"];
       let request = {

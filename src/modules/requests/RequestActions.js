@@ -48,7 +48,7 @@ export const SET_TYPE_CANCELLATION = "SET_TYPE_CANCELLATION";
 
 export const SET_ASSET = "SET_ASSET"
 
-export const SET_NAME_RECEIVED = "SET_NAME_RECEIVED";
+export const SET_NAME_REQUESTED = "SET_NAME_REQUESTED";
 
 /**
  * Recupera el listado de las solicitudes no terminadas
@@ -111,7 +111,7 @@ export const createRequest = (
   freeAssetTime,
   idCarrierUserSystemAccount,
   moreInformation,
-  nameReceived) => ({
+  nameRequested) => ({
     type: CREATE_REQUEST,
     onSuccess,
     idUbicationBegin,
@@ -122,7 +122,7 @@ export const createRequest = (
     freeAssetTime,
     idCarrierUserSystemAccount,
     moreInformation,
-    nameReceived
+    nameRequested
   });
 
 export const createRequestSuccess = data => ({
@@ -148,7 +148,7 @@ export const updateRequest = (
     freeAssetTime,
     idCarrierUserSystemAccount,
     newInfo,
-    nameReceived) => ({
+    nameRequested) => ({
   type: UPDATE_REQUEST,
   onSuccess,
   idUpdateRequest,
@@ -160,7 +160,7 @@ export const updateRequest = (
   freeAssetTime,
   idCarrierUserSystemAccount,
   newInfo,
-  nameReceived
+  nameRequested
 });
 
 export const updateRequestSuccess = data => ({
@@ -333,9 +333,9 @@ export const setMoreInformation = moreInformation => ({
   moreInformation
 });
 
-export const setNameReceived = nameReceived => ({
-  type: SET_NAME_RECEIVED,
-  nameReceived
+export const setNameRequested = nameRequested => ({
+  type: SET_NAME_REQUESTED,
+  nameRequested
 });
 
 export const setTypeReject = (typeReject, onSuccess) => ({

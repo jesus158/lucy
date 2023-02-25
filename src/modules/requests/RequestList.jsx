@@ -1259,7 +1259,7 @@ class RequestList extends React.Component {
                             dataRequest.freeAssetTime,
                             dataRequest.userCarrier ? dataRequest.userCarrier.id : 0,
                             dataRequest.moreInformation,
-                            dataRequest.nameReceived,
+                            dataRequest.nameRequested,
                         )
 
                     }}
@@ -1436,7 +1436,7 @@ class RequestList extends React.Component {
                                                     <b>Solicitado Por:</b>
                                                 </TableCell>
                                                 <TableCell style={gunnarStyle2}>
-                                                    {` ${request.nameReceived}`}
+                                                    {` ${request.nameRequested}`}
                                                 </TableCell>
                                             </TableRow>
                                             <TableRow key={`TableRow2-${key}`} style={{background: ROW_GRAY}}>
@@ -1712,7 +1712,8 @@ const mapDispatchToProps = dispatch => {
             freeAsset,
             freeAssetTime,
             idCarrierUserSystemAccount,
-            newInfo) => dispatch(updateRequest(
+            newInfo,
+            nameRequested) => dispatch(updateRequest(
             onSucess,
             idRequest,
             idUbicationBegin,
@@ -1722,7 +1723,8 @@ const mapDispatchToProps = dispatch => {
             freeAsset,
             freeAssetTime,
             idCarrierUserSystemAccount,
-            newInfo))
+            newInfo,
+            nameRequested))
     };
 };
 

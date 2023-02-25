@@ -28,13 +28,14 @@ import WaitDialog from "modules/components/WaitDialog.jsx";
 import { getListActiveTypeService } from 'modules/configurations/type_services/TypeServicesActions.js';
 import { getListActiveShowService } from 'modules/locations/ubications/UbicationActions.js';
 import { getListActiveAsset, configureAsset, getListAssetType } from 'modules/assets/AssetActions.js';
-import { createRequest, setCarrier, setMoreInformation, setTypeService, setAsset, setUbicationBegin, setUbicationEnd, setNameReceived } from 'modules/requests/RequestActions.js';
+import { createRequest, setCarrier, setMoreInformation, setTypeService, setAsset, setUbicationBegin, setUbicationEnd, setNameRequested } from 'modules/requests/RequestActions.js';
 import React from "react";
 import { connect } from 'react-redux';
 import { NAME_OPERATOR } from "modules/utils/ApiUtil.js";
 import Check from "@material-ui/icons/Check";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { addMessage } from 'layouts/MessagesActions';
 
 
 
@@ -156,7 +157,7 @@ class RequestAdmin extends React.Component {
     this.props.setUbicationEnd(this.state.ubicationByDefault);
     this.props.setCarrier(this.state.carrierByDefault);
     this.props.setMoreInformation("");
-    this.props.setNameReceived("");
+    this.props.setNameRequested("");
   };
 
   /**
@@ -164,14 +165,25 @@ class RequestAdmin extends React.Component {
    * desde el botón de la aplicación
    */
   onClickSave = () => {
-    this.props.requestState.saveActive = false;
+    // this.props.requestState.saveActive = false;
     //alert("prueba1");
     var idCarrierUserSystemAccount = undefined;
     if (this.props.requestState.data.carrier !== undefined) {
       idCarrierUserSystemAccount = this.props.requestState.data.carrier.userCarrier.id
     }
     var moreInformation = this.props.requestState.data.moreInformation;
-    var nameReceived = this.props.requestState.data.nameReceived;
+    var nameRequested = this.props.requestState.data.nameRequested;
+    var message = "El campo Solicitado Por es Obligatorio";
+
+    try {
+      if(nameRequested === "" ) {
+        throw message;
+      }
+    } catch (ex) {
+      this.props.addMessage({ variant: "warning", message: message });
+      return
+    }
+
     this.props.createRequest((success) => {
       console.log("succes ok");
       console.log(typeof(success));
@@ -191,7 +203,7 @@ class RequestAdmin extends React.Component {
       this.state.checked.freeAssetTimeByDefault,
       idCarrierUserSystemAccount,
       moreInformation,
-      nameReceived,
+      nameRequested,
     );
 
   }
@@ -247,9 +259,9 @@ class RequestAdmin extends React.Component {
     this.props.setMoreInformation(moreInformation);
   }
 
-  handleNameReceivedInput = event => {
-    var nameReceived = event.target.value;
-    this.props.setNameReceived(nameReceived);
+  handleNameRequestedInput = event => {
+    var nameRequested = event.target.value;
+    this.props.setNameRequested(nameRequested);
   }
 
   handleInputTimeText = event => {
@@ -651,15 +663,15 @@ class RequestAdmin extends React.Component {
                         Solicitado Por
                       </span>
                     }
-                    id="nameReceived"
+                    id="nameRequested"
                     formControlProps={{
                       fullWidth: true
                     }}
                     inputProps={{
-                      name: "nameReceived",
-                      id: "nameReceived",
-                      value: this.props.requestState.data.nameReceived,
-                      onChange: this.handleNameReceivedInput,
+                      name: "nameRequested",
+                      id: "nameRequested",
+                      value: this.props.requestState.data.nameRequested,
+                      onChange: this.handleNameRequestedInput,
                       startAdornment: (
                         <InputAdornment
                           position="start"
@@ -807,6 +819,7 @@ const mapDispatchToProps = dispatch => {
     getListActiveAsset: (onSuccess) => dispatch(getListActiveAsset(onSuccess)),
     getListAssetType: (onSuccess) => dispatch(getListAssetType(onSuccess)),
     getListActiveShowService: () => dispatch(getListActiveShowService()),
+    addMessage: (message) => dispatch(addMessage(message)),
     getInShiftByFilter: (ApiPaginationFilter) => dispatch(getInShiftByFilter(
       0,
       1,
@@ -822,7 +835,7 @@ const mapDispatchToProps = dispatch => {
     setUbicationEnd: (ubicationEnd) => dispatch(setUbicationEnd(ubicationEnd)),
     setCarrier: (carrier) => dispatch(setCarrier(carrier)),
     setMoreInformation: (moreInformation) => dispatch(setMoreInformation(moreInformation)),
-    setNameReceived: (nameReceived) => dispatch(setNameReceived(nameReceived)),
+    setNameRequested: (nameRequested) => dispatch(setNameRequested(nameRequested)),
     configureAsset: (asset, ownProps, onSuccess) => dispatch(configureAsset(asset, ownProps, onSuccess)),
     createRequest: (
       onSucess,
@@ -834,7 +847,7 @@ const mapDispatchToProps = dispatch => {
       freeAssetTime,
       idCarrierUserSystemAccount,
       moreInformation,
-      nameReceived) => dispatch(createRequest(
+      nameRequested) => dispatch(createRequest(
         onSucess,
         idUbicationBegin,
         idUbicationEnd,
@@ -844,7 +857,7 @@ const mapDispatchToProps = dispatch => {
         freeAssetTime,
         idCarrierUserSystemAccount,
         moreInformation,
-        nameReceived))
+        nameRequested))
   };
 };
 

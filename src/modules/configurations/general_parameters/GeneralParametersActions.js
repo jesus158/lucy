@@ -90,6 +90,17 @@ export const INACTIVE_NUMBER_ATTENTIONS_LOW_PRIORITY_WAITING_ERROR = 'INACTIVE_N
 
 export const SET_NUMBER_ATTENTIONS_LOW_PRIORITY_WAITING = 'SET_NUMBER_ATTENTIONS_LOW_PRIORITY_WAITING';
 
+//EXPIRATION TIME
+export const CONFIGURE_EXPIRATION_TIME = 'CONFIGURE_EXPIRATION_TIME';
+export const CONFIGURE_EXPIRATION_TIME_SUCCESS = 'CONFIGURE_EXPIRATION_TIME_SUCCESS';
+export const CONFIGURE_EXPIRATION_TIME_ERROR = 'CONFIGURE_EXPIRATION_TIME_ERROR';
+
+export const GET_EXPIRATION_TIME = 'GET_EXPIRATION_TIME';
+export const GET_EXPIRATION_TIME_SUCCESS = 'GET_EXPIRATION_TIME_SUCCESS';
+export const GET_EXPIRATION_TIME_ERROR = 'GET_EXPIRATION_TIME_ERROR';
+
+export const SET_EXPIRATION_TIME = 'SET_EXPIRATION_TIME';
+
 /**************************************
  * TIME_ALERT_SERVICE_WITHOUT_CARRIER *
  **************************************/
@@ -565,5 +576,56 @@ export const inactiveNumberAttentionsLowPriorityWaitingError = (error) => (
     {
         type: INACTIVE_NUMBER_ATTENTIONS_LOW_PRIORITY_WAITING_ERROR
         , error
+    }
+);
+
+/*TIME EXPIRATION*/
+export const configureExpirationTime= (expirationTime, ownProps, onSuccess) => (
+    {
+        type: CONFIGURE_EXPIRATION_TIME
+        , expirationTime
+        , ownProps
+        , onSuccess
+
+    }
+);
+
+export const configureExpirationTimeSuccess = () => (
+    {
+        type: CONFIGURE_EXPIRATION_TIME_SUCCESS
+    }
+);
+
+export const configureExpirationTimeError = (error) => (
+    {
+        type: CONFIGURE_EXPIRATION_TIME_ERROR
+        , error
+    }
+);
+
+export const getExpirationTime = () => (
+    {
+        type: GET_EXPIRATION_TIME
+    }
+);
+
+export const getExpirationTimeSuccess = (expirationTime) => (
+    {
+        type: GET_EXPIRATION_TIME_SUCCESS
+        , expirationTime
+    }
+);
+
+export const getExpirationTimeError = (error) => (
+    {
+        type: GET_EXPIRATION_TIME_ERROR
+        , error
+    }
+);
+
+export const setExpirationTime= (expirationTime) => (
+    {
+        type: SET_EXPIRATION_TIME
+        , expirationTime
     }
 );

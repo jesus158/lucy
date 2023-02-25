@@ -84,6 +84,16 @@ import {
 
     , SET_NUMBER_ATTENTIONS_LOW_PRIORITY_WAITING
 
+    , CONFIGURE_EXPIRATION_TIME
+    , CONFIGURE_EXPIRATION_TIME_SUCCESS
+    , CONFIGURE_EXPIRATION_TIME_ERROR
+
+    // , GET_EXCONFIGURE_EXPIRATION_TIME
+    // , GET_EXCONFIGURE_EXPIRATION_TIME_SUCCESS
+    // , GET_EXCONFIGURE_EXPIRATION_TIME_ERROR
+
+    , SET_EXPIRATION_TIME
+
 } from 'modules/configurations/general_parameters/GeneralParametersActions.js';
 
 const initialState = {
@@ -116,6 +126,11 @@ const initialState = {
             active: 1
         }
         , numberAttentionsLowPriorityWaiting: {
+            id: 0,
+            value: "1",
+            active: 1
+        }
+        , expirationTime: {
             id: 0,
             value: "1",
             active: 1
@@ -633,6 +648,63 @@ const generalParametersReducer = (state = initialState, action) => {
                     numberAttentionsLowPriorityWaiting: action.numberAttentionsLowPriorityWaiting,
                 },
             };
+        case CONFIGURE_EXPIRATION_TIME:
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    isActivityIndicatorShown: true,
+                },
+            };
+        case CONFIGURE_EXPIRATION_TIME_SUCCESS:
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    isActivityIndicatorShown: false,
+                },
+            };
+        case CONFIGURE_EXPIRATION_TIME_ERROR:
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    isActivityIndicatorShown: false,
+                },
+            };
+        // case INACTIVE_EXPIRATION_TIME:
+        //     return {
+        //         ...state,
+        //         data: {
+        //             ...state.data,
+        //             isActivityIndicatorShown: true,
+        //         },
+        //     };
+        // case INACTIVE_EXPIRATION_TIME_SUCCESS:
+        //     return {
+        //         ...state,
+        //         data: {
+        //             ...state.data,
+        //             isActivityIndicatorShown: false,
+        //         },
+        //     };
+        // case INACTIVE_EXPIRATION_TIME_ERROR:
+        //     return {
+        //         ...state,
+        //         data: {
+        //             ...state.data,
+        //             isActivityIndicatorShown: false,
+        //         },
+        //     };
+        case SET_EXPIRATION_TIME:
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    expirationTime: action.expirationTime,
+                },
+            };
+    
 
         default:
             return state;
